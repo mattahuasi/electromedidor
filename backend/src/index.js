@@ -2,10 +2,16 @@ import { createServer } from "http";
 import app from "./app.js";
 import webSocket from "./webSocket.js";
 import { sequelize } from "./database/database.js";
+import "./models/Person.js";
+import "./models/Category.js";
+import "./models/Hardware.js";
+import "./models/Reading.js";
+import "./models/Bill.js";
+import "./models/Report.js";
 
 async function main() {
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync({ alter: true, force: true });
     console.log("Connection has been established successfully.");
     const server = createServer(app);
     webSocket(server);
