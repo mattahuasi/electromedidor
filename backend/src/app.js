@@ -11,7 +11,7 @@ import hardwareRoutes from "./routes/hardware.routes.js";
 
 const app = express();
 
-app.set("appName", process.env.APP_NAME || "SPA");
+app.set("appName", process.env.APP_NAME || "API");
 app.set("port", process.env.APP_PORT || 3000);
 
 app.use(
