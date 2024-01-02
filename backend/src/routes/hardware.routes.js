@@ -3,7 +3,7 @@ import { validateSchema } from "../middlewares/validator.middleware.js";
 import { hardwareSchema } from "../schemas/hardware.schema.js";
 import {
   getHardware,
-  getHardwares,
+  getHardwareById,
   createHardware,
   updateHardware,
   deleteHardware,
@@ -11,8 +11,8 @@ import {
 
 const router = new Router();
 router.post("/hardware", validateSchema(hardwareSchema), createHardware);
-router.get("/hardware", getHardwares);
-router.get("/hardware/:id", getHardware);
+router.get("/hardware", getHardware);
+router.get("/hardware/:id", getHardwareById);
 router.put("/hardware/:id", updateHardware);
 router.delete("/hardware/:id", deleteHardware);
 

@@ -1,6 +1,25 @@
 import { Person, Customer } from "../models/Person.js";
 
-export const getCustomer = async (req, res) => {
+export const getCustomers = async (req, res) => {
+  try {
+    const customers = await Customer.findAll({ include: [{ model: Person }] });
+    const data = customers.map((customer) => ({
+      id: customer.id,
+      firstName: customer.person.firstName,
+      lastName: customer.person.lastName,
+      ci: customer.person.ci,
+      phone: customer.person.phone,
+      email: customer.person.email,
+      createdAt: customer.person.createdAt,
+      updatedAt: customer.person.updatedAt,
+    }));
+    res.json(data);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
+export const getCustomerById = async (req, res) => {
   try {
     const { id } = req.params;
     const customer = await Customer.findByPk(id, {
@@ -18,25 +37,6 @@ export const getCustomer = async (req, res) => {
       createdAt: customer.person.createdAt,
       updatedAt: customer.person.updatedAt,
     };
-    res.json(data);
-  } catch (error) {
-    return res.status(500).json({ errors: [error] });
-  }
-};
-
-export const getCustomers = async (req, res) => {
-  try {
-    const customers = await Customer.findAll({ include: [{ model: Person }] });
-    const data = customers.map((customer) => ({
-      id: customer.id,
-      firstName: customer.person.firstName,
-      lastName: customer.person.lastName,
-      ci: customer.person.ci,
-      phone: customer.person.phone,
-      email: customer.person.email,
-      createdAt: customer.person.createdAt,
-      updatedAt: customer.person.updatedAt,
-    }));
     res.json(data);
   } catch (error) {
     return res.status(500).json({ errors: [error] });

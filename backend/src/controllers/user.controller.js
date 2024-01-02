@@ -1,7 +1,35 @@
 import { Person, User } from "../models/Person.js";
 import bcrypt from "bcryptjs";
 
-export const getUser = async (req, res) => {
+export const getUsers = async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ["id", "admin", "createdAt", "updatedAt"],
+      include: [
+        {
+          model: Person,
+          attributes: ["firstName", "lastName", "ci", "phone", "email"],
+        },
+      ],
+    });
+    const data = users.map((user) => ({
+      id: user.id,
+      firstName: user.person.firstName,
+      lastName: user.person.lastName,
+      ci: user.person.ci,
+      phone: user.person.phone,
+      email: user.person.email,
+      admin: user.admin,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    }));
+    res.json(data);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
+export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findByPk(id, {
@@ -25,34 +53,6 @@ export const getUser = async (req, res) => {
       createdAt: user.createdAt,
       updatedAt: user.updatedAt,
     };
-    res.json(data);
-  } catch (error) {
-    return res.status(500).json({ errors: [error] });
-  }
-};
-
-export const getUsers = async (req, res) => {
-  try {
-    const users = await User.findAll({
-      attributes: ["id", "admin", "createdAt", "updatedAt"],
-      include: [
-        {
-          model: Person,
-          attributes: ["firstName", "lastName", "ci", "phone", "email"],
-        },
-      ],
-    });
-    const data = users.map((user) => ({
-      id: user.id,
-      firstName: user.person.firstName,
-      lastName: user.person.lastName,
-      ci: user.person.ci,
-      phone: user.person.phone,
-      email: user.person.email,
-      admin: user.admin,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    }));
     res.json(data);
   } catch (error) {
     return res.status(500).json({ errors: [error] });

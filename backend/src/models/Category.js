@@ -21,23 +21,23 @@ export const Category = sequelize.define("categories", {
   maxA: {
     type: DataTypes.INTEGER,
   },
+  priceA: {
+    type: DataTypes.FLOAT,
+  },
   minB: {
     type: DataTypes.INTEGER,
   },
   maxB: {
     type: DataTypes.INTEGER,
   },
+  priceB: {
+    type: DataTypes.FLOAT,
+  },
   minC: {
     type: DataTypes.INTEGER,
   },
   maxC: {
     type: DataTypes.INTEGER,
-  },
-  priceA: {
-    type: DataTypes.FLOAT,
-  },
-  priceB: {
-    type: DataTypes.FLOAT,
   },
   priceC: {
     type: DataTypes.FLOAT,
