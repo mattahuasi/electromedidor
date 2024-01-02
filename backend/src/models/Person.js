@@ -17,12 +17,12 @@ export const Person = sequelize.define("people", {
     type: DataTypes.STRING,
     unique: true,
   },
+  phone: {
+    type: DataTypes.STRING,
+  },
   email: {
     type: DataTypes.STRING,
     unique: true,
-  },
-  phone: {
-    type: DataTypes.STRING,
   },
 });
 

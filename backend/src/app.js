@@ -4,6 +4,11 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 
+import userRoutes from "./routes/user.routes.js";
+import customerRoutes from "./routes/customer.routes.js";
+import categoryRoutes from "./routes/category.routes.js";
+import hardwareRoutes from "./routes/hardware.routes.js";
+
 const app = express();
 
 app.set("appName", process.env.APP_NAME || "SPA");
@@ -18,5 +23,10 @@ app.use(
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
+
+app.use("/api", userRoutes);
+app.use("/api", customerRoutes);
+app.use("/api", categoryRoutes);
+app.use("/api", hardwareRoutes);
 
 export default app;

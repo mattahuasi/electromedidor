@@ -11,7 +11,7 @@ import "./models/Report.js";
 
 async function main() {
   try {
-    await sequelize.sync({ alter: true, force: true });
+    await sequelize.sync({ alter: true });
     console.log("Connection has been established successfully.");
     const server = createServer(app);
     webSocket(server);
