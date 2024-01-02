@@ -41,13 +41,19 @@ export const User = sequelize.define("users", {
   },
 });
 
-export const Customer = sequelize.define("customers", {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
+export const Customer = sequelize.define(
+  "customers",
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
   },
-});
+  {
+    timestamps: false,
+  }
+);
 
 Person.hasOne(User, {
   foreignKey: "personId",
