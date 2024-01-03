@@ -10,9 +10,18 @@
     "test:unit": "vitest"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
+    "axios": "^1.6.3",
+    "oh-vue-icons": "^1.0.0-rc3",
     "pinia": "^2.1.7",
+    "socket.io-client": "^4.7.2",
     "vue": "^3.3.11",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "vue-sonner": "^1.0.2",
+    "vue3-popper": "^1.5.0",
+    "vuelidate": "^0.7.7"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^4.5.2",

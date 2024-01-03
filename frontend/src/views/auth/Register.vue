@@ -8,7 +8,7 @@
         >
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
-              <h6 class="text-4xl dark:text-white">Iniciar sesión</h6>
+              <h6 class="text-4xl dark:text-white">Crear cuenta nueva</h6>
             </div>
             <hr class="mt-6 border-b-1 border-gray-200 dark:border-gray-600" />
           </div>
@@ -74,12 +74,6 @@
                 </button>
               </div>
 
-              <div class="flex justify-between items-center mx-8 mt-6">
-                <p class="text-sm">¿No tienes una cuenta?</p>
-                <router-link to="/auth/register" class="text-blue-700 text-lg"
-                  >Regístrate</router-link
-                >
-              </div>
             </form>
           </div>
         </div>
