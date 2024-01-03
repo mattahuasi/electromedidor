@@ -55,12 +55,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <card-data title="Clientes" icon="fa-user-tie">
+  <card-data title="Usuarios" icon="fa-users">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/newCustomer">Agregar Cliente</button-add>
+      <button-add to="/new/customer">Agregar Cliente</button-add>
     </template>
     <DataTable :columns="columns" :items="itemsDisplay" />
   </card-data>

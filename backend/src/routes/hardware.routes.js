@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { authRequired } from "../middlewares/validateToken.js";
+import { adminRequired } from "../middlewares/validateAdmin.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { hardwareSchema } from "../schemas/hardware.schema.js";
 import {
@@ -10,10 +12,15 @@ import {
 } from "../controllers/hardware.controller.js";
 
 const router = new Router();
-router.post("/hardware", validateSchema(hardwareSchema), createHardware);
-router.get("/hardware", getHardware);
-router.get("/hardware/:id", getHardwareById);
-router.put("/hardware/:id", updateHardware);
-router.delete("/hardware/:id", deleteHardware);
+router.post(
+  "/hardware",
+  authRequired,
+  validateSchema(hardwareSchema),
+  createHardware
+);
+router.get("/hardware", authRequired, getHardware);
+router.get("/hardware/:id", authRequired, getHardwareById);
+router.put("/hardware/:id", authRequired, updateHardware);
+router.delete("/hardware/:id", authRequired, deleteHardware);
 
 export default router;

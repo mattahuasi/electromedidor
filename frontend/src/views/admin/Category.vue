@@ -7,6 +7,7 @@ import { toast } from "vue-sonner";
 
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
+import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 
 const router = useRouter();
@@ -61,11 +62,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <card-data title="Clientes" icon="fa-user-tie">
+  <card-data title="Categorías" icon="fa-layer-group">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
+      <button-add to="/new/category">Agregar categoría</button-add>
     </template>
     <DataTable :columns="columns" :items="itemsDisplay" />
   </card-data>

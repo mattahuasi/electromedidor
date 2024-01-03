@@ -1,7 +1,7 @@
 <script setup>
 import {
   createCustomerRequest,
-  getCustomerRequest,
+  getCustomerByIdRequest,
   updateCustomerRequest,
 } from "@/api/customer.js";
 import { useRoute, useRouter } from "vue-router";
@@ -58,7 +58,7 @@ async function handleSubmit() {
 onMounted(async () => {
   if (route.query.id) {
     try {
-      const res = await getCustomerRequest(route.query.id);
+      const res = await getCustomerByIdRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
       console.log(error);
@@ -70,11 +70,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Form title="Cliente" icon="fa-user-tie" @handleSubmit="handleSubmit"
+  <Form title="Usuario" icon="fa-user" @handleSubmit="handleSubmit"
     ><h6
       class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos dl cliente
+      Datos del usuario
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">

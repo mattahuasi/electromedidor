@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { useProfileStore } from "@/stores/profile.js";
 
-import Guest from "@/layouts/Guest.vue";
 import Auth from "@/layouts/Auth.vue";
+import Admin from "@/layouts/Admin.vue";
 
 import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
@@ -14,6 +15,9 @@ import Bill from "@/views/admin/Bill.vue";
 import Report from "@/views/admin/Report.vue";
 
 import CustomerForm from "@/views/forms/CustomerForm.vue";
+import CategoryForm from "@/views/forms/CategoryForm.vue";
+import Profile from "@/views/forms/ProfileForm.vue";
+import UpdatePassword from "@/views/forms/UpdatePassword.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,60 +25,81 @@ const router = createRouter({
     {
       path: "/",
       redirect: "/dashboard",
-      component: Auth,
+      component: Admin,
       meta: { requiresAuth: true },
       children: [
-        {
-          path: "/dashboard",
-          component: Dashboard,
-        },
-        {
-          path: "/users",
-          component: User,
-        },
-        {
-          path: "/customers",
-          component: Customer,
-        },
-        {
-          path: "/newCustomer",
-          component: CustomerForm,
-        },
-        {
-          path: "/bills",
-          component: Bill,
-        },
-        {
-          path: "/categories",
-          component: Category,
-        },
-        {
-          path: "/reports",
-          component: Report,
-        },
+        { path: "/dashboard", component: Dashboard },
+        { path: "/profile", component: Profile },
+        { path: "/update/password", component: UpdatePassword },
+        { path: "/users", component: User },
+        { path: "/customers", component: Customer },
+        { path: "/new/customer", component: CustomerForm },
+        { path: "/bills", component: Bill },
+        { path: "/categories", component: Category },
+        { path: "/new/category", component: CategoryForm },
+        { path: "/reports", component: Report },
       ],
     },
     {
       path: "/auth",
       redirect: "/auth/login",
-      component: Guest,
+      component: Auth,
       meta: { notAuthenticated: true },
       children: [
-        {
-          path: "/auth/login",
-          component: Login,
-        },
-        {
-          path: "/auth/register",
-          component: Register,
-        },
+        { path: "/auth/login", component: Login },
+        { path: "/auth/register", component: Register },
       ],
     },
     { path: "/:pathMatch(.*)*", redirect: "/" },
   ],
 });
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
+  let ok = false;
+  let path = "";
+  const profileStore = useProfileStore();
+  if (!profileStore.isAuthenticated) {
+    try {
+      await profileStore.verifyToken();
+    } catch (error) {
+      console.error("Error loading user data:", error);
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!profileStore.isAuthenticated) {
+      path = "/auth/login";
+      ok = false;
+    } else {
+      ok = true;
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.notAuthenticated)) {
+    if (profileStore.isAuthenticated) {
+      ok = false;
+      path = "/";
+    } else {
+      ok = true;
+    }
+  }
+
+  if (to.matched.some((record) => record.meta.requiresAdmin)) {
+    if (!profileStore.isAdmin) {
+      ok = false;
+      path = "/";
+    } else {
+      ok = true;
+    }
+  }
+  if (ok) {
+    next();
+  } else {
+    next({ path });
+  }
+});
+
+/* router.beforeEach((to, from, next) => {
   if (to.matched.some((record) => record.meta.requiresAuth)) {
     // acceso a admin
     const isAuthenticated = true;
@@ -86,6 +111,6 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
-});
+}); */
 
 export default router;

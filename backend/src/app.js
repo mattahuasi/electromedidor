@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import "dotenv/config";
 
+import authRoutes from "./routes/auth.routes.js";
 import userRoutes from "./routes/user.routes.js";
 import customerRoutes from "./routes/customer.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
@@ -24,6 +25,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
+app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", customerRoutes);
 app.use("/api", categoryRoutes);

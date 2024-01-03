@@ -1,7 +1,7 @@
 <script setup>
 import Anchor from "@/components/anchors/Anchor.vue";
 import AnchorAccordion from "@/components/anchors/AnchorAccordion.vue";
-import { useUtilsStore } from "@/stores/utils";
+import { useUtilsStore } from "@/stores/utils.js";
 
 const utilsStore = useUtilsStore();
 </script>
@@ -22,12 +22,13 @@ const utilsStore = useUtilsStore();
           <Anchor to="/dashboard" icon="fa-flipboard" name="Panel de control" />
         </li>
         <li>
-          <AnchorAccordion name="Usuarios" icon="fa-users">
+          <!-- <AnchorAccordion name="Usuarios" icon="fa-users">
             <li>
               <Anchor to="/customers" icon="fa-user-tie" name="Clientes" />
               <Anchor to="/users" icon="fa-user-cog" name="Usuarios" />
             </li>
-          </AnchorAccordion>
+          </AnchorAccordion> -->
+          <Anchor to="/customers" icon="fa-users" name="Usuarios" />
         </li>
         <li>
           <Anchor

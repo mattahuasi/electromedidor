@@ -1,16 +1,12 @@
-<script setup>
-import Navbar from "@/components/menus/Navbar.vue";
-import Sidebar from "@/components/menus/Sidebar.vue";
-</script>
-
 <template>
-  <main>
-    <Navbar />
-    <Sidebar />
-    <div class="p-4 sm:ml-64">
-      <div class="p-4 rounded-lg mt-14">
+  <div>
+    <main>
+      <section class="relative w-full h-full py-28 min-h-screen">
+        <div
+          class="absolute top-0 w-full h-full bg-gray-100 dark:bg-gray-900"
+        ></div>
         <RouterView />
-      </div>
-    </div>
-  </main>
+      </section>
+    </main>
+  </div>
 </template>

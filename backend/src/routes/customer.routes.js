@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { authRequired } from "../middlewares/validateToken.js";
+import { adminRequired } from "../middlewares/validateAdmin.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
 import { customerSchema } from "../schemas/customer.schema.js";
 import {
@@ -10,10 +12,15 @@ import {
 } from "../controllers/customer.controller.js";
 
 const router = new Router();
-router.post("/customers", validateSchema(customerSchema), createCustomer);
-router.get("/customers", getCustomers);
-router.get("/customers/:id", getCustomerById);
-router.put("/customers/:id", updateCustomer);
-router.delete("/customers/:id", deleteCustomer);
+router.post(
+  "/customers",
+  validateSchema(customerSchema),
+  authRequired,
+  createCustomer
+);
+router.get("/customers", authRequired, getCustomers);
+router.get("/customers/:id", authRequired, getCustomerById);
+router.put("/customers/:id", authRequired, updateCustomer);
+router.delete("/customers/:id", authRequired, deleteCustomer);
 
 export default router;

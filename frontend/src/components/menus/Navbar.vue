@@ -1,6 +1,6 @@
 <script setup>
-import { useUtilsStore } from "@/stores/utils";
-// import Avatar from "@/components/avatar/Avatar.vue";
+import { useUtilsStore } from "@/stores/utils.js";
+import Avatar from "@/components/avatar/Avatar.vue";
 
 const utilsStore = useUtilsStore();
 </script>
@@ -38,7 +38,7 @@ const utilsStore = useUtilsStore();
             >
           </a>
         </div>
-        <!-- <Avatar></Avatar> -->
+        <Avatar></Avatar>
       </div>
     </div>
   </nav>
