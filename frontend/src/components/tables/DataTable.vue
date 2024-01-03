@@ -1,13 +1,20 @@
 <script setup>
 import { ref, computed } from "vue";
 import { fullDateFormat } from "@/utils/index.js";
+import TableDropdown from "@/components/dropdowns/TableDropdown.vue";
+import Dropdown from "@/components/dropdowns/Dropdown.vue";
 
+const emit = defineEmits(["action"]);
 const props = defineProps({
   columns: {
     type: Array,
     required: true,
   },
   items: {
+    type: Array,
+    required: true,
+  },
+  options: {
     type: Array,
     required: true,
   },
@@ -28,6 +35,10 @@ const itemsDisplay = computed(() => {
 function dateFormatted(date) {
   return fullDateFormat(date);
 }
+
+function action(data) {
+  emit("action", data);
+}
 </script>
 
 <template>
@@ -41,6 +52,9 @@ function dateFormatted(date) {
           class="px-4 py-3"
         >
           {{ column.label }}
+        </th>
+        <th v-if="options.length > 0" class="px-4 py-3">
+          <span>Acciones</span>
         </th>
       </thead>
       <tbody>
@@ -69,6 +83,34 @@ function dateFormatted(date) {
             <span v-else>
               {{ item[column.key] }}
             </span>
+          </td>
+          <td v-if="options.length > 0" class="px-4 py-2">
+            <table-dropdown :options="options" @emit="emit" :id="item.id" />
+            <Dropdown>
+              <template v-slot:icon>
+                <div>
+                  <button type="button" class="flex text-sm rounded-full">
+                    <v-icon
+                      name="fa-ellipsis-v"
+                      class="w-6 h-6 rounded-full text-gray-600 dark:text-gray-200 p-1"
+                    />
+                  </button>
+                </div>
+              </template>
+              <div
+                class="z-50 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+              >
+                <ul class="py-1 text-left" role="none">
+                  <li v-for="(option, index) in options" :key="index">
+                    <span
+                      class="block px-4 py-2 cursor-pointer text-xs text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                      @click="action({ action: option.id, id: item.id })"
+                      ><v-icon :name="option.icon" />{{ option.name }}</span
+                    >
+                  </li>
+                </ul>
+              </div>
+            </Dropdown>
           </td>
         </tr>
       </tbody>

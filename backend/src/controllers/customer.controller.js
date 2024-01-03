@@ -111,9 +111,7 @@ export const deleteCustomer = async (req, res) => {
     });
     if (!customer)
       return res.status(404).json({ errors: ["Customer not found"] });
-    console.log({ customerId: customer.id, personId: customer.personId });
     const person = await Person.findByPk(customer.personId);
-    console.log({ customerId: customer.id, personId: person.id });
     await Promise.all([customer.destroy(), person.destroy()]);
     return res.sendStatus(204);
   } catch (error) {

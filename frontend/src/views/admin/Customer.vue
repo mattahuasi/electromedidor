@@ -1,5 +1,5 @@
 <script setup>
-import { getCustomersRequest } from "@/api/customer.js";
+import { getCustomersRequest, deleteCustomerRequest } from "@/api/customer.js";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -20,6 +20,10 @@ const columns = ref([
   { key: "ci", label: "CI" },
   { key: "email", label: "Correo electrónico" },
   { key: "createdAt", label: "Creado", date: true },
+]);
+const options = ref([
+  { id: "update", name: "Actualizar", icon: "fa-edit" },
+  { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
 async function loadData() {
@@ -49,6 +53,21 @@ function searchItems() {
   itemsDisplay.value = filteredItems;
 }
 
+async function action(action) {
+  if (action.action === "update") {
+    router.push({ path: "/update/customer", query: { id: action.id } });
+  } else if (action.action === "delete") {
+    try {
+      await deleteCustomerRequest(action.id);
+      items.value = [];
+      loadData();
+      toast.success("Usuario eliminado");
+    } catch (error) {
+      toast.error("Error al eliminar usuario");
+    }
+  }
+}
+
 onMounted(async () => {
   loadData();
 });
@@ -62,6 +81,11 @@ onMounted(async () => {
       </div>
       <button-add to="/new/customer">Agregar Cliente</button-add>
     </template>
-    <DataTable :columns="columns" :items="itemsDisplay" />
+    <DataTable
+      :columns="columns"
+      :items="itemsDisplay"
+      :options="options"
+      @action="action"
+    />
   </card-data>
 </template>

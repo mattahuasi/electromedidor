@@ -49,6 +49,9 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
+      formData.priceA = parseFloat(formData.priceA);
+      formData.priceB = parseFloat(formData.priceB);
+      formData.priceC = parseFloat(formData.priceC);
       if (!route.query.id) await createCategoryRequest(formData);
       else await updateCategoryRequest(route.query.id, formData);
       toast.success("Categoría guardado correctamente");
@@ -129,7 +132,7 @@ onMounted(async () => {
           placeholder="0"
           v-model="v$.priceA.$model"
           :errors="v$.priceA.$errors"
-          type="number"
+          type="text"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">
@@ -159,7 +162,7 @@ onMounted(async () => {
           placeholder="0"
           v-model="v$.priceB.$model"
           :errors="v$.priceB.$errors"
-          type="number"
+          type="text"
         />
       </div>
       <div class="w-full lg:w-4/12 px-4">

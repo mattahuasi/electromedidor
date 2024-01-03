@@ -1,10 +1,8 @@
 <script setup>
-import { getCategoriesRequest } from "@/api/category.js";
-
+import { getCategoriesRequest, deleteCategoryRequest } from "@/api/category.js";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
-
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
 import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
@@ -28,6 +26,10 @@ const columns = ref([
   { key: "minC", label: "MinC" },
   { key: "maxC", label: "MaxC" },
   { key: "priceC", label: "PrecioC" },
+]);
+const options = ref([
+  { id: "update", name: "Actualizar", icon: "fa-edit" },
+  { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
 async function loadData() {
@@ -56,6 +58,21 @@ function searchItems() {
   itemsDisplay.value = filteredItems;
 }
 
+async function action(action) {
+  if (action.action === "update") {
+    router.push({ path: "/update/category", query: { id: action.id } });
+  } else if (action.action === "delete") {
+    try {
+      await deleteCategoryRequest(action.id);
+      items.value = [];
+      loadData();
+      toast.success("Categoría eliminada");
+    } catch (error) {
+      toast.error("Error al eliminar categoría");
+    }
+  }
+}
+
 onMounted(async () => {
   loadData();
 });
@@ -69,6 +86,11 @@ onMounted(async () => {
       </div>
       <button-add to="/new/category">Agregar categoría</button-add>
     </template>
-    <DataTable :columns="columns" :items="itemsDisplay" />
+    <DataTable
+      :columns="columns"
+      :items="itemsDisplay"
+      :options="options"
+      @action="action"
+    />
   </card-data>
 </template>

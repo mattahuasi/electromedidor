@@ -14,10 +14,10 @@ import Category from "@/views/admin/Category.vue";
 import Bill from "@/views/admin/Bill.vue";
 import Report from "@/views/admin/Report.vue";
 
-import CustomerForm from "@/views/forms/CustomerForm.vue";
-import CategoryForm from "@/views/forms/CategoryForm.vue";
 import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
+import CustomerForm from "@/views/forms/CustomerForm.vue";
+import CategoryForm from "@/views/forms/CategoryForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -34,9 +34,11 @@ const router = createRouter({
         { path: "/users", component: User },
         { path: "/customers", component: Customer },
         { path: "/new/customer", component: CustomerForm },
+        { path: "/update/customer", component: CustomerForm },
         { path: "/bills", component: Bill },
         { path: "/categories", component: Category },
         { path: "/new/category", component: CategoryForm },
+        { path: "/update/category", component: CategoryForm },
         { path: "/reports", component: Report },
       ],
     },

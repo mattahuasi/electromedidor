@@ -104,7 +104,7 @@ onMounted(async () => {
           placeholder="87654321"
           v-model="v$.ci.$model"
           :errors="v$.ci.$errors"
-          type="number"
+          type="text"
         />
       </div>
       <div class="w-full lg:w-6/12 px-4">
@@ -124,7 +124,7 @@ onMounted(async () => {
           placeholder="76453210"
           v-model="v$.phone.$model"
           :errors="v$.phone.$errors"
-          type="number"
+          type="text"
         />
       </div>
     </div>

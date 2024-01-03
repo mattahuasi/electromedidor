@@ -2,6 +2,7 @@
 import ButtonReturn from "@/components/buttons/ButtonReturn.vue";
 import ButtonSave from "@/components/buttons/ButtonSave.vue";
 
+const emit = defineEmits(["handleSubmit"]);
 const props = defineProps({
   title: {
     type: String,
@@ -18,7 +19,6 @@ const props = defineProps({
 });
 
 // const emit = defineEmits(["save"]);
-const emit = defineEmits(["handleSubmit"]);
 
 function handleSubmit(e) {
   if (e) e.preventDefault();
