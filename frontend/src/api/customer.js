@@ -7,7 +7,7 @@ export const getCustomersRequest = () => axios.get("/customers");
 
 export const getCustomerByIdRequest = (id) => axios.get("/customers/" + id);
 
-export const updateCustomerRequest = (id, card) =>
-  axios.put("/customers/" + id, card);
+export const updateCustomerRequest = (id, customer) =>
+  axios.put("/customers/" + id, customer);
 
 export const deleteCustomerRequest = (id) => axios.delete("/customers/" + id);
