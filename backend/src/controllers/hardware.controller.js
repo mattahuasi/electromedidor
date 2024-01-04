@@ -15,6 +15,7 @@ export const getHardware = async (req, res) => {
         { model: Category, attributes: ["id", "name", "initialism"] },
       ],
     });
+    console.log(hardware);
     const data = hardware.map((item) => ({
       id: item.id,
       mack: item.mack,
@@ -33,6 +34,7 @@ export const getHardware = async (req, res) => {
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     }));
+    console.log(data);
     res.json(data);
   } catch (error) {
     return res.status(500).json({ errors: [error] });

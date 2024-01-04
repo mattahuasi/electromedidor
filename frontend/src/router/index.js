@@ -11,6 +11,7 @@ import Dashboard from "@/views/admin/Dashboard.vue";
 import User from "@/views/admin/User.vue";
 import Customer from "@/views/admin/Customer.vue";
 import Category from "@/views/admin/Category.vue";
+import Hardware from "@/views/admin/Hardware.vue";
 import Bill from "@/views/admin/Bill.vue";
 import Report from "@/views/admin/Report.vue";
 
@@ -18,6 +19,7 @@ import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import CategoryForm from "@/views/forms/CategoryForm.vue";
+import HardwareForm from "@/views/forms/HardwareForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,10 +37,13 @@ const router = createRouter({
         { path: "/customers", component: Customer },
         { path: "/new/customer", component: CustomerForm },
         { path: "/update/customer", component: CustomerForm },
-        { path: "/bills", component: Bill },
         { path: "/categories", component: Category },
         { path: "/new/category", component: CategoryForm },
         { path: "/update/category", component: CategoryForm },
+        { path: "/hardware", component: Hardware },
+        { path: "/new/hardware", component: HardwareForm },
+        { path: "/update/hardware", component: HardwareForm },
+        { path: "/bills", component: Bill },
         { path: "/reports", component: Report },
       ],
     },
@@ -100,19 +105,5 @@ router.beforeEach(async (to, from, next) => {
     next({ path });
   }
 });
-
-/* router.beforeEach((to, from, next) => {
-  if (to.matched.some((record) => record.meta.requiresAuth)) {
-    // acceso a admin
-    const isAuthenticated = true;
-    if (!isAuthenticated) {
-      next("/auth/login");
-    } else {
-      next();
-    }
-  } else {
-    next();
-  }
-}); */
 
 export default router;

@@ -18,7 +18,7 @@ router.post(
   validateSchema(hardwareSchema),
   createHardware
 );
-router.get("/hardware", authRequired, getHardware);
+router.get("/hardware", /* authRequired, */ getHardware);
 router.get("/hardware/:id", authRequired, getHardwareById);
 router.put("/hardware/:id", authRequired, updateHardware);
 router.delete("/hardware/:id", authRequired, deleteHardware);

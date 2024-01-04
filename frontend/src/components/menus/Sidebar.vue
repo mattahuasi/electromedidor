@@ -22,17 +22,11 @@ const utilsStore = useUtilsStore();
           <Anchor to="/dashboard" icon="fa-flipboard" name="Panel de control" />
         </li>
         <li>
-          <!-- <AnchorAccordion name="Usuarios" icon="fa-users">
-            <li>
-              <Anchor to="/customers" icon="fa-user-tie" name="Clientes" />
-              <Anchor to="/users" icon="fa-user-cog" name="Usuarios" />
-            </li>
-          </AnchorAccordion> -->
           <Anchor to="/customers" icon="fa-users" name="Usuarios" />
         </li>
         <li>
           <Anchor
-            to="/reports"
+            to="/hardware"
             icon="fa-charging-station"
             name="Cortes por deuda"
           />
