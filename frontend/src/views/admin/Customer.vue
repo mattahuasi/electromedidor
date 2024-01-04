@@ -19,10 +19,12 @@ const columns = ref([
   { key: "lastName", label: "Apellidos" },
   { key: "ci", label: "CI" },
   { key: "email", label: "Correo electrónico" },
+  { key: "phone", label: "Teléfono/Celular" },
   { key: "createdAt", label: "Creado", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
+  { id: "addHardware", name: "Agregar medidor", icon: "fa-charging-station" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -56,6 +58,8 @@ function searchItems() {
 async function action(action) {
   if (action.action === "update") {
     router.push({ path: "/update/customer", query: { id: action.id } });
+  } else if (action.action === "addHardware") {
+    router.push({ path: "/new/hardware", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteCustomerRequest(action.id);

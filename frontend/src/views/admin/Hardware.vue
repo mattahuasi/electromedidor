@@ -15,6 +15,9 @@ const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
+  { key: "mack", label: "MACK" },
+  { key: "address", label: "Dirección" },
+  { key: "mack", label: "MACK" },
   { key: "mack", label: "MACK" }
 ]);
 const options = ref([

@@ -82,7 +82,7 @@ onMounted(async () => {
     ><h6
       class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos dl cliente
+      Datos de la categoría
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
