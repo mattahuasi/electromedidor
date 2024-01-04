@@ -1,14 +1,20 @@
 <script setup>
-import { getHardwareRequest, deleteHardwareRequest } from "@/api/hardware.js";
+import {
+  getCustomerByIdRequest,
+  getCustomerHardwareRequest,
+} from "@/api/customer.js";
+import { deleteHardwareRequest } from "@/api/hardware.js";
 import { ref, onMounted, watch } from "vue";
-import { useRouter } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
 import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 
+const route = useRoute();
 const router = useRouter();
+const customer = ref();
 const items = ref([]);
 const itemsDisplay = ref([]);
 const searchQuery = ref("");
@@ -17,8 +23,10 @@ const columns = ref([
   { key: "id", label: "ID" },
   { key: "mack", label: "MACK" },
   { key: "address", label: "Dirección" },
-  { key: "mack", label: "MACK" },
-  { key: "mack", label: "MACK" }
+  { key: "category", label: "Categoría" },
+  { key: "key", label: "Llave", lock: true },
+  { key: "status", label: "Estado" },
+  { key: "urban", label: "Area", area: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -28,10 +36,9 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    const res = await getHardwareRequest();
+    const res = await getCustomerHardwareRequest(route.params.id);
     items.value = res.data;
     itemsDisplay.value = items.value;
-    console.log(itemsDisplay);
     load.value = false;
   } catch (error) {
     toast.error("Error al cargar datos");
@@ -45,8 +52,9 @@ watch(searchQuery, () => {
 function searchItems() {
   const filteredItems = items.value.filter(
     (item) =>
-      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      item.initialism.toLowerCase().includes(searchQuery.value.toLowerCase())
+      item.mack.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.address.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.category.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
   itemsDisplay.value = filteredItems;
 }
@@ -68,16 +76,39 @@ async function action(action) {
 
 onMounted(async () => {
   loadData();
+  try {
+    const res = await getCustomerByIdRequest(route.params.id);
+    customer.value = res.data;
+  } catch (error) {
+    toast.error("Error al cargar datos del usuario");
+  }
 });
 </script>
 
 <template>
-  <card-data title="Cortes por deuda" icon="fa-charging-station">
+  <!-- <div class="flex flex-wrap mt-4">
+    <article class="w-full px-4">
+      <h3 class="">Datos del usuario</h3>
+      <body>
+        <p>
+          Nombre/s y apellido/s
+          <span>{{ customer.firstName + " " + customer.lastName }}</span>
+        </p>
+        <p>
+          Teléfono/Celular <span>{{ customer.phone }}</span>
+        </p>
+        <p>
+          Correo electrónico <span>{{ customer.email }}</span>
+        </p>
+      </body>
+    </article>
+  </div> -->
+  <card-data title="Medidores" icon="fa-bolt">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <!-- <button-add to="/new/category">Agregar categoría</button-add> -->
+      <button-add to="new/hardware">Agregar medidor</button-add>
     </template>
     <DataTable
       :columns="columns"

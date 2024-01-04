@@ -41,7 +41,16 @@ const router = createRouter({
         { path: "/new/category", component: CategoryForm },
         { path: "/update/category", component: CategoryForm },
         { path: "/hardware", component: Hardware },
-        { path: "/new/hardware", component: HardwareForm },
+        {
+          path: "/customers/:id/hardware",
+          name: "hardware",
+          component: Hardware,
+        },
+        {
+          path: "customers/:id/new/hardware",
+          name: "new/hardware",
+          component: HardwareForm,
+        },
         { path: "/update/hardware", component: HardwareForm },
         { path: "/bills", component: Bill },
         { path: "/reports", component: Report },

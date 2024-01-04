@@ -1,11 +1,13 @@
 <script setup>
+import { getCategoriesRequest } from "@/api/category.js";
 import {
   createHardwareRequest,
   getHardwareByIdRequest,
   updateHardwareRequest,
+  createHardwareToCustomerRequest,
 } from "@/api/hardware.js";
 import { useRoute, useRouter } from "vue-router";
-import { ref, computed, onMounted, reactive } from "vue";
+import { ref, watch, onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers, email } from "@vuelidate/validators";
 import { toast } from "vue-sonner";
@@ -16,6 +18,7 @@ import Checkbox from "@/components/inputs/Checkbox.vue";
 
 const route = useRoute();
 const router = useRouter();
+const categories = ref([]);
 const formData = reactive({
   mack: "",
   address: "",
@@ -23,16 +26,18 @@ const formData = reactive({
   key: false,
   urban: false,
   rural: false,
+  categoryId: null,
 });
 const rules = {
   mack: { required: helpers.withMessage("Se requiere Mack", required) },
   address: {
     required: helpers.withMessage("Se requiere una dirección", required),
   },
-  status: { required: helpers.withMessage("Elija un estado", required) },
+  status: { required: helpers.withMessage("Escriba un estado", required) },
   key: {},
-  urban: {},
-  rural: {},
+  urban: { required: helpers.withMessage("Elija un area", required) },
+  rural: { required: helpers.withMessage("Elija un area", required) },
+  categoryId: { required: helpers.withMessage("Elija un categoría", required) },
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -41,10 +46,12 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      if (!route.query.id) await createHardwareRequest(formData);
+      formData.categoryId = parseInt(formData.categoryId);
+      if (!route.query.id)
+        await createHardwareToCustomerRequest(route.params.id, formData);
       else await updateHardwareRequest(route.query.id, formData);
       toast.success("Hardware guardado correctamente");
-      router.push("/customers");
+      router.push({ name: "hardware", params: { id: route.params.id } });
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -52,13 +59,36 @@ async function handleSubmit() {
   }
 }
 
+watch(
+  () => formData.urban,
+  (urban) => {
+    if (urban) {
+      formData.rural = false;
+    }
+  }
+);
+
+watch(
+  () => formData.rural,
+  (rural) => {
+    if (rural) {
+      formData.urban = false;
+    }
+  }
+);
+
 onMounted(async () => {
+  try {
+    const res = await getCategoriesRequest();
+    categories.value = res.data;
+  } catch (error) {
+    toast.error("Error al cargar las categorías");
+  }
   if (route.query.id) {
     try {
       const res = await getHardwareByIdRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
-      console.log(error);
       toast.error("Error al cargar los datos");
       route.push("/customers");
     }
@@ -67,7 +97,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Form title="Hardware" icon="fa-charging-station" @handleSubmit="handleSubmit"
+  <Form title="Hardware" icon="fa-bolt" @handleSubmit="handleSubmit"
     ><h6
       class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
@@ -85,9 +115,16 @@ onMounted(async () => {
         />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Select id="status" labelText="Estado" />
+        <Input
+          id="status"
+          labelText="Estado"
+          placeholder="Escriba un estado"
+          v-model="v$.status.$model"
+          :errors="v$.status.$errors"
+          type="text"
+        />
       </div>
-      <div class="w-full lg:w-full px-4">
+      <div class="w-full px-4">
         <Input
           id="address"
           labelText="Dirección"
@@ -97,17 +134,30 @@ onMounted(async () => {
           type="text"
         />
       </div>
-      <div class="w-full lg:w-4/12 px-4">
-        <Checkbox id="key" labelText="Llave" v-model="v$.key.$model" />
+      <div class="w-full lg:w-6/12 px-4">
+        <Select
+          id="category"
+          labelText="Categoría"
+          v-model="v$.categoryId.$model"
+          :errors="v$.categoryId.$errors"
+          :options="categories"
+        />
       </div>
-      <div class="w-full lg:w-4/12 px-4">
+      <div class="w-full lg:w-6/12 px-4">
+        <Checkbox
+          id="key"
+          labelText="Llave (Selecciona para activar)"
+          v-model="v$.key.$model"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
         <Checkbox
           id="urban"
           labelText="Área urbana"
           v-model="v$.urban.$model"
         />
       </div>
-      <div class="w-full lg:w-4/12 px-4">
+      <div class="w-full lg:w-6/12 px-4">
         <Checkbox id="rural" labelText="Área rural" v-model="v$.rural.$model" />
       </div>
     </div>

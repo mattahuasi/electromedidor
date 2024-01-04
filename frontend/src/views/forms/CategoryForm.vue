@@ -69,7 +69,6 @@ onMounted(async () => {
       const res = await getCategoryByIdRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
-      console.log(error);
       toast.error("Error al cargar los datos");
       route.push("/categories");
     }

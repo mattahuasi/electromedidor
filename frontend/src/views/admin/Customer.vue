@@ -24,7 +24,7 @@ const columns = ref([
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "addHardware", name: "Agregar medidor", icon: "fa-charging-station" },
+  { id: "watchHardware", name: "Ver medidores", icon: "fa-charging-station" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -58,8 +58,9 @@ function searchItems() {
 async function action(action) {
   if (action.action === "update") {
     router.push({ path: "/update/customer", query: { id: action.id } });
-  } else if (action.action === "addHardware") {
-    router.push({ path: "/new/hardware", query: { id: action.id } });
+  } else if (action.action === "watchHardware") {
+    // router.push({ path: "/customer/:id/hardware", query: { id: action.id } });
+    router.push({ name: "hardware", params: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteCustomerRequest(action.id);

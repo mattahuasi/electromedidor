@@ -77,6 +77,17 @@ function action(data) {
                 <v-icon :name="item[column.key] ? 'fa-check' : 'fa-times'"
               /></span>
             </span>
+            <span v-else-if="column.lock" class="flex justify-center"
+              ><span
+                :class="[item[column.key] ? 'text-green-600' : 'text-red-600']"
+              >
+                <v-icon
+                  :name="item[column.key] ? 'fa-unlock' : 'fa-lock'"
+                  scale="1.5" /></span
+            ></span>
+            <span v-else-if="column.area">
+              {{ item[column.key] ? "Urbano" : "Rural" }}
+            </span>
             <span v-else-if="column.date">
               {{ dateFormatted(item[column.key]) }}
             </span>

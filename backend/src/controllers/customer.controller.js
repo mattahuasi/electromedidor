@@ -1,4 +1,6 @@
 import { Person, Customer } from "../models/Person.js";
+import { Category } from "../models/Category.js";
+import { Hardware } from "../models/Hardware.js";
 
 export const getCustomers = async (req, res) => {
   try {
@@ -114,6 +116,44 @@ export const deleteCustomer = async (req, res) => {
     const person = await Person.findByPk(customer.personId);
     await Promise.all([customer.destroy(), person.destroy()]);
     return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
+export const getCustomerHardware = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const customer = await Customer.findByPk(id, {
+      include: [
+        {
+          model: Hardware,
+          attributes: [
+            "id",
+            "mack",
+            "address",
+            "status",
+            "key",
+            "urban",
+            "rural",
+            "createdAt",
+          ],
+          include: [{ model: Category, attributes: ["id", "name"] }],
+        },
+      ],
+    });
+    const data = customer.hardware.map((item) => ({
+      id: item.id,
+      mack: item.mack,
+      address: item.address,
+      category: item.category.name,
+      status: item.status,
+      key: item.key,
+      urban: item.urban,
+      rural: item.rural,
+      createdAt: item.createdAt,
+    }));
+    res.json(data);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }

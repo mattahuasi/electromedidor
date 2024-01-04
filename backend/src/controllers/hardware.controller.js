@@ -4,18 +4,7 @@ import { Hardware } from "../models/Hardware.js";
 
 export const getHardware = async (req, res) => {
   try {
-    const hardware = await Hardware.findAll({
-      include: [
-        {
-          model: Customer,
-          include: [
-            { model: Person, attributes: ["firstName", "lastName", "email"] },
-          ],
-        },
-        { model: Category, attributes: ["id", "name", "initialism"] },
-      ],
-    });
-    console.log(hardware);
+    const hardware = await Hardware.findAll();
     const data = hardware.map((item) => ({
       id: item.id,
       mack: item.mack,
@@ -24,22 +13,55 @@ export const getHardware = async (req, res) => {
       key: item.key,
       urban: item.urban,
       rural: item.rural,
-      customerId: item.customer.id,
-      firstName: item.customer.person.firstName,
-      lastName: item.customer.person.lastName,
-      email: item.customer.person.email,
-      categoryId: item.category.id,
-      category: item.category.name,
-      initialism: item.category.initialism,
+      customerId: item.customerId,
+      categoryId: item.categoryId,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     }));
-    console.log(data);
     res.json(data);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }
 };
+
+// export const getHardware = async (req, res) => {
+//   try {
+//     const hardware = await Hardware.findAll({
+//       include: [
+//         {
+//           model: Customer,
+//           include: [
+//             { model: Person, attributes: ["firstName", "lastName", "email"] },
+//           ],
+//         },
+//         { model: Category, attributes: ["id", "name", "initialism"] },
+//       ],
+//     });
+//     console.log(hardware);
+//     const data = hardware.map((item) => ({
+//       id: item.id,
+//       mack: item.mack,
+//       address: item.address,
+//       status: item.status,
+//       key: item.key,
+//       urban: item.urban,
+//       rural: item.rural,
+//       customerId: item.customer.id,
+//       firstName: item.customer.person.firstName,
+//       lastName: item.customer.person.lastName,
+//       email: item.customer.person.email,
+//       categoryId: item.category.id,
+//       category: item.category.name,
+//       initialism: item.category.initialism,
+//       createdAt: item.createdAt,
+//       updatedAt: item.updatedAt,
+//     }));
+//     console.log(data);
+//     res.json(data);
+//   } catch (error) {
+//     return res.status(500).json({ errors: [error] });
+//   }
+// };
 
 export const getHardwareById = async (req, res) => {
   try {
@@ -117,6 +139,32 @@ export const deleteHardware = async (req, res) => {
       return res.status(404).json({ errors: ["Hardware not found"] });
     await hardware.destroy();
     return res.sendStatus(204);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
+export const createHardwareToCustomer = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { mack, address, status, key, urban, rural, categoryId } = req.body;
+    const customerFound = await Customer.findByPk(id);
+    if (!customerFound)
+      return res.status(400).json({ errors: ["Customer not found"] });
+    const mackHardware = await Hardware.findOne({ where: { mack } });
+    if (mackHardware)
+      return res.status(400).json({ errors: ["Hardware already exists"] });
+    const newHardware = await Hardware.create({
+      mack,
+      address,
+      status,
+      key,
+      urban,
+      rural,
+      customerId: customerFound.id,
+      categoryId,
+    });
+    res.json(newHardware);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }

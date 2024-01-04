@@ -11,3 +11,6 @@ export const updateHardwareRequest = (id, hardware) =>
   axios.put("/hardware/" + id, hardware);
 
 export const deleteHardwareRequest = (id) => axios.delete("/hardware/" + id);
+
+export const createHardwareToCustomerRequest = (id, hardware) =>
+  axios.post("/customers/" + id + "/hardware", hardware);

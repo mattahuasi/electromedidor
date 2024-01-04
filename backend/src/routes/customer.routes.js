@@ -9,6 +9,7 @@ import {
   createCustomer,
   updateCustomer,
   deleteCustomer,
+  getCustomerHardware,
 } from "../controllers/customer.controller.js";
 
 const router = new Router();
@@ -22,5 +23,7 @@ router.get("/customers", authRequired, getCustomers);
 router.get("/customers/:id", authRequired, getCustomerById);
 router.put("/customers/:id", authRequired, updateCustomer);
 router.delete("/customers/:id", authRequired, deleteCustomer);
+
+router.get("/customers/:id/hardware", authRequired, getCustomerHardware);
 
 export default router;
