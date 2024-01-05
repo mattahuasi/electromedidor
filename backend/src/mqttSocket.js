@@ -1,5 +1,6 @@
-import mqtt from "mqtt";
 import { Server } from "socket.io";
+import { createReading } from "./controllers/reading.controller.js";
+import mqtt from "mqtt";
 
 const webSocket = (server) => {
   const io = new Server(server, {
@@ -7,6 +8,18 @@ const webSocket = (server) => {
       origin: "http://localhost:5173",
     },
   });
+
+  // io.on("connection", (socket) => {
+  //   console.log(socket.id);
+  //   socket.emit("mqtt", () => {
+  //     client.on("message", async function (topic, message) {
+  //       let data = message.toString();
+  //       data = JSON.parse(data);
+  //       console.log(data);
+  //     });
+  //   });
+  // });
+
   const client = mqtt.connect("mqtt://localhost:1883");
   client.on("connect", () => {
     console.log("MQTT client has connected.");
@@ -17,18 +30,16 @@ const webSocket = (server) => {
     client.end();
   });
   const subscribe = async () => {
-    client.subscribe("topic", { qos: 0 });
+    client.subscribe("sisMedidor/Med01/data", { qos: 0 });
   };
   client.on("message", async function (topic, message) {
-    console.log(topic, message);
     let data = message.toString();
     data = JSON.parse(data);
-
-    io.on("connection", (socket) => {
-      console.log(socket.id);
-    });
-
-    console.log(data);
+    await createReading("DEFh1456", data);
+    // io.on("connection", (socket) => {
+    //   console.log(socket.id);
+    //   socket.emit("mqtt", data);
+    // });
   });
   client.on("close", () => {
     console.log("MQTT client disconnected.");

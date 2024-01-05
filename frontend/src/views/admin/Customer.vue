@@ -24,7 +24,7 @@ const columns = ref([
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "showHardware", name: "Ver medidores", icon: "fa-bolt" },
+  { id: "show", name: "Ver medidores", icon: "fa-bolt" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -58,7 +58,7 @@ function searchItems() {
 async function action(action) {
   if (action.action === "update") {
     router.push({ path: "/customers/update", query: { id: action.id } });
-  } else if (action.action === "showHardware") {
+  } else if (action.action === "show") {
     router.push({ name: "hardware", params: { id: action.id } });
   } else if (action.action === "delete") {
     try {

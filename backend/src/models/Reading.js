@@ -35,12 +35,12 @@ export const Reading = sequelize.define("readings", {
 });
 
 Hardware.hasMany(Reading, {
-  foreignKey: "categoryId",
+  foreignKey: "hardwareId",
   sourceKey: "id",
 });
 
 Reading.belongsTo(Hardware, {
-  foreignKey: "categoryId",
+  foreignKey: "hardwareId",
   targetKey: "id",
   allowNull: false,
   unique: true,

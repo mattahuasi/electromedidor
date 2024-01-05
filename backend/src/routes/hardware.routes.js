@@ -9,12 +9,11 @@ import {
   createHardware,
   updateHardware,
   deleteHardware,
-  createHardwareToCustomer,
 } from "../controllers/hardware.controller.js";
 
 const router = new Router();
 router.post(
-  "/hardware",
+  "/hardware/:id",
   authRequired,
   validateSchema(hardwareSchema),
   createHardware
@@ -23,12 +22,5 @@ router.get("/hardware", authRequired, getHardware);
 router.get("/hardware/:id", authRequired, getHardwareById);
 router.put("/hardware/:id", authRequired, updateHardware);
 router.delete("/hardware/:id", authRequired, deleteHardware);
-
-router.post(
-  "/customers/:id/hardware",
-  authRequired,
-  validateSchema(hardwareSchema),
-  createHardwareToCustomer
-);
 
 export default router;

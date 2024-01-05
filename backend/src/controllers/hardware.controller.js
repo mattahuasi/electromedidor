@@ -87,8 +87,11 @@ export const getHardwareById = async (req, res) => {
 
 export const createHardware = async (req, res) => {
   try {
-    const { mack, address, status, key, urban, rural, customerId, categoryId } =
-      req.body;
+    const { id } = req.params;
+    const { mack, address, status, key, urban, rural, categoryId } = req.body;
+    const customerFound = await Customer.findByPk(id);
+    if (!customerFound)
+      return res.status(400).json({ errors: ["Customer not found"] });
     const mackHardware = await Hardware.findOne({ where: { mack } });
     if (mackHardware)
       return res.status(400).json({ errors: ["Hardware already exists"] });
@@ -99,7 +102,7 @@ export const createHardware = async (req, res) => {
       key,
       urban,
       rural,
-      customerId,
+      customerId: customerFound.id,
       categoryId,
     });
     res.json(newHardware);
@@ -139,32 +142,6 @@ export const deleteHardware = async (req, res) => {
       return res.status(404).json({ errors: ["Hardware not found"] });
     await hardware.destroy();
     return res.sendStatus(204);
-  } catch (error) {
-    return res.status(500).json({ errors: [error] });
-  }
-};
-
-export const createHardwareToCustomer = async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { mack, address, status, key, urban, rural, categoryId } = req.body;
-    const customerFound = await Customer.findByPk(id);
-    if (!customerFound)
-      return res.status(400).json({ errors: ["Customer not found"] });
-    const mackHardware = await Hardware.findOne({ where: { mack } });
-    if (mackHardware)
-      return res.status(400).json({ errors: ["Hardware already exists"] });
-    const newHardware = await Hardware.create({
-      mack,
-      address,
-      status,
-      key,
-      urban,
-      rural,
-      customerId: customerFound.id,
-      categoryId,
-    });
-    res.json(newHardware);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }

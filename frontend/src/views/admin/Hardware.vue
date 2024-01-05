@@ -30,6 +30,9 @@ const columns = ref([
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
+  { id: "show", name: "Ver datos", icon: "fa-chart-line" },
+  { id: "activate", name: "Activar", icon: "fa-unlock" },
+  { id: "deactivate", name: "Desactivar", icon: "fa-lock" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -61,15 +64,17 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "/update/category", query: { id: action.id } });
+    router.push({ path: "update/hardware", query: { id: action.id } });
+  } else if (action.action === "show") {
+    router.push({ path: "show/hardware", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteHardwareRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("Categoría eliminada");
+      toast.success("Medidor eliminado");
     } catch (error) {
-      toast.error("Error al eliminar categoría");
+      toast.error("Error al eliminar medidor");
     }
   }
 }

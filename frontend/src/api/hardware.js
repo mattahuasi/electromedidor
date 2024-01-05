@@ -1,7 +1,7 @@
 import axios from "./axios.js";
 
-export const createHardwareRequest = (hardware) =>
-  axios.post("/hardware", hardware);
+export const createHardwareRequest = (id, hardware) =>
+  axios.post("/hardware/" + id, hardware);
 
 export const getHardwareRequest = () => axios.get("/hardware");
 
@@ -11,6 +11,3 @@ export const updateHardwareRequest = (id, hardware) =>
   axios.put("/hardware/" + id, hardware);
 
 export const deleteHardwareRequest = (id) => axios.delete("/hardware/" + id);
-
-export const createHardwareToCustomerRequest = (id, hardware) =>
-  axios.post("/customers/" + id + "/hardware", hardware);

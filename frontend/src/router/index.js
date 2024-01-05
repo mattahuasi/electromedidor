@@ -21,6 +21,7 @@ import UserForm from "@/views/forms/UserForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import CategoryForm from "@/views/forms/CategoryForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
+import HardwareData from "@/views/data/HardwareData.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -40,10 +41,6 @@ const router = createRouter({
         { path: "/customers", component: Customer },
         { path: "/customers/new", component: CustomerForm },
         { path: "/customers/update", component: CustomerForm },
-        { path: "/categories", component: Category },
-        { path: "/new/category", component: CategoryForm },
-        { path: "/update/category", component: CategoryForm },
-        { path: "/hardware", component: Hardware },
         {
           path: "/customers/:id/hardware",
           name: "hardware",
@@ -54,6 +51,21 @@ const router = createRouter({
           name: "new/hardware",
           component: HardwareForm,
         },
+        {
+          path: "customers/:id/show/hardware",
+          name: "show/hardware",
+          component: HardwareData,
+        },
+        {
+          path: "customers/:id/update/hardware",
+          name: "update/hardware",
+          component: HardwareForm,
+        },
+        { path: "/categories", component: Category },
+        { path: "/new/category", component: CategoryForm },
+        { path: "/update/category", component: CategoryForm },
+        { path: "/hardware", component: Hardware },
+
         { path: "/update/hardware", component: HardwareForm },
         { path: "/bills", component: Bill },
         { path: "/reports", component: Report },

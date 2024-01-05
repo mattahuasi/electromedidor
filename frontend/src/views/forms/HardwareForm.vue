@@ -4,7 +4,7 @@ import {
   createHardwareRequest,
   getHardwareByIdRequest,
   updateHardwareRequest,
-  createHardwareToCustomerRequest,
+  // createHardwareToCustomerRequest,
 } from "@/api/hardware.js";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, reactive } from "vue";
@@ -48,7 +48,7 @@ async function handleSubmit() {
     try {
       formData.categoryId = parseInt(formData.categoryId);
       if (!route.query.id)
-        await createHardwareToCustomerRequest(route.params.id, formData);
+        await createHardwareRequest(route.params.id, formData);
       else await updateHardwareRequest(route.query.id, formData);
       toast.success("Hardware guardado correctamente");
       router.push({ name: "hardware", params: { id: route.params.id } });
