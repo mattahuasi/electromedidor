@@ -12,5 +12,5 @@ export const updateCustomerRequest = (id, customer) =>
 
 export const deleteCustomerRequest = (id) => axios.delete("/customers/" + id);
 
-export const getCustomerHardwareRequest = (id) =>
+export const getCustomerByIdHardwareRequest = (id) =>
   axios.get("/customers/" + id + "/hardware");

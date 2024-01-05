@@ -1,7 +1,7 @@
 <script setup>
 import {
   getCustomerByIdRequest,
-  getCustomerHardwareRequest,
+  getCustomerByIdHardwareRequest,
 } from "@/api/customer.js";
 import { deleteHardwareRequest } from "@/api/hardware.js";
 import { ref, onMounted, watch } from "vue";
@@ -26,7 +26,7 @@ const columns = ref([
   { key: "category", label: "Categoría" },
   { key: "key", label: "Llave", lock: true },
   { key: "status", label: "Estado" },
-  { key: "urban", label: "Area", area: true },
+  { key: "urban", label: "Área", area: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -36,7 +36,7 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    const res = await getCustomerHardwareRequest(route.params.id);
+    const res = await getCustomerByIdHardwareRequest(route.params.id);
     items.value = res.data;
     itemsDisplay.value = items.value;
     load.value = false;

@@ -139,3 +139,39 @@ export const updateProfile = async (req, res) => {
     res.status(500).json({ errors: [error.message] });
   }
 };
+
+export const register = async (req, res) => {
+  try {
+    const { firstName, lastName, ci, phone, email, password } = req.body;
+    const userEmail = await User.findOne({
+      include: [{ model: Person, where: { email } }],
+    });
+    if (userEmail)
+      return res.status(400).json({ errors: ["Email already exists"] });
+    const userCi = await User.findOne({
+      include: [{ model: Person, where: { ci } }],
+    });
+    if (userCi) return res.status(400).json({ errors: ["CI already exists"] });
+    const hash = await bcrypt.hash(password, 10);
+    const newPerson = await Person.create({
+      firstName,
+      lastName,
+      ci,
+      phone,
+      email,
+    });
+    const newUser = await User.create({
+      password: hash,
+      admin: false,
+      personId: newPerson.id,
+    });
+    const data = {
+      id: newUser.id,
+      email: newPerson.email,
+      password: newUser.password,
+    };
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};

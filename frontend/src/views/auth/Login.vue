@@ -58,9 +58,16 @@ function notification() {
         >
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
-              <h6 class="text-4xl dark:text-white">Iniciar sesión</h6>
+              <h6 class="text-4xl dark:text-white">
+                <router-link to="/">SisMedidor</router-link>
+              </h6>
             </div>
-            <hr class="mt-6 border-b-1 border-gray-200 dark:border-gray-600" />
+            <div class="text-center">
+              <p class="text-xs text-gray-500">
+                Ingresa tus credenciales para iniciar sesión.
+              </p>
+            </div>
+            <hr class="mt-4 border-b-1 border-gray-200 dark:border-gray-600" />
           </div>
           <div class="flex-auto px-4 lg:px-10 py-10 pt-0">
             <div v-if="alertOpen">
@@ -88,13 +95,12 @@ function notification() {
                   <p class="text-sm text-red-500">{{ error.$message }}</p>
                 </div>
                 <input
-                  class="border px-3 py-3 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  class="border px-3 py-2 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   v-model="v$.email.$model"
                   placeholder="Correo electrónico"
                   type="email"
                 />
               </div>
-
               <div class="relative w-full mb-3">
                 <label
                   class="block mb-2 dark:text-white"
@@ -110,13 +116,12 @@ function notification() {
                   <p class="text-sm text-red-500">{{ error.$message }}</p>
                 </div>
                 <input
-                  class="border px-3 py-3 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                  class="border px-3 py-2 rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   v-model="v$.password.$model"
                   placeholder="Contraseña"
                   type="password"
                 />
               </div>
-
               <div class="text-center mt-6">
                 <button
                   class="bg-gray-800 dark:bg-gray-200 hover:bg-gray-700 dark:hover:bg-white text-white dark:text-gray-700 active:bg-gray-900 dark:active:bg-gray-300 font-bold uppercase px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
@@ -125,12 +130,14 @@ function notification() {
                   Ingresar
                 </button>
               </div>
-
-              <div class="flex justify-between items-center mx-8 mt-6">
-                <p class="text-sm">¿No tienes una cuenta?</p>
-                <router-link to="/auth/register" class="text-blue-700 text-lg"
-                  >Regístrate</router-link
-                >
+              <div class="text-center mx-8 mt-6">
+                <p class="text-xs text-gray-500">
+                  ¿No tienes una cuenta?
+                  <router-link to="/auth/register" class="text-blue-700 text-sm"
+                    >Registrarse</router-link
+                  >
+                  o pídele a un administrador que lo haga.
+                </p>
               </div>
             </form>
           </div>

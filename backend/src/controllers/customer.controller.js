@@ -109,19 +109,22 @@ export const deleteCustomer = async (req, res) => {
   try {
     const { id } = req.params;
     const customer = await Customer.findByPk(id, {
-      include: [{ model: Person }],
+      include: [{ model: Person }, { model: Hardware }],
     });
-    if (!customer)
-      return res.status(404).json({ errors: ["Customer not found"] });
-    const person = await Person.findByPk(customer.personId);
-    await Promise.all([customer.destroy(), person.destroy()]);
+    await Promise.all([
+      customer.hardware.map(async (hardware) => {
+        await hardware.destroy();
+      }),
+      customer.destroy(),
+      customer.person.destroy(),
+    ]);
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }
 };
 
-export const getCustomerHardware = async (req, res) => {
+export const getCustomerByIdHardware = async (req, res) => {
   try {
     const { id } = req.params;
     const customer = await Customer.findByPk(id, {

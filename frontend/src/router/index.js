@@ -17,6 +17,7 @@ import Report from "@/views/admin/Report.vue";
 
 import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
+import UserForm from "@/views/forms/UserForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import CategoryForm from "@/views/forms/CategoryForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
@@ -32,11 +33,13 @@ const router = createRouter({
       children: [
         { path: "/dashboard", component: Dashboard },
         { path: "/profile", component: Profile },
-        { path: "/update/password", component: UpdatePassword },
+        { path: "/profile/update/password", component: UpdatePassword },
         { path: "/users", component: User },
+        { path: "/users/new", component: UserForm },
+        { path: "/users/update", component: UserForm },
         { path: "/customers", component: Customer },
-        { path: "/new/customer", component: CustomerForm },
-        { path: "/update/customer", component: CustomerForm },
+        { path: "/customers/new", component: CustomerForm },
+        { path: "/customers/update", component: CustomerForm },
         { path: "/categories", component: Category },
         { path: "/new/category", component: CategoryForm },
         { path: "/update/category", component: CategoryForm },

@@ -24,7 +24,7 @@ const columns = ref([
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "watchHardware", name: "Ver medidores", icon: "fa-charging-station" },
+  { id: "showHardware", name: "Ver medidores", icon: "fa-bolt" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -57,18 +57,17 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "/update/customer", query: { id: action.id } });
-  } else if (action.action === "watchHardware") {
-    // router.push({ path: "/customer/:id/hardware", query: { id: action.id } });
+    router.push({ path: "/customers/update", query: { id: action.id } });
+  } else if (action.action === "showHardware") {
     router.push({ name: "hardware", params: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteCustomerRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("Usuario eliminado");
+      toast.success("Cliente eliminado");
     } catch (error) {
-      toast.error("Error al eliminar usuario");
+      toast.error("Error al eliminar cliente");
     }
   }
 }
@@ -79,12 +78,12 @@ onMounted(async () => {
 </script>
 
 <template>
-  <card-data title="Usuarios" icon="fa-users">
+  <card-data title="Clientes" icon="fa-user-tie">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/new/customer">Agregar Cliente</button-add>
+      <button-add to="/customers/new">Agregar Cliente</button-add>
     </template>
     <DataTable
       :columns="columns"
