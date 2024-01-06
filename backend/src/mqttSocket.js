@@ -20,7 +20,9 @@ const webSocket = (server) => {
   //   });
   // });
 
-  const client = mqtt.connect("mqtt://localhost:1883");
+  // const client = mqtt.connect("mqtt://localhost:1883");
+  const client = mqtt.connect("mqtt://192.168.0.160:1883");
+
   client.on("connect", () => {
     console.log("MQTT client has connected.");
     subscribe();
@@ -30,12 +32,13 @@ const webSocket = (server) => {
     client.end();
   });
   const subscribe = async () => {
-    client.subscribe("sisMedidor/Med01/data", { qos: 0 });
+    client.subscribe("outTopic", { qos: 0 });
   };
   client.on("message", async function (topic, message) {
     let data = message.toString();
     data = JSON.parse(data);
-    await createReading("DEFh1456", data);
+    await createReading("DEFh3456", data);
+    // console.log(data);
     // io.on("connection", (socket) => {
     //   console.log(socket.id);
     //   socket.emit("mqtt", data);

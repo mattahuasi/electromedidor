@@ -6,18 +6,9 @@ import Dropdown from "@/components/dropdowns/Dropdown.vue";
 
 const emit = defineEmits(["action"]);
 const props = defineProps({
-  columns: {
-    type: Array,
-    required: true,
-  },
-  items: {
-    type: Array,
-    required: true,
-  },
-  options: {
-    type: Array,
-    required: true,
-  },
+  columns: { type: Array, required: true },
+  items: { type: Array, required: true },
+  options: { type: Array, required: true },
 });
 
 const currentPage = ref(1);

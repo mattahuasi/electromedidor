@@ -30,7 +30,7 @@ const columns = ref([
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "show", name: "Ver datos", icon: "fa-chart-line" },
+  { id: "show", name: "Ver gráficos", icon: "fa-chart-line" },
   { id: "activate", name: "Activar", icon: "fa-unlock" },
   { id: "deactivate", name: "Desactivar", icon: "fa-lock" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },

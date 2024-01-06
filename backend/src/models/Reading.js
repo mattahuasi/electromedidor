@@ -14,7 +14,7 @@ export const Reading = sequelize.define("readings", {
   power: {
     type: DataTypes.FLOAT,
   },
-  tension: {
+  voltage: {
     type: DataTypes.FLOAT,
   },
   current: {

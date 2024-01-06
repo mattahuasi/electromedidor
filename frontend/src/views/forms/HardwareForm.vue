@@ -4,7 +4,6 @@ import {
   createHardwareRequest,
   getHardwareByIdRequest,
   updateHardwareRequest,
-  // createHardwareToCustomerRequest,
 } from "@/api/hardware.js";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, reactive } from "vue";

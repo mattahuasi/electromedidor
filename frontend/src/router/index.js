@@ -11,7 +11,7 @@ import Dashboard from "@/views/admin/Dashboard.vue";
 import User from "@/views/admin/User.vue";
 import Customer from "@/views/admin/Customer.vue";
 import Category from "@/views/admin/Category.vue";
-import Hardware from "@/views/admin/Hardware.vue";
+import Hardware from "@/views/admin/hardware/Hardware.vue";
 import Bill from "@/views/admin/Bill.vue";
 import Report from "@/views/admin/Report.vue";
 
@@ -21,7 +21,8 @@ import UserForm from "@/views/forms/UserForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import CategoryForm from "@/views/forms/CategoryForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
-import HardwareData from "@/views/data/HardwareData.vue";
+
+import HardwareChart from "@/views/admin/hardware/HardwareChart.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -54,7 +55,7 @@ const router = createRouter({
         {
           path: "customers/:id/show/hardware",
           name: "show/hardware",
-          component: HardwareData,
+          component: HardwareChart,
         },
         {
           path: "customers/:id/update/hardware",
