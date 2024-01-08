@@ -32,7 +32,7 @@ const utilsStore = useUtilsStore();
           </button>
           <a class="flex ml-2 md:mr-24">
             <router-link
-              to="/dashboard"
+              :to="{ name: 'dashboard' }"
               class="self-center text-xs border-b-2 border-gray-200 font-semibold sm:text-2xl whitespace-nowrap text-gray-200"
               >SisElectro</router-link
             >

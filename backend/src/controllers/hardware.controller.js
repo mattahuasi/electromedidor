@@ -13,7 +13,6 @@ export const getHardware = async (req, res) => {
       urban: item.urban,
       rural: item.rural,
       customerId: item.customerId,
-      categoryId: item.categoryId,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     }));

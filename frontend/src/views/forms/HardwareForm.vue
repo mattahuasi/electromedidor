@@ -1,9 +1,9 @@
 <script setup>
-import { getCategoriesRequest } from "@/api/category.js";
+import { getCustomersRequest } from "@/api/customer.js";
 import {
   createHardwareRequest,
   getHardwareByIdRequest,
-  updateHardwareRequest,
+  updateHardwareByIdRequest,
 } from "@/api/hardware.js";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, reactive } from "vue";
@@ -17,7 +17,7 @@ import Checkbox from "@/components/inputs/Checkbox.vue";
 
 const route = useRoute();
 const router = useRouter();
-const categories = ref([]);
+const customers = ref([]);
 const formData = reactive({
   mack: "",
   address: "",
@@ -25,7 +25,7 @@ const formData = reactive({
   key: false,
   urban: false,
   rural: false,
-  categoryId: null,
+  customerId: "",
 });
 const rules = {
   mack: { required: helpers.withMessage("Se requiere Mack", required) },
@@ -36,7 +36,7 @@ const rules = {
   key: {},
   urban: { required: helpers.withMessage("Elija un area", required) },
   rural: { required: helpers.withMessage("Elija un area", required) },
-  categoryId: { required: helpers.withMessage("Elija un categoría", required) },
+  customerId: { required: helpers.withMessage("Elija un usuario", required) },
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -45,12 +45,13 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      formData.categoryId = parseInt(formData.categoryId);
+      formData.customerId = parseInt(formData.customerId);
       if (!route.query.id)
         await createHardwareRequest(route.params.id, formData);
-      else await updateHardwareRequest(route.query.id, formData);
-      toast.success("Hardware guardado correctamente");
-      router.push({ name: "hardware", params: { id: route.params.id } });
+      else await updateHardwareByIdRequest(route.query.id, formData);
+      toast.success("Hardware guardado exitosamente");
+      router.push({ name: "hardware" });
+      // router.push({ name: "hardware", params: { id: route.params.id } });
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -78,10 +79,10 @@ watch(
 
 onMounted(async () => {
   try {
-    const res = await getCategoriesRequest();
-    categories.value = res.data;
+    const res = await getCustomersRequest();
+    customers.value = res.data;
   } catch (error) {
-    toast.error("Error al cargar las categorías");
+    toast.error("Error al cargar usuarios");
   }
   if (route.query.id) {
     try {
@@ -135,11 +136,12 @@ onMounted(async () => {
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Select
-          id="category"
-          labelText="Categoría"
-          v-model="v$.categoryId.$model"
-          :errors="v$.categoryId.$errors"
-          :options="categories"
+          id="customer"
+          labelText="Usuario"
+          v-model="v$.customerId.$model"
+          :errors="v$.customerId.$errors"
+          name="firstName"
+          :options="customers"
         />
       </div>
       <div class="w-full lg:w-6/12 px-4">

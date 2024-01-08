@@ -14,7 +14,7 @@ export const useProfileStore = defineStore("profile", {
     }),
     fullName: (state) =>
       state.user.user?.firstName + " " + state.user.user?.lastName,
-    isAdmin: (state) => state.user?.admin,
+    isAdmin: (state) => state.user.admin,
   },
   actions: {
     async verifyToken() {

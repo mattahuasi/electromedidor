@@ -19,31 +19,48 @@ const utilsStore = useUtilsStore();
     <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-700">
       <ul class="space-y-2 font-medium">
         <li>
-          <Anchor to="/dashboard" icon="fa-flipboard" name="Panel de control" />
+          <Anchor
+            :to="{ name: 'dashboard' }"
+            icon="fa-flipboard"
+            name="Panel de control"
+          />
         </li>
         <li>
           <AnchorAccordion name="Usuarios" icon="fa-users">
             <li>
-              <Anchor to="/customers" icon="fa-user-tie" name="Clientes" />
-              <Anchor to="/users" icon="fa-user-cog" name="Sistema" />
+              <Anchor
+                :to="{ name: 'customers' }"
+                icon="fa-user-tie"
+                name="Clientes"
+              />
+              <Anchor
+                :to="{ name: 'employees' }"
+                icon="fa-user-cog"
+                name="Sistema"
+              />
             </li>
           </AnchorAccordion>
         </li>
         <li>
           <Anchor
-            to="/hardware"
+            :to="{ name: 'hardware' }"
             icon="fa-charging-station"
             name="Cortes por deuda"
           />
         </li>
         <li>
-          <Anchor to="/bills" icon="fa-book" name="Facturas Gral." />
+          <Anchor
+            :to="{ name: 'bills' }"
+            icon="fa-book"
+            name="Facturas Gral."
+          />
         </li>
         <li>
-          <Anchor to="/categories" icon="fa-layer-group" name="Categorías" />
-        </li>
-        <li>
-          <Anchor to="/reports" icon="fa-newspaper" name="Noticias" />
+          <Anchor
+            :to="{ name: 'reports' }"
+            icon="fa-newspaper"
+            name="Noticias"
+          />
         </li>
       </ul>
     </div>

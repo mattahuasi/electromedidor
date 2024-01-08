@@ -7,7 +7,8 @@ export const getHardwareRequest = () => axios.get("/hardware");
 
 export const getHardwareByIdRequest = (id) => axios.get("/hardware/" + id);
 
-export const updateHardwareRequest = (id, hardware) =>
+export const updateHardwareByIdRequest = (id, hardware) =>
   axios.put("/hardware/" + id, hardware);
 
-export const deleteHardwareRequest = (id) => axios.delete("/hardware/" + id);
+export const deleteHardwareByIdRequest = (id) =>
+  axios.delete("/hardware/" + id);

@@ -45,11 +45,7 @@ async function handleSubmit() {
 </script>
 
 <template>
-  <Form
-    title="Cambiar contraseña"
-    icon="fa-password"
-    @handleSubmit="handleSubmit"
-  >
+  <Form title="Cambiar contraseña" icon="fa-key" @handleSubmit="handleSubmit">
     <h6 class="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
       Contraseña
     </h6>

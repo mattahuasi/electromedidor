@@ -36,6 +36,7 @@ const rules = {
     required: helpers.withMessage("El correo es requerido", required),
     email: helpers.withMessage("El correo no es valido", email),
   },
+  password: {},
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -44,10 +45,12 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      if (!route.query.id) await createCustomerRequest(formData);
-      else await updateCustomerByIdRequest(route.query.id, formData);
-      toast.success("Cliente guardado correctamente");
-      router.push("/customers");
+      if (!route.query.id) {
+        formData.password = `Sis${formData.ci}`;
+        await createCustomerRequest(formData);
+      } else await updateCustomerByIdRequest(route.query.id, formData);
+      toast.success("Usuario creado exitosamente");
+      router.push({ name: "customers" });
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -62,7 +65,7 @@ onMounted(async () => {
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");
-      route.push("/customers");
+      router.push({ name: "customers" });
     }
   }
 });

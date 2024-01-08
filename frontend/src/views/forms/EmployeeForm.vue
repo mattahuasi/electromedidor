@@ -41,6 +41,7 @@ const rules = {
     email: helpers.withMessage("El correo no es valido", email),
   },
   password: {},
+  staff: {},
   admin: {},
 };
 const v$ = useVuelidate(rules, formData);
@@ -52,10 +53,11 @@ async function handleSubmit() {
     try {
       if (!route.query.id) {
         formData.password = `Sis${formData.ci}`;
+        formData.staff = true;
         await createEmployeeRequest(formData);
       } else await updateEmployeeByIdRequest(route.query.id, formData);
       toast.success("Usuario guardado correctamente");
-      router.push("/users");
+      router.push({ name: "employees" });
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -70,7 +72,7 @@ onMounted(async () => {
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");
-      route.push("/users");
+      router.push({ name: "employees" });
     }
   }
 });

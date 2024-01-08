@@ -1,9 +1,9 @@
 <script setup>
+import { getCustomerByIdRequest } from "@/api/customer.js";
 import {
-  getCustomerByIdRequest,
-  getCustomerByIdHardwareRequest,
-} from "@/api/customer.js";
-import { deleteHardwareRequest } from "@/api/hardware.js";
+  getHardwareRequest,
+  deleteHardwareByIdRequest,
+} from "@/api/hardware.js";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -23,10 +23,12 @@ const columns = ref([
   { key: "id", label: "ID" },
   { key: "mack", label: "MACK" },
   { key: "address", label: "Dirección" },
-  { key: "category", label: "Categoría" },
   { key: "key", label: "Llave", lock: true },
   { key: "status", label: "Estado" },
   { key: "urban", label: "Área", area: true },
+  { key: "customerId", label: "Área", area: true },
+  { key: "createdAt", label: "Fecha de creación", date: true },
+  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -39,7 +41,7 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    const res = await getCustomerByIdHardwareRequest(route.params.id);
+    const res = await getHardwareRequest();
     items.value = res.data;
     itemsDisplay.value = items.value;
     load.value = false;
@@ -64,12 +66,12 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "update/hardware", query: { id: action.id } });
+    router.push({ name: "update/hardware", query: { id: action.id } });
   } else if (action.action === "show") {
     router.push({ path: "show/hardware", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteHardwareRequest(action.id);
+      await deleteHardwareByIdRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Medidor eliminado");
@@ -81,12 +83,6 @@ async function action(action) {
 
 onMounted(async () => {
   loadData();
-  try {
-    const res = await getCustomerByIdRequest(route.params.id);
-    customer.value = res.data;
-  } catch (error) {
-    toast.error("Error al cargar datos del usuario");
-  }
 });
 </script>
 
@@ -113,7 +109,7 @@ onMounted(async () => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="new/hardware">Agregar medidor</button-add>
+      <button-add :to="{ name: 'new/hardware' }">Agregar medidor</button-add>
     </template>
     <DataTable
       :columns="columns"

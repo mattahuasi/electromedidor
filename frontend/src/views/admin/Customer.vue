@@ -18,12 +18,13 @@ const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
-  { key: "firstName", label: "Nombre/s" },
+  { key: "firstName", label: "Nombres" },
   { key: "lastName", label: "Apellidos" },
-  { key: "ci", label: "CI" },
+  { key: "ci", label: "Cédula de identidad" },
   { key: "email", label: "Correo electrónico" },
-  { key: "phone", label: "Teléfono/Celular" },
-  { key: "createdAt", label: "Creado", date: true },
+  { key: "phone", label: "Nro. de contacto" },
+  { key: "createdAt", label: "Fecha de creación", date: true },
+  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -60,7 +61,7 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "/customers/update", query: { id: action.id } });
+    router.push({ name: "update/customers", query: { id: action.id } });
   } else if (action.action === "show") {
     router.push({ name: "hardware", params: { id: action.id } });
   } else if (action.action === "delete") {
@@ -86,7 +87,7 @@ onMounted(async () => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/customers/new">Agregar Cliente</button-add>
+      <button-add :to="{ name: 'new/customers' }">Agregar Cliente</button-add>
     </template>
     <DataTable
       :columns="columns"

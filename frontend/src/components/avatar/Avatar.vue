@@ -30,7 +30,7 @@ async function logout() {
           <ul class="py-1" role="none">
             <li>
               <router-link
-                to="/profile"
+                :to="{ name: 'profile' }"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                 role="menuitem"
                 >Mi información</router-link
@@ -38,8 +38,9 @@ async function logout() {
             </li>
             <li>
               <router-link
-                to="/profile/update/password"
+                :to="{ name: 'update/password' }"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                role="menuitem"
               >
                 Actualizar contraseña
               </router-link>

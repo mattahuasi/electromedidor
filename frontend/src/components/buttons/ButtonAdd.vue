@@ -1,8 +1,10 @@
 <script setup>
 const props = defineProps({
   to: {
-    type: String,
-    default: "/",
+    type: Object,
+    default: {
+      name: "/",
+    },
   },
 });
 </script>

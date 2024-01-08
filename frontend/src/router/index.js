@@ -10,8 +10,7 @@ import Register from "@/views/auth/Register.vue";
 import Dashboard from "@/views/admin/Dashboard.vue";
 import Employee from "@/views/admin/Employee.vue";
 import Customer from "@/views/admin/Customer.vue";
-import Category from "@/views/admin/Category.vue";
-import Hardware from "@/views/admin/hardware/Hardware.vue";
+import Hardware from "@/views/admin/Hardware.vue";
 import Bill from "@/views/admin/Bill.vue";
 import Report from "@/views/admin/Report.vue";
 
@@ -19,57 +18,123 @@ import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
 import EmployeeForm from "@/views/forms/EmployeeForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
-import CategoryForm from "@/views/forms/CategoryForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
 
-import HardwareChart from "@/views/admin/hardware/HardwareChart.vue";
+// import HardwareChart from "@/views/admin/hardware/HardwareChart.vue";
+
+import CustomerDashboard from "@/views/customer/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "/dashboard",
+      redirect: "/admin/dashboard",
       component: Admin,
       meta: { requiresAuth: true },
       children: [
-        { path: "/dashboard", component: Dashboard },
-        { path: "/profile", component: Profile },
-        { path: "/profile/update/password", component: UpdatePassword },
-        { path: "/employees", component: Employee },
-        { path: "/employees/new", component: EmployeeForm },
-        { path: "/employees/update", component: EmployeeForm },
-        { path: "/customers", component: Customer },
-        { path: "/customers/new", component: CustomerForm },
-        { path: "/customers/update", component: CustomerForm },
         {
-          path: "/customers/:id/hardware",
+          path: "/admin/dashboard",
+          name: "dashboard",
+          component: Dashboard,
+        },
+        {
+          path: "/admin/profile",
+          name: "profile",
+          component: Profile,
+        },
+        {
+          path: "/admin/profile/update/password",
+          name: "update/password",
+          component: UpdatePassword,
+        },
+        {
+          path: "/admin/employees",
+          name: "employees",
+          component: Employee,
+        },
+        {
+          path: "/admin/new/employees",
+          name: "new/employees",
+          component: EmployeeForm,
+        },
+        {
+          path: "/admin/update/employees",
+          name: "update/employees",
+          component: EmployeeForm,
+        },
+        {
+          path: "/admin/customers",
+          name: "customers",
+          component: Customer,
+        },
+        {
+          path: "/admin/new/customers",
+          name: "new/customers",
+          component: CustomerForm,
+        },
+        {
+          path: "/admin/update/customers",
+          name: "update/customers",
+          component: CustomerForm,
+        },
+        {
+          path: "/admin/hardware",
           name: "hardware",
           component: Hardware,
         },
         {
-          path: "customers/:id/new/hardware",
+          path: "admin/new/hardware",
           name: "new/hardware",
           component: HardwareForm,
         },
         {
-          path: "customers/:id/show/hardware",
-          name: "show/hardware",
-          component: HardwareChart,
-        },
-        {
-          path: "customers/:id/update/hardware",
+          path: "admin/update/hardware",
           name: "update/hardware",
           component: HardwareForm,
         },
-        { path: "/categories", component: Category },
-        { path: "/new/category", component: CategoryForm },
-        { path: "/update/category", component: CategoryForm },
-        { path: "/hardware", component: Hardware },
-
-        { path: "/update/hardware", component: HardwareForm },
-        { path: "/bills", component: Bill },
-        { path: "/reports", component: Report },
+        {
+          path: "/admin/customers/:id/hardware",
+          name: "customers/hardware",
+          component: Hardware,
+        },
+        {
+          path: "admin/customers/:id/new/hardware",
+          name: "customers/new/hardware",
+          component: HardwareForm,
+        },
+        // {
+        //   path: "admin/customers/:id/show/hardware",
+        //   name: "show/hardware",
+        //   component: HardwareChart,
+        // },
+        {
+          path: "admin/customers/:id/update/hardware",
+          name: "customers/update/hardware",
+          component: HardwareForm,
+        },
+        {
+          path: "/admin/bills",
+          name: "bills",
+          component: Bill,
+        },
+        {
+          path: "/admin/reports",
+          name: "reports",
+          component: Report,
+        },
+      ],
+    },
+    {
+      path: "/",
+      redirect: "/dashboard",
+      component: Admin,
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: "/customer/dashboard",
+          component: CustomerDashboard,
+        },
       ],
     },
     {
@@ -124,6 +189,19 @@ router.beforeEach(async (to, from, next) => {
       ok = true;
     }
   }
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!profileStore.isAuthenticated) {
+      path = "/auth/login";
+      ok = false;
+    } else if (!profileStore.isAdmin && to.path === "/dashboard") {
+      path = "/customer/dashboard";
+      ok = false;
+    } else {
+      ok = true;
+    }
+  }
+
   if (ok) {
     next();
   } else {

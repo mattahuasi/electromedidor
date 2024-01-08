@@ -20,13 +20,13 @@ const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
-  { key: "firstName", label: "Nombre/s" },
+  { key: "firstName", label: "Nombres" },
   { key: "lastName", label: "Apellidos" },
-  { key: "ci", label: "CI" },
+  { key: "ci", label: "Cédula de identidad" },
   { key: "email", label: "Correo electrónico" },
-  // { key: "admin", label: "Administrador", status: true },
-  // { key: "createdAt", label: "Creado", date: true },
-  // { key: "updatedAt", label: "Actualizado", date: true },
+  { key: "phone", label: "Nro. de contacto" },
+  { key: "createdAt", label: "Fecha de creación", date: true },
+  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -62,7 +62,7 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ path: "/users/update", query: { id: action.id } });
+    router.push({ name: "update/employees", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteEmployeeByIdRequest(action.id);
@@ -77,17 +77,6 @@ async function action(action) {
 
 onMounted(async () => {
   loadData();
-  try {
-    if (!profileStore.isAdmin) options.value.length = 0;
-    else if (profileStore.isAdmin)
-      columns.value.push(
-        { key: "admin", label: "Administrador", status: true },
-        { key: "createdAt", label: "Creado", date: true },
-        { key: "updatedAt", label: "Actualizado", date: true }
-      );
-  } catch (error) {
-    toast.error("Error al cargar datos");
-  }
 });
 </script>
 
@@ -97,7 +86,7 @@ onMounted(async () => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add to="/users/new">Agregar Usuario</button-add>
+      <button-add :to="{ name: 'new/employees' }">Agregar Usuario</button-add>
     </template>
     <DataTable
       :columns="columns"

@@ -4,8 +4,10 @@ import { useUtilsStore } from "@/stores/utils";
 const utilsStore = useUtilsStore();
 const props = defineProps({
   to: {
-    type: String,
-    default: "/",
+    type: Object,
+    default: {
+      name: "/",
+    },
   },
   icon: {
     type: String,
