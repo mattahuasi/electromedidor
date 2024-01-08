@@ -4,6 +4,12 @@ import AnchorAccordion from "@/components/anchors/AnchorAccordion.vue";
 import { useUtilsStore } from "@/stores/utils.js";
 
 const utilsStore = useUtilsStore();
+const prop = defineProps({
+  menu: {
+    type: Array,
+    required: true,
+  },
+});
 </script>
 
 <template>
@@ -18,56 +24,31 @@ const utilsStore = useUtilsStore();
   >
     <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-700">
       <ul class="space-y-2 font-medium">
-        <li>
-          <Anchor
-            :to="{ name: 'dashboard' }"
-            icon="fa-flipboard"
-            name="Panel de control"
-          />
-        </li>
-        <li>
-          <AnchorAccordion name="Usuarios" icon="fa-users">
-            <li>
+        <li v-for="item in menu">
+          <AnchorAccordion
+            v-if="item.accordion"
+            name="Usuarios"
+            icon="fa-users"
+          >
+            <li v-for="item in menu">
               <Anchor
-                :to="{ name: 'customers' }"
-                icon="fa-user-tie"
-                name="Clientes"
-              />
-              <Anchor
-                :to="{ name: 'employees' }"
-                icon="fa-user-cog"
-                name="Sistema"
-              />
+                v-if="item.accordionItem"
+                :to="item.to"
+                :icon="item.icon"
+                :name="item.name"
+              >
+                {{ row.label }}</Anchor
+              >
             </li>
           </AnchorAccordion>
-        </li>
-        <li>
           <Anchor
-            :to="{ name: 'hardware' }"
-            icon="fa-charging-station"
-            name="Cortes por deuda"
-          />
-        </li>
-        <li>
-          <Anchor
-            :to="{ name: 'hardware' }"
-            icon="fa-bolt"
-            name="Medidores en Gral."
-          />
-        </li>
-        <li>
-          <Anchor
-            :to="{ name: 'bills' }"
-            icon="fa-book"
-            name="Facturas Gral."
-          />
-        </li>
-        <li>
-          <Anchor
-            :to="{ name: 'reports' }"
-            icon="fa-newspaper"
-            name="Noticias"
-          />
+            v-else-if="!item.accordionItem"
+            :to="item.to"
+            :icon="item.icon"
+            :name="item.name"
+          >
+            {{ row.label }}</Anchor
+          >
         </li>
       </ul>
     </div>

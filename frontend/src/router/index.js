@@ -3,6 +3,7 @@ import { useProfileStore } from "@/stores/profile.js";
 
 import Auth from "@/layouts/Auth.vue";
 import Admin from "@/layouts/Admin.vue";
+import Layout from "@/layouts/Layout.vue";
 
 import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
@@ -22,79 +23,79 @@ import HardwareForm from "@/views/forms/HardwareForm.vue";
 
 // import HardwareChart from "@/views/admin/hardware/HardwareChart.vue";
 
-import CustomerDashboard from "@/views/customer/Dashboard.vue";
+import UserDashboard from "@/views/user/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "/admin/dashboard",
+      redirect: "dashboard",
       component: Admin,
       meta: { requiresAuth: true },
       children: [
         {
-          path: "/admin/dashboard",
+          path: "/dashboard",
           name: "dashboard",
           component: Dashboard,
         },
         {
-          path: "/admin/profile",
+          path: "/profile",
           name: "profile",
           component: Profile,
         },
         {
-          path: "/admin/profile/update/password",
+          path: "/profile/update/password",
           name: "update/password",
           component: UpdatePassword,
         },
         {
-          path: "/admin/employees",
+          path: "/employees",
           name: "employees",
           component: Employee,
         },
         {
-          path: "/admin/new/employees",
+          path: "/new/employees",
           name: "new/employees",
           component: EmployeeForm,
         },
         {
-          path: "/admin/update/employees",
+          path: "/update/employees",
           name: "update/employees",
           component: EmployeeForm,
         },
         {
-          path: "/admin/customers",
+          path: "/customers",
           name: "customers",
           component: Customer,
         },
         {
-          path: "/admin/new/customers",
+          path: "/new/customers",
           name: "new/customers",
           component: CustomerForm,
         },
         {
-          path: "/admin/customers/:id/hardware",
+          path: "/customers/:id/hardware",
           name: "customers/hardware",
           component: Hardware,
         },
         {
-          path: "/admin/update/customers",
+          path: "/update/customers",
           name: "update/customers",
           component: CustomerForm,
         },
         {
-          path: "/admin/hardware",
+          path: "/hardware",
           name: "hardware",
           component: Hardware,
         },
         {
-          path: "admin/new/hardware",
+          path: "/new/hardware",
           name: "new/hardware",
           component: HardwareForm,
         },
         {
-          path: "admin/update/hardware",
+          path: "/update/hardware",
           name: "update/hardware",
           component: HardwareForm,
         },
@@ -104,7 +105,7 @@ const router = createRouter({
         //   component: Hardware,
         // },
         {
-          path: "admin/customers/:id/new/hardware",
+          path: "/customers/:id/new/hardware",
           name: "customers/new/hardware",
           component: HardwareForm,
         },
@@ -114,17 +115,17 @@ const router = createRouter({
         //   component: HardwareChart,
         // },
         {
-          path: "admin/customers/:id/update/hardware",
+          path: "/customers/:id/update/hardware",
           name: "customers/update/hardware",
           component: HardwareForm,
         },
         {
-          path: "/admin/bills",
+          path: "/bills",
           name: "bills",
           component: Bill,
         },
         {
-          path: "/admin/reports",
+          path: "/reports",
           name: "reports",
           component: Report,
         },
@@ -133,12 +134,23 @@ const router = createRouter({
     {
       path: "/",
       redirect: "/dashboard",
-      component: Admin,
+      component: Layout,
       meta: { requiresAuth: true },
       children: [
         {
-          path: "/customer/dashboard",
-          component: CustomerDashboard,
+          path: "/users/dashboard",
+          name: "users/dashboard",
+          component: UserDashboard,
+        },
+        {
+          path: "/users/profile",
+          name: "users/profile",
+          component: Profile,
+        },
+        {
+          path: "/users/profile/update/password",
+          name: "users/update/password",
+          component: UpdatePassword,
         },
       ],
     },
@@ -200,7 +212,7 @@ router.beforeEach(async (to, from, next) => {
       path = "/auth/login";
       ok = false;
     } else if (!profileStore.isAdmin && to.path === "/dashboard") {
-      path = "/customer/dashboard";
+      path = "/users/dashboard";
       ok = false;
     } else {
       ok = true;

@@ -1,7 +1,9 @@
 <script setup>
 import { useUtilsStore } from "@/stores/utils.js";
+import { useProfileStore } from "@/stores/profile.js";
 import Avatar from "@/components/avatar/Avatar.vue";
 
+const profileStore = useProfileStore();
 const utilsStore = useUtilsStore();
 </script>
 
@@ -32,6 +34,13 @@ const utilsStore = useUtilsStore();
           </button>
           <a class="flex ml-2 md:mr-24">
             <router-link
+              v-if="profileStore.isAdmin"
+              :to="{ name: 'dashboard' }"
+              class="self-center text-xs border-b-2 border-gray-200 font-semibold sm:text-2xl whitespace-nowrap text-gray-200"
+              >SisElectro</router-link
+            >
+            <router-link
+              v-else
               :to="{ name: 'dashboard' }"
               class="self-center text-xs border-b-2 border-gray-200 font-semibold sm:text-2xl whitespace-nowrap text-gray-200"
               >SisElectro</router-link
