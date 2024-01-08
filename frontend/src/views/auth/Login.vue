@@ -59,7 +59,7 @@ function notification() {
           <div class="rounded-t mb-0 px-6 py-6">
             <div class="text-center mb-3">
               <h6 class="text-4xl dark:text-white">
-                <router-link to="/">SisMedidor</router-link>
+                <router-link to="/auth/login">SisMedidor</router-link>
               </h6>
             </div>
             <div class="text-center">
