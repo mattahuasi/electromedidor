@@ -8,14 +8,14 @@ const props = defineProps({
   items: { type: Array, required: true },
 });
 
+console.log(props.title);
+console.log(props.items);
+
 const line = ref(null);
 const data = ref([]);
 const categories = ref([]);
 
-onMounted(() => {
-  data.value = props.items;
-  console.log(data.value);
-});
+onMounted(() => {});
 </script>
 
 <template>

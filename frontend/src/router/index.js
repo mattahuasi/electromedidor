@@ -21,7 +21,7 @@ import EmployeeForm from "@/views/forms/EmployeeForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
 
-// import HardwareChart from "@/views/admin/hardware/HardwareChart.vue";
+import Chart from "@/views/admin/Chart.vue";
 
 import UserDashboard from "@/views/user/Dashboard.vue";
 
@@ -93,6 +93,11 @@ const router = createRouter({
           path: "/new/hardware",
           name: "new/hardware",
           component: HardwareForm,
+        },
+        {
+          path: "/show/hardware",
+          name: "show/hardware",
+          component: Chart,
         },
         {
           path: "/update/hardware",

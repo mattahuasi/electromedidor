@@ -1,0 +1,135 @@
+<script setup>
+import { getReadingsRequest } from "@/api/reading.js";
+import { fullDateFormat, dateFormat, hourFormat } from "@/utils/index.js";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import { toast } from "vue-sonner";
+import * as echarts from "echarts";
+
+const route = useRoute();
+const items = ref([]);
+const line = ref(null);
+const data = ref([]);
+const categories = ref([]);
+
+onMounted(async () => {
+  try {
+    const res = await getReadingsRequest(route.query.id);
+    items.value = res.data;
+  } catch (error) {
+    toast.error("Error al cargar datos");
+  }
+  items.value.splice(0, items.value.length - 20);
+  items.value.forEach((item) => {
+    data.value.push(item.power);
+  });
+  items.value.forEach((item) => {
+    categories.value.push(hourFormat(item.createdAt));
+  });
+  if (line.value !== null) {
+    const echart = echarts.init(line.value, null, {
+      width: 1024,
+      height: 500,
+    });
+    echart.setOption({
+      title: {
+        text: "Distribution of Electricity",
+        subtext: "Fake Data",
+      },
+      tooltip: {
+        trigger: "axis",
+        axisPointer: {
+          type: "cross",
+        },
+      },
+      toolbox: {
+        show: true,
+        feature: {
+          saveAsImage: {},
+        },
+      },
+      xAxis: {
+        type: "category",
+        boundaryGap: false,
+        data: categories.value,
+      },
+      yAxis: {
+        type: "value",
+        axisLabel: {
+          formatter: "{value} W",
+        },
+        axisPointer: {
+          snap: true,
+        },
+      },
+      series: [
+        {
+          name: "Electricity",
+          type: "line",
+          smooth: true,
+          data: data.value,
+        },
+      ],
+    });K
+    setInterval(async function () {
+      const items = ref([]);
+      try {
+        const res = await getReadingsRequest(route.query.id);
+        items.value = res.data;
+        data.value.shift();
+        data.value.push(items.value[items.value.length - 1].power);
+        categories.value.shift();
+        categories.value.push(
+          hourFormat(items.value[items.value.length - 1].createdAt)
+        );
+        echart.setOption({
+          xAxis: [
+            {
+              data: categories.value,
+            },
+          ],
+          series: [
+            {
+              data: data.value,
+            },
+          ],
+        });
+      } catch (error) {
+        toast.error("Error al cargar datos");
+      }
+    }, 5100);
+  }
+});
+</script>
+
+<template>
+  <div ref="line"></div>
+</template>
+
+<!-- <script setup>
+import { getReadingsRequest } from "@/api/reading.js";
+import { ref, onMounted } from "vue";
+import { useRoute } from "vue-router";
+import LineChart from "@/components/charts/LineChart.vue";
+
+const route = useRoute();
+const items = ref([]);
+const itemsDisplay = ref([]);
+const load = ref(true);
+
+onMounted(async () => {
+  load.value = true;
+  try {
+    const res = await getReadingsRequest(route.query.id);
+    items.value = res.data;
+    itemsDisplay.value = items.value;
+    load.value = false;
+  } catch (error) {
+    toast.error("Error al cargar datos");
+  }
+});
+</script>
+
+<template>
+  <LineChart :title="'Potencia'" :items="itemsDisplay" />
+</template> -->

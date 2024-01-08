@@ -41,7 +41,6 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    // const res = await getHardwareRequest();
     if (route.params.id) {
       const res = await getCustomerHardwareByIdRequest(route.params.id);
       items.value = res.data;
@@ -76,7 +75,7 @@ async function action(action) {
   if (action.action === "update") {
     router.push({ name: "update/hardware", query: { id: action.id } });
   } else if (action.action === "show") {
-    router.push({ path: "show/hardware", query: { id: action.id } });
+    router.push({ name: "show/hardware", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteHardwareByIdRequest(action.id);
@@ -95,23 +94,6 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- <div class="flex flex-wrap mt-4">
-    <article class="w-full px-4">
-      <h3 class="">Datos del usuario</h3>
-      <body>
-        <p>
-          Nombre/s y apellido/s
-          <span>{{ customer.firstName + " " + customer.lastName }}</span>
-        </p>
-        <p>
-          Teléfono/Celular <span>{{ customer.phone }}</span>
-        </p>
-        <p>
-          Correo electrónico <span>{{ customer.email }}</span>
-        </p>
-      </body>
-    </article>
-  </div> -->
   <card-data title="Medidores" icon="fa-bolt">
     <template v-slot:filters>
       <div class="pb-4">

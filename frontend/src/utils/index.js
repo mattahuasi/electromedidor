@@ -21,3 +21,14 @@ export const fullDateFormat = (date) => {
   const minute = addCero(d.getMinutes());
   return `${year}-${month}-${day} ${hour}:${minute}`;
 };
+
+export const hourFormat = (date) => {
+  const d = new Date(date);
+  const addCero = (number) => {
+    return number < 10 ? `0${number}` : number;
+  };
+  const hour = addCero(d.getHours());
+  const minute = addCero(d.getMinutes());
+  const second = addCero(d.getSeconds());
+  return `${hour}:${minute}:${second}`;
+};
