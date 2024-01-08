@@ -2,20 +2,30 @@ import { Router } from "express";
 import { authRequired } from "../middlewares/validateToken.js";
 import { adminRequired } from "../middlewares/validateAdmin.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
-import { userSchema } from "../schemas/user.schema.js";
+import { employeeSchema } from "../schemas/employee.schema.js";
 import {
-  getUsers,
-  getUserById,
-  createUser,
-  updateUser,
-  deleteUser,
-} from "../controllers/user.controller.js";
+  createEmployee,
+  getEmployees,
+  getEmployeeById,
+  updateEmployeeById,
+  deleteEmployeeById,
+} from "../controllers/employee.controller.js";
 
 const router = new Router();
-router.post("/users", validateSchema(userSchema), authRequired, createUser);
-router.get("/users", authRequired, getUsers);
-router.get("/users/:id", authRequired, getUserById);
-router.put("/users/:id", authRequired, adminRequired, updateUser);
-router.delete("/users/:id", authRequired, deleteUser);
+router.post(
+  "/employees",
+  authRequired,
+  validateSchema(employeeSchema),
+  createEmployee
+);
+router.get("/employees", authRequired, getEmployees);
+router.get("/employees/:id", authRequired, getEmployeeById);
+router.put("/employees/:id", authRequired, updateEmployeeById);
+router.delete(
+  "/employees/:id",
+  authRequired,
+  adminRequired,
+  deleteEmployeeById
+);
 
 export default router;

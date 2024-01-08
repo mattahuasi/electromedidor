@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const userSchema = z.object({
+export const employeeSchema = z.object({
   firstName: z
     .string({
       required_error: "Name is required",
@@ -52,6 +52,10 @@ export const userSchema = z.object({
       message:
         "Password must include at least one uppercase letter, one lowercase letter, and one number (e.g., 'Abc123')",
     }),
+  staff: z.boolean({
+    required_error: "Staff is required",
+    invalid_type_error: "Staff must be a boolean",
+  }),
   admin: z.boolean({
     required_error: "Admin is required",
     invalid_type_error: "Admin must be a boolean",

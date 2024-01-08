@@ -1,7 +1,6 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
-import { Customer } from "./Person.js";
-import { Category } from "./Category.js";
+import { Customer } from "./User.js";
 
 export const Hardware = sequelize.define("hardware", {
   id: {
@@ -40,18 +39,6 @@ Customer.hasMany(Hardware, {
 
 Hardware.belongsTo(Customer, {
   foreignKey: "customerId",
-  targetKey: "id",
-  allowNull: false,
-  unique: true,
-});
-
-Category.hasMany(Hardware, {
-  foreignKey: "categoryId",
-  sourceKey: "id",
-});
-
-Hardware.belongsTo(Category, {
-  foreignKey: "categoryId",
   targetKey: "id",
   allowNull: false,
   unique: true,

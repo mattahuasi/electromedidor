@@ -8,9 +8,6 @@ export const Reading = sequelize.define("readings", {
     autoIncrement: true,
     primaryKey: true,
   },
-  consumption: {
-    type: DataTypes.FLOAT,
-  },
   power: {
     type: DataTypes.FLOAT,
   },
@@ -23,13 +20,7 @@ export const Reading = sequelize.define("readings", {
   powerFactor: {
     type: DataTypes.FLOAT,
   },
-  a: {
-    type: DataTypes.FLOAT,
-  },
-  b: {
-    type: DataTypes.FLOAT,
-  },
-  c: {
+  consumption: {
     type: DataTypes.FLOAT,
   },
 });

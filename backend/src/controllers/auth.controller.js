@@ -1,8 +1,8 @@
-import { Person, User } from "../models/Person.js";
+import { Person, User } from "../models/User.js";
 import { createdAccessToken } from "../libs/jwt.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import "dotenv/config";
+// import "dotenv/config";
 
 export const login = async (req, res) => {
   try {

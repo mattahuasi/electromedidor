@@ -1,7 +1,7 @@
 import { DataTypes } from "sequelize";
 import { sequelize } from "../database/database.js";
 
-export const Person = sequelize.define("people", {
+export const User = sequelize.define("users", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -24,16 +24,20 @@ export const Person = sequelize.define("people", {
     type: DataTypes.STRING,
     unique: true,
   },
+  password: {
+    type: DataTypes.STRING,
+  },
 });
 
-export const User = sequelize.define("users", {
+export const Employee = sequelize.define("employees", {
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
   },
-  password: {
-    type: DataTypes.STRING,
+  staff: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   admin: {
     type: DataTypes.BOOLEAN,
@@ -55,25 +59,25 @@ export const Customer = sequelize.define(
   }
 );
 
-Person.hasOne(User, {
-  foreignKey: "personId",
+User.hasOne(Employee, {
+  foreignKey: "userId",
   sourceKey: "id",
 });
 
-User.belongsTo(Person, {
-  foreignKey: "personId",
+Employee.belongsTo(User, {
+  foreignKey: "userId",
   targetKey: "id",
   allowNull: false,
   unique: true,
 });
 
-Person.hasOne(Customer, {
-  foreignKey: "personId",
+User.hasOne(Customer, {
+  foreignKey: "userId",
   sourceKey: "id",
 });
 
-Customer.belongsTo(Person, {
-  foreignKey: "personId",
+Customer.belongsTo(User, {
+  foreignKey: "userId",
   targetKey: "id",
   allowNull: false,
   unique: true,

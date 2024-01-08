@@ -26,6 +26,7 @@ export const Report = sequelize.define("reports", {
   },
   end: {
     type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW,
   },
 });
 

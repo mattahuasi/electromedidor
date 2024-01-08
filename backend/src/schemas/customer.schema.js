@@ -41,4 +41,15 @@ export const customerSchema = z.object({
       invalid_type_error: "Email must be a string",
     })
     .email({ message: "Invalid email address" }),
+  password: z
+    .string({
+      required_error: "Password is required",
+      invalid_type_error: "Password must be a string",
+    })
+    .min(6, { message: "Password should have at least 6 characters" })
+    .max(20, { message: "Password should not exceed 20 characters" })
+    .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,20}$/, {
+      message:
+        "Password must include at least one uppercase letter, one lowercase letter, and one number (e.g., 'Abc123')",
+    }),
 });

@@ -1,5 +1,4 @@
-import { Person, Customer } from "../models/Person.js";
-import { Category } from "../models/Category.js";
+import { User, Customer } from "../models/User.js";
 import { Hardware } from "../models/Hardware.js";
 
 export const getHardware = async (req, res) => {

@@ -31,9 +31,9 @@ export const hardwareSchema = z.object({
     required_error: "Rural is required",
     invalid_type_error: "Rural must be a boolean",
   }),
-  // customerId: z.number(),
-  categoryId: z.number({
-    required_error: "Category is required",
-    invalid_type_error: "Category must be a number",
+  customerId: z.number({
+    required_error: "Customer is required",
+    invalid_type_error: "Customer must be a number",
   }),
+  // categoryId: z.number(),
 });
