@@ -6,15 +6,15 @@ export const useProfileStore = defineStore("profile", {
   state: () => ({ user: {}, isAuthenticated: false }),
   getters: {
     dataUser: (state) => ({
-      email: state.user.person.email,
-      firstName: state.user.person?.firstName,
-      lastName: state.user.person?.lastName,
-      ci: state.user.person?.ci,
-      phone: state.user.person?.phone,
+      email: state.user.user.email,
+      firstName: state.user.user?.firstName,
+      lastName: state.user.user?.lastName,
+      ci: state.user.user?.ci,
+      phone: state.user.user?.phone,
     }),
     fullName: (state) =>
-      state.user.person?.firstName + " " + state.user.person?.lastName,
-    isAdmin: (state) => state.user.admin,
+      state.user.user?.firstName + " " + state.user.user?.lastName,
+    isAdmin: (state) => state.user?.admin,
   },
   actions: {
     async verifyToken() {

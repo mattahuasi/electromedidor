@@ -4,22 +4,26 @@ import { validateSchema } from "../middlewares/validator.middleware.js";
 import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 import {
   login,
+  customerRegister,
   logout,
-  profile,
-  updateProfile,
+  // profile,
+  // updateProfile,
   verifyToken,
-  updatePassword,
-  register,
+  // updatePassword,
 } from "../controllers/auth.controller.js";
 
 const router = new Router();
 
 router.post("/login", validateSchema(loginSchema), login);
+router.post(
+  "/customers/register",
+  validateSchema(registerSchema),
+  customerRegister
+);
 router.post("/logout", authRequired, logout);
-router.put("/profile/update/password", authRequired, updatePassword);
-router.get("/profile", authRequired, profile);
-router.put("/profile", authRequired, updateProfile);
+// router.put("/profile/update/password", authRequired, updatePassword);
+// router.get("/profile", authRequired, profile);
+// router.put("/profile", authRequired, updateProfile);
 router.get("/verify", verifyToken);
-router.post("/register", validateSchema(registerSchema), register);
 
 export default router;

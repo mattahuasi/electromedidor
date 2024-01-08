@@ -1,9 +1,9 @@
 <script setup>
 import {
-  createUserRequest,
-  getUserByIdRequest,
-  updateUserRequest,
-} from "@/api/user.js";
+  createEmployeeRequest,
+  getEmployeeByIdRequest,
+  updateEmployeeByIdRequest,
+} from "@/api/employee.js";
 import { useProfileStore } from "@/stores/profile.js";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive } from "vue";
@@ -52,8 +52,8 @@ async function handleSubmit() {
     try {
       if (!route.query.id) {
         formData.password = `Sis${formData.ci}`;
-        await createUserRequest(formData);
-      } else await updateUserRequest(route.query.id, formData);
+        await createEmployeeRequest(formData);
+      } else await updateEmployeeByIdRequest(route.query.id, formData);
       toast.success("Usuario guardado correctamente");
       router.push("/users");
     } catch (error) {
@@ -66,7 +66,7 @@ async function handleSubmit() {
 onMounted(async () => {
   if (route.query.id) {
     try {
-      const res = await getUserByIdRequest(route.query.id);
+      const res = await getEmployeeByIdRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");

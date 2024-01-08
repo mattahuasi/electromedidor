@@ -2,7 +2,7 @@
 import {
   createCustomerRequest,
   getCustomerByIdRequest,
-  updateCustomerRequest,
+  updateCustomerByIdRequest,
 } from "@/api/customer.js";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive } from "vue";
@@ -45,7 +45,7 @@ async function handleSubmit() {
   if (isFormCorrect) {
     try {
       if (!route.query.id) await createCustomerRequest(formData);
-      else await updateCustomerRequest(route.query.id, formData);
+      else await updateCustomerByIdRequest(route.query.id, formData);
       toast.success("Cliente guardado correctamente");
       router.push("/customers");
     } catch (error) {

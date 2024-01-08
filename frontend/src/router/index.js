@@ -8,7 +8,7 @@ import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
 
 import Dashboard from "@/views/admin/Dashboard.vue";
-import User from "@/views/admin/User.vue";
+import Employee from "@/views/admin/Employee.vue";
 import Customer from "@/views/admin/Customer.vue";
 import Category from "@/views/admin/Category.vue";
 import Hardware from "@/views/admin/hardware/Hardware.vue";
@@ -17,7 +17,7 @@ import Report from "@/views/admin/Report.vue";
 
 import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
-import UserForm from "@/views/forms/UserForm.vue";
+import EmployeeForm from "@/views/forms/EmployeeForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import CategoryForm from "@/views/forms/CategoryForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
@@ -36,9 +36,9 @@ const router = createRouter({
         { path: "/dashboard", component: Dashboard },
         { path: "/profile", component: Profile },
         { path: "/profile/update/password", component: UpdatePassword },
-        { path: "/users", component: User },
-        { path: "/users/new", component: UserForm },
-        { path: "/users/update", component: UserForm },
+        { path: "/employees", component: Employee },
+        { path: "/employees/new", component: EmployeeForm },
+        { path: "/employees/update", component: EmployeeForm },
         { path: "/customers", component: Customer },
         { path: "/customers/new", component: CustomerForm },
         { path: "/customers/update", component: CustomerForm },

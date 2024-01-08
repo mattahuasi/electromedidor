@@ -12,11 +12,21 @@ import {
 } from "../controllers/customer.controller.js";
 
 const router = new Router();
-router.post("/customers", validateSchema(customerSchema), createCustomer);
-router.get("/customers", getCustomers);
-router.get("/customers/:id", getCustomerById);
-router.put("/customers/:id", updateCustomerById);
-router.delete("/customers/:id", deleteCustomerById);
+router.post(
+  "/customers",
+  authRequired,
+  validateSchema(customerSchema),
+  createCustomer
+);
+router.get("/customers", authRequired, getCustomers);
+router.get("/customers/:id", authRequired, getCustomerById);
+router.put("/customers/:id", authRequired, updateCustomerById);
+router.delete(
+  "/customers/:id",
+  authRequired,
+  adminRequired,
+  deleteCustomerById
+);
 // router.get("/customers/:id/hardware", authRequired, getCustomerByIdHardware);
 
 export default router;

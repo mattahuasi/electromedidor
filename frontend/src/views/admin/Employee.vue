@@ -1,5 +1,8 @@
 <script setup>
-import { getUsersRequest, deleteUserRequest } from "@/api/user.js";
+import {
+  getEmployeesRequest,
+  deleteEmployeeByIdRequest,
+} from "@/api/employee.js";
 import { useProfileStore } from "@/stores/profile.js";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
@@ -33,7 +36,7 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    const res = await getUsersRequest();
+    const res = await getEmployeesRequest();
     items.value = res.data;
     itemsDisplay.value = items.value;
     load.value = false;
@@ -62,7 +65,7 @@ async function action(action) {
     router.push({ path: "/users/update", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteUserRequest(action.id);
+      await deleteEmployeeByIdRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Usuario eliminado");

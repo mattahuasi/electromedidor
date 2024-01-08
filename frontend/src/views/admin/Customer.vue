@@ -1,5 +1,8 @@
 <script setup>
-import { getCustomersRequest, deleteCustomerRequest } from "@/api/customer.js";
+import {
+  getCustomersRequest,
+  deleteCustomerByIdRequest,
+} from "@/api/customer.js";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -62,7 +65,7 @@ async function action(action) {
     router.push({ name: "hardware", params: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteCustomerRequest(action.id);
+      await deleteCustomerByIdRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Cliente eliminado");
