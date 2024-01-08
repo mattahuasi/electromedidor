@@ -46,8 +46,7 @@ async function handleSubmit() {
   if (isFormCorrect) {
     try {
       formData.customerId = parseInt(formData.customerId);
-      if (!route.query.id)
-        await createHardwareRequest(route.params.id, formData);
+      if (!route.query.id) await createHardwareRequest(formData);
       else await updateHardwareByIdRequest(route.query.id, formData);
       toast.success("Hardware guardado exitosamente");
       router.push({ name: "hardware" });
@@ -90,7 +89,7 @@ onMounted(async () => {
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");
-      route.push("/customers");
+      router.push({ name: "hardware" });
     }
   }
 });

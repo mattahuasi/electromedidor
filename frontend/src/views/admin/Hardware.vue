@@ -26,7 +26,7 @@ const columns = ref([
   { key: "key", label: "Llave", lock: true },
   { key: "status", label: "Estado" },
   { key: "urban", label: "Área", area: true },
-  { key: "customerId", label: "Área", area: true },
+  { key: "customerId", label: "UID" },
   { key: "createdAt", label: "Fecha de creación", date: true },
   { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);

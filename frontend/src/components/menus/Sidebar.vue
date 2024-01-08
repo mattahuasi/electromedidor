@@ -50,6 +50,13 @@ const utilsStore = useUtilsStore();
         </li>
         <li>
           <Anchor
+            :to="{ name: 'hardware' }"
+            icon="fa-bolt"
+            name="Medidores en Gral."
+          />
+        </li>
+        <li>
+          <Anchor
             :to="{ name: 'bills' }"
             icon="fa-book"
             name="Facturas Gral."
