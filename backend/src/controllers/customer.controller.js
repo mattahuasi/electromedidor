@@ -148,40 +148,26 @@ export const deleteCustomerById = async (req, res) => {
   }
 };
 
-// export const getCustomerByIdHardware = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const customer = await Customer.findByPk(id, {
-//       include: [
-//         {
-//           model: Hardware,
-//           attributes: [
-//             "id",
-//             "mack",
-//             "address",
-//             "status",
-//             "key",
-//             "urban",
-//             "rural",
-//             "createdAt",
-//           ],
-//           include: [{ model: Category, attributes: ["id", "name"] }],
-//         },
-//       ],
-//     });
-//     const data = customer.hardware.map((item) => ({
-//       id: item.id,
-//       mack: item.mack,
-//       address: item.address,
-//       category: item.category.name,
-//       status: item.status,
-//       key: item.key,
-//       urban: item.urban,
-//       rural: item.rural,
-//       createdAt: item.createdAt,
-//     }));
-//     res.json(data);
-//   } catch (error) {
-//     return res.status(500).json({ errors: [error] });
-//   }
-// };
+export const getCustomerHardwareById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const customer = await Customer.findByPk(id, {
+      include: [{ model: Hardware }],
+    });
+    if (!customer) return res.status(404).json({ errors: ["User not found"] });
+    const data = customer.hardware.map((item) => ({
+      id: item.id,
+      mack: item.mack,
+      address: item.address,
+      status: item.status,
+      key: item.key,
+      urban: item.urban,
+      rural: item.rural,
+      createdAt: item.createdAt,
+      updatedAt: item.updatedAt,
+    }));
+    res.json(data);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};

@@ -1,5 +1,5 @@
 <script setup>
-import { getCustomerByIdRequest } from "@/api/customer.js";
+import { getCustomerHardwareByIdRequest } from "@/api/customer.js";
 import {
   getHardwareRequest,
   deleteHardwareByIdRequest,
@@ -41,10 +41,18 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    const res = await getHardwareRequest();
-    items.value = res.data;
-    itemsDisplay.value = items.value;
-    load.value = false;
+    // const res = await getHardwareRequest();
+    if (route.params.id) {
+      const res = await getCustomerHardwareByIdRequest(route.params.id);
+      items.value = res.data;
+      itemsDisplay.value = items.value;
+      load.value = false;
+    } else {
+      const res = await getHardwareRequest();
+      items.value = res.data;
+      itemsDisplay.value = items.value;
+      load.value = false;
+    }
   } catch (error) {
     toast.error("Error al cargar datos");
   }

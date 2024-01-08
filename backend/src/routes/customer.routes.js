@@ -9,6 +9,7 @@ import {
   getCustomerById,
   updateCustomerById,
   deleteCustomerById,
+  getCustomerHardwareById,
 } from "../controllers/customer.controller.js";
 
 const router = new Router();
@@ -27,6 +28,6 @@ router.delete(
   adminRequired,
   deleteCustomerById
 );
-// router.get("/customers/:id/hardware", authRequired, getCustomerByIdHardware);
+router.get("/customers/:id/hardware", authRequired, getCustomerHardwareById);
 
 export default router;

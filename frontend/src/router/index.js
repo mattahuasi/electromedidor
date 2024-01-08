@@ -74,6 +74,11 @@ const router = createRouter({
           component: CustomerForm,
         },
         {
+          path: "/admin/show/customers/:id/hardware",
+          name: "show/customers/hardware",
+          component: Hardware,
+        },
+        {
           path: "/admin/update/customers",
           name: "update/customers",
           component: CustomerForm,
