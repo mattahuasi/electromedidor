@@ -63,7 +63,7 @@ async function action(action) {
   if (action.action === "update") {
     router.push({ name: "update/customers", query: { id: action.id } });
   } else if (action.action === "show") {
-    router.push({ name: "show/customers/hardware", params: { id: action.id } });
+    router.push({ name: "customers/hardware", params: { id: action.id } });
   } else if (action.action === "delete") {
     try {
       await deleteCustomerByIdRequest(action.id);
