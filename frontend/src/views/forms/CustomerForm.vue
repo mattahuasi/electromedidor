@@ -3,7 +3,7 @@ import {
   createCustomerRequest,
   getCustomerByIdRequest,
   updateCustomerByIdRequest,
-} from "@/api/customer.js";
+} from "@/api/customer";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";

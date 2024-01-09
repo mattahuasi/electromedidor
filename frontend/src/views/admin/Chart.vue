@@ -1,7 +1,7 @@
 <script setup>
-import { getReadingsRequest } from "@/api/reading.js";
-import { fullDateFormat, dateFormat, hourFormat } from "@/utils/index.js";
-import { ref, onMounted } from "vue";
+import { getReadingsRequest } from "@/api/reading";
+import { fullDateFormat, dateFormat, hourFormat } from "@/utils/index";
+import { ref, onMounted, onBeforeUnmount } from "vue";
 import { useRoute } from "vue-router";
 import { toast } from "vue-sonner";
 import * as echarts from "echarts";
@@ -11,6 +11,7 @@ const items = ref([]);
 const line = ref(null);
 const data = ref([]);
 const categories = ref([]);
+const interval = ref(null);
 
 onMounted(async () => {
   try {
@@ -70,8 +71,8 @@ onMounted(async () => {
           data: data.value,
         },
       ],
-    });K
-    setInterval(async function () {
+    });
+    interval = setInterval(async function () {
       const items = ref([]);
       try {
         const res = await getReadingsRequest(route.query.id);
@@ -100,6 +101,12 @@ onMounted(async () => {
     }, 5100);
   }
 });
+
+onBeforeUnmount(() => {
+  if (interval) {
+    clearInterval(interval);
+  }
+});
 </script>
 
 <template>
@@ -107,7 +114,7 @@ onMounted(async () => {
 </template>
 
 <!-- <script setup>
-import { getReadingsRequest } from "@/api/reading.js";
+import { getReadingsRequest } from "@/api/reading";
 import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import LineChart from "@/components/charts/LineChart.vue";

@@ -1,4 +1,4 @@
-import axios from "./axios.js";
+import axios from "./axios";
 
 export const createCategoryRequest = (category) =>
   axios.post("/categories", category);

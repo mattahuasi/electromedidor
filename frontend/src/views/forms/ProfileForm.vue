@@ -1,6 +1,6 @@
 <script setup>
-import { updateProfileRequest } from "@/api/auth.js";
-import { useProfileStore } from "@/stores/profile.js";
+import { updateProfileRequest } from "@/api/auth";
+import { useProfileStore } from "@/stores/profile";
 import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";

@@ -1,7 +1,7 @@
 <script setup>
 import Anchor from "@/components/anchors/Anchor.vue";
 import AnchorAccordion from "@/components/anchors/AnchorAccordion.vue";
-import { useUtilsStore } from "@/stores/utils.js";
+import { useUtilsStore } from "@/stores/utils";
 
 const utilsStore = useUtilsStore();
 const prop = defineProps({

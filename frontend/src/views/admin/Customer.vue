@@ -1,8 +1,5 @@
 <script setup>
-import {
-  getCustomersRequest,
-  deleteCustomerByIdRequest,
-} from "@/api/customer.js";
+import { getCustomersRequest, deleteCustomerByIdRequest } from "@/api/customer";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -76,7 +73,7 @@ async function action(action) {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   loadData();
 });
 </script>

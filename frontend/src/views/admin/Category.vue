@@ -1,5 +1,5 @@
 <script setup>
-import { getCategoriesRequest, deleteCategoryRequest } from "@/api/category.js";
+import { getCategoriesRequest, deleteCategoryRequest } from "@/api/category";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -66,7 +66,7 @@ async function action(action) {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   loadData();
 });
 </script>

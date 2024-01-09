@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import { fullDateFormat } from "@/utils/index.js";
+import { fullDateFormat } from "@/utils/index";
 import TableDropdown from "@/components/dropdowns/TableDropdown.vue";
 import Dropdown from "@/components/dropdowns/Dropdown.vue";
 

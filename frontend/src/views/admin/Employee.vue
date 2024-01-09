@@ -1,9 +1,6 @@
 <script setup>
-import {
-  getEmployeesRequest,
-  deleteEmployeeByIdRequest,
-} from "@/api/employee.js";
-import { useProfileStore } from "@/stores/profile.js";
+import { getEmployeesRequest, deleteEmployeeByIdRequest } from "@/api/employee";
+import { useProfileStore } from "@/stores/profile";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -75,7 +72,7 @@ async function action(action) {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   loadData();
 });
 </script>

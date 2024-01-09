@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { useProfileStore } from "@/stores/profile.js";
+import { useProfileStore } from "@/stores/profile";
 
 import Auth from "@/layouts/Auth.vue";
 import Admin from "@/layouts/Admin.vue";
@@ -14,12 +14,14 @@ import Customer from "@/views/admin/Customer.vue";
 import Hardware from "@/views/admin/Hardware.vue";
 import Bill from "@/views/admin/Bill.vue";
 import Report from "@/views/admin/Report.vue";
+import Disconnection from "@/views/admin/Disconnection.vue";
 
 import Profile from "@/views/forms/ProfileForm.vue";
 import UpdatePassword from "@/views/forms/UpdatePassword.vue";
 import EmployeeForm from "@/views/forms/EmployeeForm.vue";
 import CustomerForm from "@/views/forms/CustomerForm.vue";
 import HardwareForm from "@/views/forms/HardwareForm.vue";
+import BillForm from "@/views/forms/BillForm.vue";
 
 import Chart from "@/views/admin/Chart.vue";
 
@@ -128,6 +130,21 @@ const router = createRouter({
           path: "/bills",
           name: "bills",
           component: Bill,
+        },
+        {
+          path: "/new/bills",
+          name: "new/bills",
+          component: BillForm,
+        },
+        {
+          path: "/update/bills",
+          name: "update/bills",
+          component: BillForm,
+        },
+        {
+          path: "/disconnection",
+          name: "disconnection",
+          component: Disconnection,
         },
         {
           path: "/reports",

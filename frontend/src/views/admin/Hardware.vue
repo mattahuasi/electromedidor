@@ -1,9 +1,6 @@
 <script setup>
-import { getCustomerHardwareByIdRequest } from "@/api/customer.js";
-import {
-  getHardwareRequest,
-  deleteHardwareByIdRequest,
-} from "@/api/hardware.js";
+import { getCustomerHardwareByIdRequest } from "@/api/customer";
+import { getHardwareRequest, deleteHardwareByIdRequest } from "@/api/hardware";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -88,7 +85,7 @@ async function action(action) {
   }
 }
 
-onMounted(async () => {
+onMounted(() => {
   loadData();
 });
 </script>

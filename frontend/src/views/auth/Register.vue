@@ -1,5 +1,5 @@
 <script setup>
-import { registerRequest } from "@/api/auth.js";
+import { registerRequest } from "@/api/auth";
 import { reactive, computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import { useVuelidate } from "@vuelidate/core";

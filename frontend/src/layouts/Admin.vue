@@ -32,7 +32,7 @@ const menu = ref([
   },
   {
     key: "deu",
-    to: { name: "hardware" },
+    to: { name: "disconnection" },
     name: "Cortes por deuda",
     icon: "fa-charging-station",
   },

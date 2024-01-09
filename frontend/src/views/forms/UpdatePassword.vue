@@ -1,5 +1,5 @@
 <script setup>
-import { updatePassword } from "@/api/auth.js";
+import { updatePassword } from "@/api/auth";
 import { ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";

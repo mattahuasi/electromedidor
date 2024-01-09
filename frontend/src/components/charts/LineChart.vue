@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { fullDateFormat } from "@/utils/index.js";
+import { fullDateFormat } from "@/utils/index";
 import * as echarts from "echarts";
 
 const props = defineProps({

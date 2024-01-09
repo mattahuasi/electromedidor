@@ -1,5 +1,5 @@
 <script setup>
-import { useProfileStore } from "@/stores/profile.js";
+import { useProfileStore } from "@/stores/profile";
 import Dropdown from "@/components/dropdowns/Dropdown.vue";
 
 const profileStore = useProfileStore();

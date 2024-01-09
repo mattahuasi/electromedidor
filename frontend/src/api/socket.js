@@ -7,7 +7,7 @@ socket.on("connect", () => {
 });
 
 socket.on("mqtt", (value) => {
-    console.log(value);
-  });
+  console.log(value);
+});
 
 export default socket;

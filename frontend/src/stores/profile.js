@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { verifyTokenRequest, loginRequest } from "@/api/auth.js";
+import { verifyTokenRequest, loginRequest } from "@/api/auth";
 import Cookies from "js-cookie";
 
 export const useProfileStore = defineStore("profile", {

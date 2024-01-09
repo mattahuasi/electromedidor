@@ -3,7 +3,7 @@ import {
   createCategoryRequest,
   getCategoryByIdRequest,
   updateCategoryRequest,
-} from "@/api/category.js";
+} from "@/api/category";
 import { useRoute, useRouter } from "vue-router";
 import { ref, computed, onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";

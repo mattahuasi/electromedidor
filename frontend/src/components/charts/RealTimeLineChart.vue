@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { getReadingsRequest } from "@/api/reading.js";
+import { getReadingsRequest } from "@/api/reading";
 import * as echarts from "echarts";
 
 const items = ref([]);

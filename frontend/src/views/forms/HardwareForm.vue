@@ -1,10 +1,10 @@
 <script setup>
-import { getCustomersRequest } from "@/api/customer.js";
+import { getCustomersRequest } from "@/api/customer";
 import {
   createHardwareRequest,
   getHardwareByIdRequest,
   updateHardwareByIdRequest,
-} from "@/api/hardware.js";
+} from "@/api/hardware";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";

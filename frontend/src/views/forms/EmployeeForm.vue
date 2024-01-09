@@ -3,8 +3,8 @@ import {
   createEmployeeRequest,
   getEmployeeByIdRequest,
   updateEmployeeByIdRequest,
-} from "@/api/employee.js";
-import { useProfileStore } from "@/stores/profile.js";
+} from "@/api/employee";
+import { useProfileStore } from "@/stores/profile";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";

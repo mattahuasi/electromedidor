@@ -1,4 +1,4 @@
-import axios from "./axios.js";
+import axios from "./axios";
 
 export const createEmployeeRequest = (user) => axios.post("/employees", user);
 
