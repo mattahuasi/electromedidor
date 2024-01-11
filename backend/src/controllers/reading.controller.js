@@ -1,29 +1,6 @@
 import { Hardware } from "../models/Hardware.js";
 import { Reading } from "../models/Reading.js";
 
-export const createReading = async (mack, data) => {
-  try {
-    const hardware = await Hardware.findOne({ where: { mack } });
-    if (!hardware) return console.log("Hardwares doesn't exist");
-    let consumption = 0;
-    const power = parseFloat(data.potencia);
-    const voltage = parseFloat(data.voltaje);
-    const current = parseFloat(data.corriente);
-    const powerFactor = parseFloat(data.factorPotencia);
-    if (data.consumo) consumption = parseFloat(data.consumo);
-    const newReading = await Reading.create({
-      power,
-      voltage,
-      current,
-      powerFactor,
-      consumption,
-      hardwareId: hardware.id,
-    });
-  } catch (error) {
-    console.log("Error: " + error);
-  }
-};
-
 export const getReadingsById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -45,5 +22,29 @@ export const getReadingsById = async (req, res) => {
     res.json(readings);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
+  }
+};
+
+export const createReadingMQTT = async (name, reading) => {
+  try {
+    const hardware = await Hardware.findOne({ where: { name } });
+    if (!hardware) return console.log("Hardwares doesn't exist");
+    if (hardware.key) {
+      const power = parseFloat(reading.potencia);
+      const voltage = parseFloat(reading.voltaje);
+      const current = parseFloat(reading.corriente);
+      const powerFactor = parseFloat(reading.factorPotencia);
+      const consumption = parseFloat(reading.consumo);
+      const newReading = await Reading.create({
+        power,
+        voltage,
+        current,
+        powerFactor,
+        consumption,
+        hardwareId: hardware.id,
+      });
+    }
+  } catch (error) {
+    console.log("Error: " + error);
   }
 };

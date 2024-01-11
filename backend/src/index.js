@@ -1,7 +1,7 @@
 import { createServer } from "http";
-import app from "./app.js";
-import webSocket from "./mqttSocket.js";
 import { sequelize } from "./database/database.js";
+import webSocket from "./webSocket.js";
+import app from "./app.js";
 import "./models/User.js";
 import "./models/Category.js";
 import "./models/Hardware.js";

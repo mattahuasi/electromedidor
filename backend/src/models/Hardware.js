@@ -8,25 +8,18 @@ export const Hardware = sequelize.define("hardware", {
     autoIncrement: true,
     primaryKey: true,
   },
-  mack: {
+  name: {
     type: DataTypes.STRING,
     unique: true,
   },
   address: {
     type: DataTypes.TEXT,
   },
-  status: {
-    type: DataTypes.STRING,
-  },
   key: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-  urban: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  rural: {
+  area: {
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },

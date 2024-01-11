@@ -2,7 +2,6 @@ import { User, Employee, Customer } from "../models/User.js";
 import { createdAccessToken } from "../libs/jwt.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-// import "dotenv/config";
 
 export const login = async (req, res) => {
   try {
@@ -87,36 +86,6 @@ export const login = async (req, res) => {
   }
 };
 
-export const customerRegister = async (req, res) => {
-  try {
-    const { firstName, lastName, ci, phone, email, password } = req.body;
-    const userEmail = await User.findOne({ where: { email } });
-    if (userEmail)
-      return res.status(400).json({ errors: ["User already exists"] });
-    const userCi = await User.findOne({ where: { ci } });
-    if (userCi)
-      return res.status(400).json({ errors: ["User already exists"] });
-    const PasswordHash = await bcrypt.hash(password, 10);
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      ci,
-      phone,
-      email,
-      password: PasswordHash,
-    });
-    const newCustomer = await Customer.create({
-      userId: newUser.id,
-    });
-    res.json({
-      email: newUser.email,
-      password: newUser.password,
-    });
-  } catch (error) {
-    res.status(500).json({ errors: [error.message] });
-  }
-};
-
 export const updatePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword, repeatPassword } = req.body;
@@ -182,7 +151,7 @@ export const verifyToken = async (req, res) => {
       if (err) return res.status(401).json({ errors: ["Unauthorized"] });
       let userFound = await Employee.findOne({
         where: { id: user.id },
-        attributes: ["id", "staff", "admin"],
+        attributes: ["id", "admin"],
         include: [
           {
             model: User,
@@ -213,6 +182,44 @@ export const verifyToken = async (req, res) => {
         res.json(userFound);
       } else res.json(userFound);
     });
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};
+
+export const updateProfileAdmin = async (req, res) => {
+  try {
+    const { firstName, lastName, ci, phone, email } = req.body;
+    const employee = await employee.findOne({
+      where: { id: req.user.id },
+      attributes: ["id", "userId"],
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
+        },
+      ],
+    });
+    res.json(employee);
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};
+
+export const updateProfileCustomer = async (req, res) => {
+  try {
+    const { firstName, lastName, ci, phone, email } = req.body;
+    const customer = await Customer.findOne({
+      where: { id: req.user.id },
+      attributes: ["id", "userId"],
+      include: [
+        {
+          model: User,
+          attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
+        },
+      ],
+    });
+    res.json(customer);
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
@@ -284,3 +291,33 @@ export const verifyToken = async (req, res) => {
 //     res.status(500).json({ errors: [error.message] });
 //   }
 // };
+
+export const register = async (req, res) => {
+  try {
+    const { firstName, lastName, ci, phone, email, password } = req.body;
+    const userEmail = await User.findOne({ where: { email } });
+    if (userEmail)
+      return res.status(400).json({ errors: ["User already exists"] });
+    const userCi = await User.findOne({ where: { ci } });
+    if (userCi)
+      return res.status(400).json({ errors: ["User already exists"] });
+    const PasswordHash = await bcrypt.hash(password, 10);
+    const newUser = await User.create({
+      firstName,
+      lastName,
+      ci,
+      phone,
+      email,
+      password: PasswordHash,
+    });
+    const newCustomer = await Customer.create({
+      userId: newUser.id,
+    });
+    res.json({
+      email: newUser.email,
+      password: newUser.password,
+    });
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};

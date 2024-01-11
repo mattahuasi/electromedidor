@@ -1,4 +1,13 @@
 <script setup>
+import socket from "@/api/socket";
+
+</script>
+
+<template>
+  <div></div>
+</template>
+
+<!-- <script setup>
 import { getReadingsRequest } from "@/api/reading";
 import { fullDateFormat, dateFormat, hourFormat } from "@/utils/index";
 import { ref, onMounted, onBeforeUnmount } from "vue";
@@ -111,32 +120,4 @@ onBeforeUnmount(() => {
 
 <template>
   <div ref="line"></div>
-</template>
-
-<!-- <script setup>
-import { getReadingsRequest } from "@/api/reading";
-import { ref, onMounted } from "vue";
-import { useRoute } from "vue-router";
-import LineChart from "@/components/charts/LineChart.vue";
-
-const route = useRoute();
-const items = ref([]);
-const itemsDisplay = ref([]);
-const load = ref(true);
-
-onMounted(async () => {
-  load.value = true;
-  try {
-    const res = await getReadingsRequest(route.query.id);
-    items.value = res.data;
-    itemsDisplay.value = items.value;
-    load.value = false;
-  } catch (error) {
-    toast.error("Error al cargar datos");
-  }
-});
-</script>
-
-<template>
-  <LineChart :title="'Potencia'" :items="itemsDisplay" />
 </template> -->

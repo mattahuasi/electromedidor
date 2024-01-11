@@ -9,6 +9,9 @@ export const Bill = sequelize.define("bills", {
     autoIncrement: true,
     primaryKey: true,
   },
+  date: {
+    type: DataTypes.DATE,
+  },
   consumption: {
     type: DataTypes.FLOAT,
   },

@@ -2,8 +2,10 @@ import { Bill } from "../models/Bill.js";
 
 export const createBill = async (req, res) => {
   try {
-    const { consumption, cost, status, customerId, hardwareId } = req.body;
+    const { date, consumption, cost, status, customerId, hardwareId } =
+      req.body;
     const newBill = await Bill.create({
+      date,
       consumption,
       cost,
       status,
@@ -21,6 +23,7 @@ export const getBills = async (req, res) => {
     const bills = await Bill.findAll();
     const data = bills.map((bill) => ({
       id: bill.id,
+      date: bill.date,
       consumption: bill.consumption,
       cost: bill.cost,
       status: bill.status,

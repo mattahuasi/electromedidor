@@ -1,6 +1,10 @@
 import { z } from "zod";
 
 export const billSchema = z.object({
+  date: z.date({
+    required_error: "Date is required",
+    invalid_type_error: "Date must be a date type",
+  }),
   consumption: z.number({
     required_error: "Consumption is required",
     invalid_type_error: "Consumption must be a number",

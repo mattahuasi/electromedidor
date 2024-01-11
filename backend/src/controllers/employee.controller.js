@@ -3,8 +3,7 @@ import bcrypt from "bcryptjs";
 
 export const createEmployee = async (req, res) => {
   try {
-    const { firstName, lastName, ci, phone, email, password, staff, admin } =
-      req.body;
+    const { firstName, lastName, ci, phone, email, password, admin } = req.body;
     const userEmail = await Employee.findOne({
       include: [{ model: User, where: { email } }],
     });
@@ -24,7 +23,7 @@ export const createEmployee = async (req, res) => {
       password: passwordHash,
     });
     const newEmployee = await Employee.create({
-      staff,
+      staff: true,
       admin,
       userId: newUser.id,
     });
@@ -35,7 +34,6 @@ export const createEmployee = async (req, res) => {
       ci: newUser.ci,
       phone: newUser.phone,
       email: newUser.email,
-      staff: newEmployee.staff,
       admin: newEmployee.admin,
       createdAt: newEmployee.createdAt,
     });
@@ -47,7 +45,7 @@ export const createEmployee = async (req, res) => {
 export const getEmployees = async (req, res) => {
   try {
     const employees = await Employee.findAll({
-      attributes: ["id", "admin", "staff", "createdAt", "updatedAt"],
+      attributes: ["id", "admin", "createdAt", "updatedAt"],
       include: [
         {
           model: User,
@@ -62,7 +60,6 @@ export const getEmployees = async (req, res) => {
       ci: employee.user.ci,
       phone: employee.user.phone,
       email: employee.user.email,
-      staff: employee.staff,
       admin: employee.admin,
       createdAt: employee.createdAt,
       updatedAt: employee.updatedAt,
@@ -92,7 +89,6 @@ export const getEmployeeById = async (req, res) => {
       ci: employee.user.ci,
       phone: employee.user.phone,
       email: employee.user.email,
-      staff: employee.staff,
       admin: employee.admin,
       createdAt: employee.createdAt,
       updatedAt: employee.updatedAt,
@@ -105,9 +101,9 @@ export const getEmployeeById = async (req, res) => {
 export const updateEmployeeById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { firstName, lastName, ci, phone, email, staff, admin } = req.body;
+    const { firstName, lastName, ci, phone, email, admin } = req.body;
     const employee = await Employee.findByPk(id, {
-      attributes: ["id", "staff", "admin", "userId"],
+      attributes: ["id", "admin", "userId"],
     });
     if (!employee) return res.status(404).json({ errors: ["User not found"] });
     const userEmail = await Employee.findOne({
@@ -126,7 +122,6 @@ export const updateEmployeeById = async (req, res) => {
     if (user.ci != ci) user.ci = ci;
     user.phone = phone;
     user.email = email;
-    employee.staff = staff;
     employee.admin = admin;
     await Promise.all([user.save(), employee.save()]);
     return res.sendStatus(204);

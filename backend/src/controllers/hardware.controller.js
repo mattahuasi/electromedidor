@@ -2,17 +2,15 @@ import { Hardware } from "../models/Hardware.js";
 
 export const createHardware = async (req, res) => {
   try {
-    const { mack, address, status, key, urban, rural, customerId } = req.body;
-    const mackHardware = await Hardware.findOne({ where: { mack } });
-    if (mackHardware)
+    const { name, address, key, area, customerId } = req.body;
+    const hardware = await Hardware.findOne({ where: { name } });
+    if (hardware)
       return res.status(400).json({ errors: ["Hardware already exists"] });
     const newHardware = await Hardware.create({
-      mack,
+      name,
       address,
-      status,
       key,
-      urban,
-      rural,
+      area,
       customerId: customerId,
     });
     res.json(newHardware);
@@ -26,12 +24,10 @@ export const getHardware = async (req, res) => {
     const hardware = await Hardware.findAll();
     const data = hardware.map((item) => ({
       id: item.id,
-      mack: item.mack,
+      name: item.name,
       address: item.address,
-      status: item.status,
       key: item.key,
-      urban: item.urban,
-      rural: item.rural,
+      area: item.area,
       customerId: item.customerId,
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
@@ -56,18 +52,16 @@ export const getHardwareById = async (req, res) => {
 export const updateHardwareById = async (req, res) => {
   try {
     const { id } = req.params;
-    const { mack, address, status, key, urban, rural, customerId } = req.body;
+    const { name, address, key, area, customerId } = req.body;
     const hardware = await Hardware.findByPk(id);
     if (!hardware) return res.status(404).json("Hardware not found");
-    const mackHardware = await Hardware.findOne({ where: { mack } });
-    if (mackHardware && hardware.id != mackHardware.id)
+    const nameHardware = await Hardware.findOne({ where: { name } });
+    if (nameHardware && hardware.id != nameHardware.id)
       return res.status(400).json({ errors: ["Hardware already exists"] });
-    if (mack != hardware.mack) hardware.mack = mack;
+    if (name != hardware.name) hardware.name = name;
     hardware.address = address;
-    hardware.status = status;
     hardware.key = key;
-    hardware.urban = urban;
-    hardware.rural = rural;
+    hardware.area = area;
     hardware.customerId = customerId;
     await hardware.save();
     res.sendStatus(204);
@@ -86,5 +80,14 @@ export const deleteHardwareById = async (req, res) => {
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
+  }
+};
+
+export const getHardwareMQTT = async () => {
+  try {
+    const hardware = await Hardware.findAll();
+    return hardware;
+  } catch (error) {
+    return error;
   }
 };
