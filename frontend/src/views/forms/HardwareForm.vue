@@ -19,23 +19,26 @@ const route = useRoute();
 const router = useRouter();
 const customers = ref([]);
 const formData = reactive({
-  mack: "",
+  name: "",
   address: "",
-  status: "",
   key: false,
-  urban: false,
-  rural: false,
+  area: false,
   customerId: "",
 });
 const rules = {
-  mack: { required: helpers.withMessage("Se requiere Mack", required) },
+  name: {
+    required: helpers.withMessage(
+      "Se requiere un nombre (El nombre no debe contener espacios)",
+      required
+    ),
+  },
   address: {
     required: helpers.withMessage("Se requiere una dirección", required),
   },
-  status: { required: helpers.withMessage("Escriba un estado", required) },
   key: {},
-  urban: { required: helpers.withMessage("Elija un area", required) },
-  rural: { required: helpers.withMessage("Elija un area", required) },
+  area: { required: helpers.withMessage("Elija un area", required) },
+  urban: {},
+  rural: {},
   customerId: { required: helpers.withMessage("Elija un usuario", required) },
 };
 const v$ = useVuelidate(rules, formData);
@@ -45,10 +48,12 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
+      if (formData.urban) formData.area = true;
+      else formData.area = false;
       formData.customerId = parseInt(formData.customerId);
       if (!route.query.id) await createHardwareRequest(formData);
       else await updateHardwareByIdRequest(route.query.id, formData);
-      toast.success("Hardware guardado exitosamente");
+      toast.success("Medidor registrado exitosamente");
       router.push({ name: "hardware" });
       // router.push({ name: "hardware", params: { id: route.params.id } });
     } catch (error) {
@@ -105,29 +110,17 @@ onMounted(async () => {
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
         <Input
-          id="mack"
-          labelText="Mack"
-          placeholder="xca4v"
-          v-model="v$.mack.$model"
-          :errors="v$.mack.$errors"
+          id="name"
+          labelText="Nombre del medidor"
+          v-model="v$.name.$model"
+          :errors="v$.name.$errors"
           type="text"
         />
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Input
-          id="status"
-          labelText="Estado"
-          placeholder="Escriba un estado"
-          v-model="v$.status.$model"
-          :errors="v$.status.$errors"
-          type="text"
-        />
-      </div>
-      <div class="w-full px-4">
-        <Input
           id="address"
           labelText="Dirección"
-          placeholder="Calle 123"
           v-model="v$.address.$model"
           :errors="v$.address.$errors"
           type="text"

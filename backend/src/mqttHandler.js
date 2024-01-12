@@ -1,25 +1,29 @@
-import { getHardwareMQTT } from "./controllers/hardware.controller.js";
+import {
+  getHardwareMQTT,
+  updateHardwareKeyMQTT,
+} from "./controllers/hardware.controller.js";
 import { createReadingMQTT } from "./controllers/reading.controller.js";
 import mqtt from "mqtt";
 
 class mqttHandler {
   constructor() {
-    this.client = null;
+    this.mqttClient = null;
     this.options = {
-      host: "3ee15d0a582046d2b93b187b50001048.s2.eu.hivemq.cloud",
-      port: "8883",
-      protocol: "mqtts",
-      username: "username",
-      password: "helloworld",
+      host: process.env.MQTT_HOST,
+      port: process.env.MQTT_PORT,
+      protocol: process.env.MQTT_PROTOCOL,
+      username: process.env.MQTT_USERNAME,
+      password: process.env.MQTT_PASSWORD,
     };
-    this.client = mqtt.connect(this.options);
+
+    this.mqttClient = mqtt.connect(this.options);
   }
   connect() {
-    this.client.on("error", (error) => {
+    this.mqttClient.on("error", (error) => {
       console.log(error);
-      this.client.end();
+      this.mqttClient.end();
     });
-    this.client.on("connect", () => {
+    this.mqttClient.on("connect", () => {
       console.log("MQTT client has connected.");
       subscribe();
     });
@@ -27,19 +31,22 @@ class mqttHandler {
       const res = await getHardwareMQTT();
       res.forEach((hardware) => {
         const name = hardware.dataValues.name;
-        this.client.subscribe(`medidor/${name}`, { qos: 0 });
+        this.mqttClient.subscribe(`server/medidor/${name}`, { qos: 0 });
+        this.mqttClient.subscribe(`client/medidor/${name}`, { qos: 0 });
       });
     };
-    // setInterval(subscribe, 5 * 6 * 1000);
-    this.client.on("message", async function (topic, message) {
+    this.mqttClient.on("message", async function (topic, message) {
       const topicVector = topic.toString().split("/");
-      const name = topicVector[1].trim();
+      const name = topicVector[2].trim();
+      if (message.toString() === "1" || message.toString() === "0") {
+        const arg = message.toString() === "1" ? 1 : 0;
+        await updateHardwareKeyMQTT(name, arg);
+      }
       let reading = message.toString();
       reading = JSON.parse(reading);
       await createReadingMQTT(name, reading);
-      // this.client.publish(topic, message);
     });
-    this.client.on("close", () => {
+    this.mqttClient.on("close", () => {
       console.log("MQTT client disconnected.");
     });
   }

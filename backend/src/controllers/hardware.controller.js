@@ -21,7 +21,9 @@ export const createHardware = async (req, res) => {
 
 export const getHardware = async (req, res) => {
   try {
-    const hardware = await Hardware.findAll();
+    const hardware = await Hardware.findAll({
+      order: [["name", "ASC"]],
+    });
     const data = hardware.map((item) => ({
       id: item.id,
       name: item.name,
@@ -87,6 +89,18 @@ export const getHardwareMQTT = async () => {
   try {
     const hardware = await Hardware.findAll();
     return hardware;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const updateHardwareKeyMQTT = async (name, arg) => {
+  try {
+    const hardware = await Hardware.findOne({ where: { name } });
+    if (!hardware) return console.log("Hardware doesn't exist");
+    if (arg === 1) hardware.key = true;
+    else if (arg === 0) hardware.key = false;
+    await hardware.save();
   } catch (error) {
     return error;
   }

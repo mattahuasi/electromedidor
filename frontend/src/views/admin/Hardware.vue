@@ -1,9 +1,14 @@
 <script setup>
 import { getCustomerHardwareByIdRequest } from "@/api/customer";
-import { getHardwareRequest, deleteHardwareByIdRequest } from "@/api/hardware";
+import {
+  getHardwareRequest,
+  getHardwareByIdRequest,
+  deleteHardwareByIdRequest,
+} from "@/api/hardware";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
+import mqttClient from "@/utils/mqtt";
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
 import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
@@ -18,11 +23,10 @@ const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
   { key: "id", label: "ID" },
-  { key: "mack", label: "MACK" },
+  { key: "name", label: "Nombre" },
   { key: "address", label: "Dirección" },
   { key: "key", label: "Llave", lock: true },
-  { key: "status", label: "Estado" },
-  { key: "urban", label: "Área", area: true },
+  { key: "area", label: "Área", area: true },
   { key: "customerId", label: "UID" },
   { key: "createdAt", label: "Fecha de creación", date: true },
   { key: "updatedAt", label: "Ultima modificación", date: true },
@@ -30,8 +34,8 @@ const columns = ref([
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
   { id: "show", name: "Ver gráficos", icon: "fa-chart-line" },
-  { id: "activate", name: "Activar", icon: "fa-unlock" },
-  { id: "deactivate", name: "Desactivar", icon: "fa-lock" },
+  { id: "on", name: "Activar", icon: "fa-unlock" },
+  { id: "off", name: "Desactivar", icon: "fa-lock" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -61,9 +65,8 @@ watch(searchQuery, () => {
 function searchItems() {
   const filteredItems = items.value.filter(
     (item) =>
-      item.mack.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      item.address.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
-      item.category.toLowerCase().includes(searchQuery.value.toLowerCase())
+      item.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
+      item.address.toLowerCase().includes(searchQuery.value.toLowerCase())
   );
   itemsDisplay.value = filteredItems;
 }
@@ -73,6 +76,26 @@ async function action(action) {
     router.push({ name: "update/hardware", query: { id: action.id } });
   } else if (action.action === "show") {
     router.push({ name: "show/hardware", query: { id: action.id } });
+  } else if (action.action === "on" || action.action === "off") {
+    try {
+      const res = await getHardwareByIdRequest(action.id);
+      const hardware = res.data;
+      mqttClient.publish(
+        `client/medidor/${hardware.name}`,
+        action.action === "on" ? "1" : "0"
+      );
+      toast.success(
+        `Medidor ${action.action === "on" ? "activado" : "desactivado"}`
+      );
+      setTimeout(() => {
+        items.value = [];
+        loadData();
+      }, 500);
+    } catch (error) {
+      toast.error(
+        `Error al ${action.action === "on" ? "activar" : "desactivar"} medidor`
+      );
+    }
   } else if (action.action === "delete") {
     try {
       await deleteHardwareByIdRequest(action.id);

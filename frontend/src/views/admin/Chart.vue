@@ -1,11 +1,10 @@
-<script setup>
-import socket from "@/api/socket";
-
-</script>
-
 <template>
   <div></div>
 </template>
+
+<script setup></script>
+
+<style lang="scss" scoped></style>
 
 <!-- <script setup>
 import { getReadingsRequest } from "@/api/reading";
@@ -20,7 +19,7 @@ const items = ref([]);
 const line = ref(null);
 const data = ref([]);
 const categories = ref([]);
-const interval = ref(null);
+const interval = ref();
 
 onMounted(async () => {
   try {
