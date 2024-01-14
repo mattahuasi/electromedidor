@@ -38,7 +38,7 @@ export const login = async (req, res) => {
 
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
-      return res.status(404).json({ errors: ["User not found"] });
+      return res.status(404).json({ errors: ["Password incorrect"] });
     }
 
     const id = userFound.employee
@@ -80,10 +80,12 @@ export const login = async (req, res) => {
 export const verifyToken = async (req, res) => {
   try {
     const token = req.headers.authorization;
-    if (!token) return res.status(401).json({ errors: ["Unauthorized"] });
+    if (!token)
+      return res.status(401).json({ errors: ["Authentication failed"] });
 
     jwt.verify(token, process.env.APP_TOKEN_SECRET, async (err, user) => {
-      if (err) return res.status(401).json({ errors: ["Unauthorized"] });
+      if (err)
+        return res.status(401).json({ errors: ["Authentication failed"] });
 
       const userFound = await User.findOne({
         where: { id: user.id },
@@ -103,7 +105,7 @@ export const verifyToken = async (req, res) => {
         ],
       });
       if (!userFound) {
-        return res.status(404).json({ errors: ["Unauthorized"] });
+        return res.status(404).json({ errors: ["Authentication failed"] });
       }
 
       const id = userFound.employee
