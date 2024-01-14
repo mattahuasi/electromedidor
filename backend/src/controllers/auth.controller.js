@@ -6,81 +6,135 @@ import jwt from "jsonwebtoken";
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    let userFound = await Employee.findOne({
-      where: { staff: true },
-      attributes: ["id", "admin"],
+
+    const userFound = await User.findOne({
+      where: { email },
+      attributes: [
+        "id",
+        "firstName",
+        "lastName",
+        "ci",
+        "phone",
+        "email",
+        "password",
+      ],
       include: [
         {
-          model: User,
-          where: { email },
-          attributes: [
-            "id",
-            "firstName",
-            "lastName",
-            "ci",
-            "phone",
-            "email",
-            "password",
-          ],
+          model: Employee,
+          where: { staff: true },
+          attributes: ["id", "admin"],
+          required: false,
+        },
+        {
+          model: Customer,
+          attributes: ["id"],
+          required: false,
         },
       ],
     });
     if (!userFound) {
-      userFound = await Customer.findOne({
-        attributes: ["id"],
+      return res.status(404).json({ errors: ["User not found"] });
+    }
+
+    const isMatch = await bcrypt.compare(password, userFound.password);
+    if (!isMatch) {
+      return res.status(404).json({ errors: ["User not found"] });
+    }
+
+    const id = userFound.employee
+      ? userFound.employee.id
+      : userFound.customer.id;
+    const data = {
+      id: id,
+      email: userFound.email,
+    };
+
+    if (userFound.employee) {
+      data.admin = userFound.employee.admin;
+      data.user = {
+        id: userFound.id,
+        firstName: userFound.firstName,
+        lastName: userFound.lastName,
+        ci: userFound.ci,
+        phone: userFound.phone,
+      };
+    } else {
+      data.user = {
+        id: userFound.id,
+        firstName: userFound.firstName,
+        lastName: userFound.lastName,
+        ci: userFound.ci,
+        phone: userFound.phone,
+      };
+    }
+
+    const token = await createdAccessToken({ id: userFound.id });
+    data.token = token;
+
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};
+
+export const verifyToken = async (req, res) => {
+  try {
+    const token = req.headers.authorization;
+    if (!token) return res.status(401).json({ errors: ["Unauthorized"] });
+
+    jwt.verify(token, process.env.APP_TOKEN_SECRET, async (err, user) => {
+      if (err) return res.status(401).json({ errors: ["Unauthorized"] });
+
+      const userFound = await User.findOne({
+        where: { id: user.id },
+        attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
         include: [
           {
-            model: User,
-            where: { email },
-            attributes: [
-              "id",
-              "firstName",
-              "lastName",
-              "ci",
-              "phone",
-              "email",
-              "password",
-            ],
+            model: Employee,
+            where: { staff: true },
+            attributes: ["id", "admin"],
+            required: false,
+          },
+          {
+            model: Customer,
+            attributes: ["id"],
+            required: false,
           },
         ],
       });
-      if (!userFound)
-        return res.status(404).json({ errors: ["User not found"] });
-      const isMatch = await bcrypt.compare(password, userFound.user.password);
-      if (!isMatch)
-        return res.status(404).json({ errors: ["Password incorrect"] });
-      const token = await createdAccessToken({ id: userFound.id });
-      res.json({
-        id: userFound.id,
-        email: userFound.user.email,
-        user: {
-          id: userFound.user.id,
-          firstName: userFound.user.firstName,
-          lastName: userFound.user.lastName,
-          ci: userFound.user.ci,
-          phone: userFound.user.phone,
-        },
-        token: token,
-      });
-    } else {
-      const isMatch = await bcrypt.compare(password, userFound.user.password);
-      if (!isMatch)
-        return res.status(404).json({ errors: ["Password incorrect"] });
-      const token = await createdAccessToken({ id: userFound.id });
-      res.json({
-        id: userFound.id,
-        email: userFound.user.email,
-        admin: userFound.admin,
-        user: {
-          id: userFound.user.id,
-          firstName: userFound.user.firstName,
-          lastName: userFound.user.lastName,
-          ci: userFound.user.ci,
-          phone: userFound.user.phone,
-        },
-        token: token,
-      });
-    }
+      if (!userFound) {
+        return res.status(404).json({ errors: ["Unauthorized"] });
+      }
+
+      const id = userFound.employee
+        ? userFound.employee.id
+        : userFound.customer.id;
+      const data = {
+        id: id,
+        email: userFound.email,
+      };
+
+      if (userFound.employee) {
+        data.admin = userFound.employee.admin;
+        data.user = {
+          id: userFound.id,
+          firstName: userFound.firstName,
+          lastName: userFound.lastName,
+          ci: userFound.ci,
+          phone: userFound.phone,
+        };
+      } else {
+        data.user = {
+          id: userFound.id,
+          firstName: userFound.firstName,
+          lastName: userFound.lastName,
+          ci: userFound.ci,
+          phone: userFound.phone,
+        };
+      }
+
+      res.json(data);
+    });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
@@ -137,50 +191,6 @@ export const profile = async (req, res) => {
     });
     if (!userFound) return res.status(400).json({ errors: ["User not found"] });
     res.json(userFound);
-  } catch (error) {
-    res.status(500).json({ errors: [error.message] });
-  }
-};
-
-export const verifyToken = async (req, res) => {
-  try {
-    const token = req.headers.authorization;
-    if (!token) return res.status(401).json({ errors: ["Unauthorized"] });
-    jwt.verify(token, process.env.APP_TOKEN_SECRET, async (err, user) => {
-      if (err) return res.status(401).json({ errors: ["Unauthorized"] });
-      let userFound = await Employee.findOne({
-        where: { id: user.id },
-        attributes: ["id", "admin"],
-        include: [
-          {
-            model: User,
-            attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-          },
-        ],
-      });
-      if (!userFound) {
-        userFound = await Customer.findOne({
-          where: { id: user.id },
-          attributes: ["id"],
-          include: [
-            {
-              model: User,
-              attributes: [
-                "id",
-                "firstName",
-                "lastName",
-                "ci",
-                "phone",
-                "email",
-              ],
-            },
-          ],
-        });
-        if (!userFound)
-          return res.status(401).json({ errors: ["Unauthorized"] });
-        res.json(userFound);
-      } else res.json(userFound);
-    });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
