@@ -31,8 +31,8 @@ async function handleSubmit() {
   if (isFormCorrect) {
     try {
       await updatePassword(formData);
-      formData.newPassword = "";
       formData.oldPassword = "";
+      formData.newPassword = "";
       formData.repeatPassword = "";
       v$.value.$reset();
       toast.success("Contraseña actualizada");

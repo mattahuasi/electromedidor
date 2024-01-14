@@ -3,29 +3,29 @@ import { useProfileStore } from "@/stores/profile";
 
 import Auth from "@/layouts/Auth.vue";
 import Admin from "@/layouts/Admin.vue";
-import Layout from "@/layouts/Layout.vue";
+import Client from "@/layouts/Client.vue";
 
 import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
 
-import Dashboard from "@/views/admin/Dashboard.vue";
-import Employee from "@/views/admin/Employee.vue";
-import Customer from "@/views/admin/Customer.vue";
-import Hardware from "@/views/admin/Hardware.vue";
-import Bill from "@/views/admin/Bill.vue";
-import Report from "@/views/admin/Report.vue";
-import Disconnection from "@/views/admin/Disconnection.vue";
+import Dashboard from "@/views/admin/panel/Dashboard.vue";
+import Employee from "@/views/admin/panel/Employee.vue";
+import Customer from "@/views/admin/panel/Customer.vue";
+import Hardware from "@/views/admin/panel/Hardware.vue";
+import Bill from "@/views/admin/panel/Bill.vue";
+import Report from "@/views/admin/panel/Report.vue";
+import Disconnection from "@/views/admin/panel/Disconnection.vue";
 
-import Profile from "@/views/forms/ProfileForm.vue";
-import UpdatePassword from "@/views/forms/UpdatePassword.vue";
-import EmployeeForm from "@/views/forms/EmployeeForm.vue";
-import CustomerForm from "@/views/forms/CustomerForm.vue";
-import HardwareForm from "@/views/forms/HardwareForm.vue";
-import BillForm from "@/views/forms/BillForm.vue";
+import Profile from "@/views/admin/forms/ProfileForm.vue";
+import UpdatePassword from "@/views/admin/forms/UpdatePassword.vue";
+import EmployeeForm from "@/views/admin/forms/EmployeeForm.vue";
+import CustomerForm from "@/views/admin/forms/CustomerForm.vue";
+import HardwareForm from "@/views/admin/forms/HardwareForm.vue";
+import BillForm from "@/views/admin/forms/BillForm.vue";
 
-import Chart from "@/views/admin/Chart.vue";
+import Chart from "@/views/admin/panel/Chart.vue";
 
-import UserDashboard from "@/views/user/Dashboard.vue";
+import UserDashboard from "@/views/client/panel/Dashboard.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -156,7 +156,7 @@ const router = createRouter({
     {
       path: "/",
       redirect: "/dashboard",
-      component: Layout,
+      component: Client,
       meta: { requiresAuth: true },
       children: [
         {

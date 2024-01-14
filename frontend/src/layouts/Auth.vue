@@ -1,9 +1,11 @@
 <template>
   <div>
-    <main>
-      <section class="relative w-full h-full py-16 min-h-screen">
+    <main class="">
+      <section
+        class="flex justify-center items-center relative w-full h-full min-h-screen"
+      >
         <div
-          class="absolute top-0 w-full h-full bg-gray-100 dark:bg-gray-900"
+          class="absolute top-0 w-full h-full bg-gray-100 dark:bg-gray-700"
         ></div>
         <RouterView />
       </section>

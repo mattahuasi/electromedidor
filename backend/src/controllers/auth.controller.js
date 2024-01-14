@@ -91,31 +91,30 @@ export const updatePassword = async (req, res) => {
     const { oldPassword, newPassword, repeatPassword } = req.body;
     if (newPassword !== repeatPassword)
       return res.status(500).json({ errors: ["Passwords don't match"] });
-    const userFound = await User.findOne({ where: { id: req.user.id } });
-    res.json(userFound.id);
+    let userFound = await Employee.findOne({
+      where: { id: req.user.id },
+      include: [{ model: User }],
+    });
+    if (!userFound) {
+      userFound = await Customer.findOne({
+        where: { id: req.user.id },
+        include: [{ model: User }],
+      });
+      console.log(userFound);
+      if (!userFound)
+        return res.status(404).json({ errors: ["User not found"] });
+    }
+    const isMatch = await bcrypt.compare(oldPassword, userFound.user.password);
+    if (!isMatch)
+      return res.status(500).json({ errors: ["Password incorrect"] });
+    const PasswordHash = await bcrypt.hash(newPassword, 10);
+    userFound.user.password = PasswordHash;
+    userFound.user.save();
+    res.json({ id: userFound.id });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
 };
-
-// export const updatePassword = async (req, res) => {
-//   try {
-//     const { oldPassword, newPassword, repeatPassword } = req.body;
-//     const userFound = await User.findOne({ where: { id: req.user.id } });
-//     if (newPassword !== repeatPassword)
-//       return res.status(500).json({ errors: ["Passwords don't match"] });
-//     if (!userFound) return res.status(404).json({ errors: ["User not found"] });
-//     const isMatch = await bcrypt.compare(oldPassword, userFound.password);
-//     if (!isMatch)
-//       return res.status(500).json({ errors: ["Password incorrect"] });
-//     const PasswordHash = await bcrypt.hash(newPassword, 10);
-//     userFound.password = PasswordHash;
-//     userFound.save();
-//     res.json({ id: userFound.id });
-//   } catch (error) {
-//     res.status(500).json({ errors: [error.message] });
-//   }
-// };
 
 export const logout = (req, res) => {
   res.cookie("token", "", {
@@ -124,24 +123,24 @@ export const logout = (req, res) => {
   return res.sendStatus(200);
 };
 
-// export const profile = async (req, res) => {
-//   try {
-//     const userFound = await User.findOne({
-//       where: { id: req.user.id },
-//       attributes: ["id", "admin"],
-//       include: [
-//         {
-//           model: Person,
-//           attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-//         },
-//       ],
-//     });
-//     if (!userFound) return res.status(400).json({ errors: ["User not found"] });
-//     res.json(userFound);
-//   } catch (error) {
-//     res.status(500).json({ errors: [error.message] });
-//   }
-// };
+export const profile = async (req, res) => {
+  try {
+    const userFound = await User.findOne({
+      where: { id: req.user.id },
+      attributes: ["id", "admin"],
+      include: [
+        {
+          model: Person,
+          attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
+        },
+      ],
+    });
+    if (!userFound) return res.status(400).json({ errors: ["User not found"] });
+    res.json(userFound);
+  } catch (error) {
+    res.status(500).json({ errors: [error.message] });
+  }
+};
 
 export const verifyToken = async (req, res) => {
   try {
@@ -251,42 +250,6 @@ export const updateProfileCustomer = async (req, res) => {
 //       ],
 //     });
 //     res.json(userFound);
-//   } catch (error) {
-//     res.status(500).json({ errors: [error.message] });
-//   }
-// };
-
-// export const register = async (req, res) => {
-//   try {
-//     const { firstName, lastName, ci, phone, email, password } = req.body;
-//     const userEmail = await User.findOne({
-//       include: [{ model: Person, where: { email } }],
-//     });
-//     if (userEmail)
-//       return res.status(400).json({ errors: ["Email already exists"] });
-//     const userCi = await User.findOne({
-//       include: [{ model: Person, where: { ci } }],
-//     });
-//     if (userCi) return res.status(400).json({ errors: ["CI already exists"] });
-//     const hash = await bcrypt.hash(password, 10);
-//     const newPerson = await Person.create({
-//       firstName,
-//       lastName,
-//       ci,
-//       phone,
-//       email,
-//     });
-//     const newUser = await User.create({
-//       password: hash,
-//       admin: false,
-//       personId: newPerson.id,
-//     });
-//     const data = {
-//       id: newUser.id,
-//       email: newPerson.email,
-//       password: newUser.password,
-//     };
-//     res.json(data);
 //   } catch (error) {
 //     res.status(500).json({ errors: [error.message] });
 //   }

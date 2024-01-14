@@ -57,6 +57,10 @@ export const getCustomers = async (req, res) => {
           ],
         },
       ],
+      order: [
+        [User, "firstName", "ASC"],
+        [User, "lastName", "ASC"],
+      ],
     });
     const data = customers.map((customer) => ({
       id: customer.id,
@@ -153,6 +157,7 @@ export const getCustomerHardwareById = async (req, res) => {
     const { id } = req.params;
     const customer = await Customer.findByPk(id, {
       include: [{ model: Hardware }],
+      order: [[Hardware, "name", "ASC"]],
     });
     if (!customer) return res.status(404).json({ errors: ["User not found"] });
     const data = customer.hardware.map((item) => ({

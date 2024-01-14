@@ -5,10 +5,10 @@ import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
 import {
   login,
   logout,
-  // profile,
+  profile,
   updateProfileAdmin,
   verifyToken,
-  // updatePassword,
+  updatePassword,
   register,
 } from "../controllers/auth.controller.js";
 
@@ -16,10 +16,10 @@ const router = new Router();
 
 router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", authRequired, logout);
-// router.put("/profile/update/password", authRequired, updatePassword);
-// router.get("/profile", authRequired, profile);
-router.put("/profile", authRequired, updateProfileAdmin);
+router.get("/profile", authRequired, profile);
+router.put("/profile/update", authRequired, updateProfileAdmin);
+router.put("/profile/update/password", authRequired, updatePassword);
 router.get("/verify", verifyToken);
-router.post("/customers/register", validateSchema(registerSchema), register);
+router.post("/register", validateSchema(registerSchema), register);
 
 export default router;
