@@ -4,9 +4,7 @@
       <section
         class="flex justify-center items-center relative w-full h-full min-h-screen"
       >
-        <div
-          class="absolute top-0 w-full h-full bg-gray-100 dark:bg-gray-700"
-        ></div>
+        <div class="absolute top-0 w-full h-full bg-gray-800"></div>
         <RouterView />
       </section>
     </main>
