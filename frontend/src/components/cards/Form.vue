@@ -18,8 +18,6 @@ const props = defineProps({
   },
 });
 
-// const emit = defineEmits(["save"]);
-
 function handleSubmit(e) {
   if (e) e.preventDefault();
   emit("handleSubmit");
@@ -33,7 +31,7 @@ function handleSubmit(e) {
         class="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-gray-100 dark:bg-gray-800 border-0"
       >
         <div
-          class="rounded-t bg-white dark:bg-gray-800 text-dark dark:text-white mb-0 px-6 py-6"
+          class="rounded-t bg-gray-100 dark:bg-gray-800 text-dark dark:text-white mb-0 px-6 py-6"
         >
           <div class="text-center flex justify-between">
             <h6 class="text-gray-700 dark:text-white text-xl font-bold">

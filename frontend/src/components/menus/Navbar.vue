@@ -8,14 +8,19 @@ const utilsStore = useUtilsStore();
 </script>
 
 <template>
-  <nav class="fixed top-0 z-50 w-full bg-gray-700 border-b border-gray-600">
+  <nav
+    class="fixed top-0 z-50 w-full bg-gray-100 border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700"
+  >
     <div class="px-3 py-3 lg:px-5 lg:pl-3">
       <div class="flex items-center justify-between">
-        <div class="flex items-center justify-start">
+        <div class="flex items-center justify-start rtl:justify-end">
           <button
             @click="utilsStore.toggleSideBar()"
-            type="button"
             class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+            data-drawer-target="logo-sidebar"
+            data-drawer-toggle="logo-sidebar"
+            aria-controls="logo-sidebar"
+            type="button"
           >
             <span class="sr-only">Open sidebar</span>
             <svg
@@ -32,22 +37,14 @@ const utilsStore = useUtilsStore();
               ></path>
             </svg>
           </button>
-          <a class="flex ml-2 md:mr-24">
-            <router-link
-              v-if="profileStore.isAdmin"
-              :to="{ name: 'dashboard' }"
-              class="self-center text-xs border-b-2 border-gray-200 font-semibold sm:text-2xl whitespace-nowrap text-gray-200"
-              >SisElectro</router-link
-            >
-            <router-link
-              v-else
-              :to="{ name: 'dashboard' }"
-              class="self-center text-xs border-b-2 border-gray-200 font-semibold sm:text-2xl whitespace-nowrap text-gray-200"
-              >SisElectro</router-link
-            >
-          </a>
+          <router-link to="/" class="flex ms-2 md:me-24"
+            ><span
+              class="self-center text-2xl font-semibold sm:text-4xl whitespace-nowrap border-b-2 border-gray-800 dark:border-gray-100 dark:text-white"
+              >SisElectro</span
+            ></router-link
+          >
         </div>
-        <Avatar></Avatar>
+        <Avatar />
       </div>
     </div>
   </nav>

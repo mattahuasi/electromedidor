@@ -58,7 +58,7 @@ function notification() {
   >
     <form class="space-y-6" :onSubmit="handleSubmit">
       <h5 class="text-4xl underline text-center font-medium text-white">
-        <router-link to="/auth/login">SisMedidor</router-link>
+        <router-link to="/auth/login">SisElectro</router-link>
       </h5>
       <!-- <p class="text-sm text-center font-medium text-gray-300">
         Ingresa tus credenciales para iniciar sesión.

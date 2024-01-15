@@ -1,7 +1,7 @@
 <script setup>
+import { useUtilsStore } from "@/stores/utils";
 import Anchor from "@/components/anchors/Anchor.vue";
 import AnchorAccordion from "@/components/anchors/AnchorAccordion.vue";
-import { useUtilsStore } from "@/stores/utils";
 
 const utilsStore = useUtilsStore();
 const prop = defineProps({
@@ -14,7 +14,8 @@ const prop = defineProps({
 
 <template>
   <aside
-    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform bg-gray-700 border-r border-gray-600 sm:translate-x-0"
+    id="logo-sidebar"
+    class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-gray-100 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
     :class="[
       utilsStore.sideBarShow
         ? 'translate-x-0 ease-out'
@@ -22,7 +23,7 @@ const prop = defineProps({
     ]"
     aria-label="Sidebar"
   >
-    <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-700">
+    <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
         <li v-for="item in menu">
           <AnchorAccordion

@@ -28,8 +28,8 @@ const props = defineProps({
           utilsStore.toggleSideBar();
         }
       "
-      class="flex items-center p-2 rounded-lg hover:bg-sky-600 group"
-      :class="[isActive ? 'text-gray-200 bg-sky-600 ' : 'text-gray-200 ']"
+      class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-blue-600 dark:hover:bg-blue-600 group"
+      :class="[isActive ? 'text-white bg-blue-700 ' : 'text-gray-900 ']"
     >
       <v-icon
         :name="icon"
