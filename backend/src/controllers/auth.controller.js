@@ -6,7 +6,6 @@ import jwt from "jsonwebtoken";
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
     const userFound = await User.findOne({
       where: { email },
       attributes: [
@@ -35,12 +34,10 @@ export const login = async (req, res) => {
     if (!userFound) {
       return res.status(404).json({ errors: ["User not found"] });
     }
-
     const isMatch = await bcrypt.compare(password, userFound.password);
     if (!isMatch) {
       return res.status(404).json({ errors: ["Password incorrect"] });
     }
-
     const id = userFound.employee
       ? userFound.employee.id
       : userFound.customer.id;
@@ -48,7 +45,6 @@ export const login = async (req, res) => {
       id: id,
       email: userFound.email,
     };
-
     if (userFound.employee) {
       data.admin = userFound.employee.admin;
       data.user = {
@@ -67,10 +63,8 @@ export const login = async (req, res) => {
         phone: userFound.phone,
       };
     }
-
     const token = await createdAccessToken({ id: userFound.id });
     data.token = token;
-
     res.json(data);
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
@@ -82,11 +76,9 @@ export const verifyToken = async (req, res) => {
     const token = req.headers.authorization;
     if (!token)
       return res.status(401).json({ errors: ["Authentication failed"] });
-
     jwt.verify(token, process.env.APP_TOKEN_SECRET, async (err, user) => {
       if (err)
         return res.status(401).json({ errors: ["Authentication failed"] });
-
       const userFound = await User.findOne({
         where: { id: user.id },
         attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
@@ -107,7 +99,6 @@ export const verifyToken = async (req, res) => {
       if (!userFound) {
         return res.status(404).json({ errors: ["Authentication failed"] });
       }
-
       const id = userFound.employee
         ? userFound.employee.id
         : userFound.customer.id;
@@ -115,7 +106,6 @@ export const verifyToken = async (req, res) => {
         id: id,
         email: userFound.email,
       };
-
       if (userFound.employee) {
         data.admin = userFound.employee.admin;
         data.user = {
@@ -134,7 +124,6 @@ export const verifyToken = async (req, res) => {
           phone: userFound.phone,
         };
       }
-
       res.json(data);
     });
   } catch (error) {
@@ -147,25 +136,21 @@ export const updatePassword = async (req, res) => {
     const { oldPassword, newPassword, repeatPassword } = req.body;
     if (newPassword !== repeatPassword)
       return res.status(500).json({ errors: ["Passwords don't match"] });
-    let userFound = await Employee.findOne({
+    console.log(req.user.id);
+    const userFound = await User.findOne({
       where: { id: req.user.id },
-      include: [{ model: User }],
+      include: [
+        { model: Employee, where: { staff: true }, required: false },
+        { model: Customer, required: false },
+      ],
     });
-    if (!userFound) {
-      userFound = await Customer.findOne({
-        where: { id: req.user.id },
-        include: [{ model: User }],
-      });
-      console.log(userFound);
-      if (!userFound)
-        return res.status(404).json({ errors: ["User not found"] });
-    }
-    const isMatch = await bcrypt.compare(oldPassword, userFound.user.password);
+    if (!userFound) return res.status(404).json({ errors: ["User not found"] });
+    const isMatch = await bcrypt.compare(oldPassword, userFound.password);
     if (!isMatch)
       return res.status(500).json({ errors: ["Password incorrect"] });
     const PasswordHash = await bcrypt.hash(newPassword, 10);
-    userFound.user.password = PasswordHash;
-    userFound.user.save();
+    userFound.password = PasswordHash;
+    userFound.save();
     res.json({ id: userFound.id });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });

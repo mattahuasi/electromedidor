@@ -8,24 +8,26 @@ import Client from "@/layouts/Client.vue";
 import Login from "@/views/auth/Login.vue";
 import Register from "@/views/auth/Register.vue";
 
-import Dashboard from "@/views/admin/panel/Dashboard.vue";
-import Employee from "@/views/admin/panel/Employee.vue";
-import Customer from "@/views/admin/panel/Customer.vue";
-import Hardware from "@/views/admin/panel/Hardware.vue";
-import Bill from "@/views/admin/panel/Bill.vue";
-import Report from "@/views/admin/panel/Report.vue";
-import Disconnection from "@/views/admin/panel/Disconnection.vue";
+import AdminDashboard from "@/views/admin/panel/Dashboard.vue";
+import AdminEmployee from "@/views/admin/panel/Employee.vue";
+import AdminCustomer from "@/views/admin/panel/Customer.vue";
+import AdminHardware from "@/views/admin/panel/Hardware.vue";
+import AdminBill from "@/views/admin/panel/Bill.vue";
+import AdminReport from "@/views/admin/panel/Report.vue";
+import AdminDisconnection from "@/views/admin/panel/Disconnection.vue";
 
-import Profile from "@/views/admin/forms/ProfileForm.vue";
-import UpdatePassword from "@/views/admin/forms/UpdatePassword.vue";
-import EmployeeForm from "@/views/admin/forms/EmployeeForm.vue";
-import CustomerForm from "@/views/admin/forms/CustomerForm.vue";
-import HardwareForm from "@/views/admin/forms/HardwareForm.vue";
-import BillForm from "@/views/admin/forms/BillForm.vue";
+import AdminProfile from "@/views/admin/forms/ProfileForm.vue";
+import AdminUpdatePassword from "@/views/admin/forms/UpdatePassword.vue";
+import AdminEmployeeForm from "@/views/admin/forms/EmployeeForm.vue";
+import AdminCustomerForm from "@/views/admin/forms/CustomerForm.vue";
+import AdminHardwareForm from "@/views/admin/forms/HardwareForm.vue";
+import AdminBillForm from "@/views/admin/forms/BillForm.vue";
 
 import Chart from "@/views/admin/panel/Chart.vue";
 
-import UserDashboard from "@/views/client/panel/Dashboard.vue";
+import ClientDashboard from "@/views/client/panel/Dashboard.vue";
+
+import ClientUpdatePassword from "@/views/client/forms/UpdatePassword.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -39,62 +41,62 @@ const router = createRouter({
         {
           path: "/dashboard",
           name: "dashboard",
-          component: Dashboard,
+          component: AdminDashboard,
         },
         {
           path: "/profile",
           name: "profile",
-          component: Profile,
+          component: AdminProfile,
         },
         {
           path: "/profile/update/password",
           name: "update/password",
-          component: UpdatePassword,
+          component: AdminUpdatePassword,
         },
         {
           path: "/employees",
           name: "employees",
-          component: Employee,
+          component: AdminEmployee,
         },
         {
           path: "/new/employees",
           name: "new/employees",
-          component: EmployeeForm,
+          component: AdminEmployeeForm,
         },
         {
           path: "/update/employees",
           name: "update/employees",
-          component: EmployeeForm,
+          component: AdminEmployeeForm,
         },
         {
           path: "/customers",
           name: "customers",
-          component: Customer,
+          component: AdminCustomer,
         },
         {
           path: "/new/customers",
           name: "new/customers",
-          component: CustomerForm,
+          component: AdminCustomerForm,
         },
         {
           path: "/customers/:id/hardware",
           name: "customers/hardware",
-          component: Hardware,
+          component: AdminHardware,
         },
         {
           path: "/update/customers",
           name: "update/customers",
-          component: CustomerForm,
+          component: AdminCustomerForm,
         },
         {
           path: "/hardware",
           name: "hardware",
-          component: Hardware,
+          component: AdminHardware,
         },
         {
           path: "/new/hardware",
           name: "new/hardware",
-          component: HardwareForm,
+          component: AdminHardwareForm,
         },
         {
           path: "/show/hardware",
@@ -104,7 +106,7 @@ const router = createRouter({
         {
           path: "/update/hardware",
           name: "update/hardware",
-          component: HardwareForm,
+          component: AdminHardwareForm,
         },
         // {
         //   path: "/admin/customers/:id/hardware",
@@ -114,7 +116,7 @@ const router = createRouter({
         {
           path: "/customers/:id/new/hardware",
           name: "customers/new/hardware",
-          component: HardwareForm,
+          component: AdminHardwareForm,
         },
         // {
         //   path: "admin/customers/:id/show/hardware",
@@ -124,32 +126,32 @@ const router = createRouter({
         {
           path: "/customers/:id/update/hardware",
           name: "customers/update/hardware",
-          component: HardwareForm,
+          component: AdminHardwareForm,
         },
         {
           path: "/bills",
           name: "bills",
-          component: Bill,
+          component: AdminBill,
         },
         {
           path: "/new/bills",
           name: "new/bills",
-          component: BillForm,
+          component: AdminBillForm,
         },
         {
           path: "/update/bills",
           name: "update/bills",
-          component: BillForm,
+          component: AdminBillForm,
         },
         {
           path: "/disconnection",
           name: "disconnection",
-          component: Disconnection,
+          component: AdminDisconnection,
         },
         {
           path: "/reports",
           name: "reports",
-          component: Report,
+          component: AdminReport,
         },
       ],
     },
@@ -160,19 +162,19 @@ const router = createRouter({
       meta: { requiresAuth: true },
       children: [
         {
-          path: "/users/dashboard",
-          name: "users/dashboard",
-          component: UserDashboard,
+          path: "/dashboard",
+          name: "client/dashboard",
+          component: ClientDashboard,
         },
+        // {
+        //   path: "/users/profile",
+        //   name: "users/profile",
+        //   component: Profile,
+        // },
         {
-          path: "/users/profile",
-          name: "users/profile",
-          component: Profile,
-        },
-        {
-          path: "/users/profile/update/password",
-          name: "users/update/password",
-          component: UpdatePassword,
+          path: "/profile/update/password",
+          name: "client/update/password",
+          component: ClientUpdatePassword,
         },
       ],
     },
