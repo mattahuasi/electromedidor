@@ -9,7 +9,7 @@ export const verifyTokenRequest = () => axios.get("/verify");
 export const updateProfileRequest = (user) =>
   axios.put("/profile/update", user);
 
-export const updatePassword = (user) =>
+export const updatePasswordRequest = (user) =>
   axios.put("/profile/update/password", user);
 
 export const registerRequest = (user) => axios.post("/register", user);

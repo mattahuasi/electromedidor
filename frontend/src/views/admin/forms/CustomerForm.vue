@@ -1,8 +1,8 @@
 <script setup>
 import {
   createCustomerRequest,
-  getCustomerByIdRequest,
-  updateCustomerByIdRequest,
+  getCustomerRequest,
+  updateCustomerRequest,
 } from "@/api/customer";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive } from "vue";
@@ -48,7 +48,7 @@ async function handleSubmit() {
       if (!route.query.id) {
         formData.password = `Sis${formData.ci}`;
         await createCustomerRequest(formData);
-      } else await updateCustomerByIdRequest(route.query.id, formData);
+      } else await updateCustomerRequest(route.query.id, formData);
       toast.success("Usuario creado exitosamente");
       router.push({ name: "customers" });
     } catch (error) {
@@ -61,7 +61,7 @@ async function handleSubmit() {
 onMounted(async () => {
   if (route.query.id) {
     try {
-      const res = await getCustomerByIdRequest(route.query.id);
+      const res = await getCustomerRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");

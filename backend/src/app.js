@@ -9,6 +9,7 @@ import customerRoutes from "./routes/customer.routes.js";
 import hardwareRoutes from "./routes/hardware.routes.js";
 import readingRoutes from "./routes/reading.routes.js";
 import billRoutes from "./routes/bill.routes.js";
+import reportRoutes from "./routes/report.routes.js";
 
 const app = express();
 
@@ -31,5 +32,6 @@ app.use("/api", customerRoutes);
 app.use("/api", hardwareRoutes);
 app.use("/api", readingRoutes);
 app.use("/api", billRoutes);
+app.use("/api", reportRoutes);
 
 export default app;

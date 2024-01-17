@@ -1,11 +1,14 @@
 import { Hardware } from "../models/Hardware.js";
+import { Reading } from "../models/Reading.js";
 
 export const createHardware = async (req, res) => {
   try {
     const { name, address, key, area, customerId } = req.body;
+
     const hardware = await Hardware.findOne({ where: { name } });
     if (hardware)
       return res.status(400).json({ errors: ["Hardware already exists"] });
+
     const newHardware = await Hardware.create({
       name,
       address,
@@ -13,6 +16,7 @@ export const createHardware = async (req, res) => {
       area,
       customerId: customerId,
     });
+
     res.json(newHardware);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
@@ -22,8 +26,9 @@ export const createHardware = async (req, res) => {
 export const getHardware = async (req, res) => {
   try {
     const hardware = await Hardware.findAll({
-      order: [["name", "ASC"]],
+      order: [["id", "ASC"]],
     });
+
     const data = hardware.map((item) => ({
       id: item.id,
       name: item.name,
@@ -34,51 +39,69 @@ export const getHardware = async (req, res) => {
       createdAt: item.createdAt,
       updatedAt: item.updatedAt,
     }));
+
     res.json(data);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }
 };
 
-export const getHardwareById = async (req, res) => {
+export const getOneHardware = async (req, res) => {
   try {
     const { id } = req.params;
+
     const hardware = await Hardware.findByPk(id);
     if (!hardware) return res.status(404).json("Hardware not found");
+
     res.json(hardware);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }
 };
 
-export const updateHardwareById = async (req, res) => {
+export const updateHardware = async (req, res) => {
   try {
     const { id } = req.params;
     const { name, address, key, area, customerId } = req.body;
+
     const hardware = await Hardware.findByPk(id);
     if (!hardware) return res.status(404).json("Hardware not found");
+
     const nameHardware = await Hardware.findOne({ where: { name } });
     if (nameHardware && hardware.id != nameHardware.id)
       return res.status(400).json({ errors: ["Hardware already exists"] });
+
     if (name != hardware.name) hardware.name = name;
     hardware.address = address;
     hardware.key = key;
     hardware.area = area;
     hardware.customerId = customerId;
+
     await hardware.save();
+
     res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }
 };
 
-export const deleteHardwareById = async (req, res) => {
+export const deleteHardware = async (req, res) => {
   try {
     const { id } = req.params;
-    const hardware = await Hardware.findByPk(id);
+
+    const hardware = await Hardware.findByPk(id, {
+      include: [{ model: Reading }],
+    });
     if (!hardware)
       return res.status(404).json({ errors: ["Hardware not found"] });
-    await hardware.destroy();
+
+    await Promise.all([
+      hardware.reading.map(async (reading) => {
+        await reading.destroy();
+      }),
+      await hardware.destroy(),
+    ]);
+
     return res.sendStatus(204);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
@@ -88,6 +111,7 @@ export const deleteHardwareById = async (req, res) => {
 export const getHardwareMQTT = async () => {
   try {
     const hardware = await Hardware.findAll();
+
     return hardware;
   } catch (error) {
     return error;
@@ -98,8 +122,10 @@ export const updateHardwareKeyMQTT = async (name, arg) => {
   try {
     const hardware = await Hardware.findOne({ where: { name } });
     if (!hardware) return console.log("Hardware doesn't exist");
+
     if (arg === 1) hardware.key = true;
     else if (arg === 0) hardware.key = false;
+
     await hardware.save();
   } catch (error) {
     return error;

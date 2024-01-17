@@ -27,20 +27,18 @@ import Chart from "@/views/admin/panel/Chart.vue";
 
 import ClientDashboard from "@/views/client/panel/Dashboard.vue";
 
-import ClientUpdatePassword from "@/views/client/forms/UpdatePassword.vue";
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "dashboard",
+      redirect: "admin-dashboard",
       component: Admin,
       meta: { requiresAuth: true },
       children: [
         {
           path: "/dashboard",
-          name: "dashboard",
+          name: "admin-dashboard",
           component: AdminDashboard,
         },
         {
@@ -50,7 +48,7 @@ const router = createRouter({
         },
         {
           path: "/profile/update/password",
-          name: "update/password",
+          name: "update-password",
           component: AdminUpdatePassword,
         },
         {
@@ -60,12 +58,12 @@ const router = createRouter({
         },
         {
           path: "/new/employees",
-          name: "new/employees",
+          name: "new-employees",
           component: AdminEmployeeForm,
         },
         {
           path: "/update/employees",
-          name: "update/employees",
+          name: "update-employees",
           component: AdminEmployeeForm,
         },
         {
@@ -75,17 +73,12 @@ const router = createRouter({
         },
         {
           path: "/new/customers",
-          name: "new/customers",
+          name: "new-customers",
           component: AdminCustomerForm,
         },
         {
-          path: "/customers/:id/hardware",
-          name: "customers/hardware",
-          component: AdminHardware,
-        },
-        {
           path: "/update/customers",
-          name: "update/customers",
+          name: "update-customers",
           component: AdminCustomerForm,
         },
         {
@@ -95,37 +88,17 @@ const router = createRouter({
         },
         {
           path: "/new/hardware",
-          name: "new/hardware",
+          name: "new-hardware",
           component: AdminHardwareForm,
         },
         {
           path: "/show/hardware",
-          name: "show/hardware",
+          name: "show-hardware",
           component: Chart,
         },
         {
           path: "/update/hardware",
-          name: "update/hardware",
-          component: AdminHardwareForm,
-        },
-        // {
-        //   path: "/admin/customers/:id/hardware",
-        //   name: "customers/hardware",
-        //   component: Hardware,
-        // },
-        {
-          path: "/customers/:id/new/hardware",
-          name: "customers/new/hardware",
-          component: AdminHardwareForm,
-        },
-        // {
-        //   path: "admin/customers/:id/show/hardware",
-        //   name: "show/hardware",
-        //   component: HardwareChart,
-        // },
-        {
-          path: "/customers/:id/update/hardware",
-          name: "customers/update/hardware",
+          name: "update-hardware",
           component: AdminHardwareForm,
         },
         {
@@ -135,12 +108,12 @@ const router = createRouter({
         },
         {
           path: "/new/bills",
-          name: "new/bills",
+          name: "new-bills",
           component: AdminBillForm,
         },
         {
           path: "/update/bills",
-          name: "update/bills",
+          name: "update-bills",
           component: AdminBillForm,
         },
         {
@@ -157,24 +130,14 @@ const router = createRouter({
     },
     {
       path: "/",
-      redirect: "/dashboard",
+      redirect: "client-dashboard",
       component: Client,
       meta: { requiresAuth: true },
       children: [
         {
           path: "/dashboard",
-          name: "client/dashboard",
+          name: "client-dashboard",
           component: ClientDashboard,
-        },
-        // {
-        //   path: "/users/profile",
-        //   name: "users/profile",
-        //   component: Profile,
-        // },
-        {
-          path: "/profile/update/password",
-          name: "client/update/password",
-          component: ClientUpdatePassword,
         },
       ],
     },

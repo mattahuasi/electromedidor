@@ -1,5 +1,5 @@
 <script setup>
-import { getBillsRequest, deleteBillByIdRequest } from "@/api/bill";
+import { getBillsRequest, deleteBillRequest } from "@/api/bill";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -59,10 +59,10 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ name: "update/bills", query: { id: action.id } });
+    router.push({ name: "update-bills", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteBillByIdRequest(action.id);
+      await deleteBillRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Factura eliminado exitosamente");
@@ -83,7 +83,7 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new/bills' }">Agregar Factura</button-add>
+      <button-add :to="{ name: 'new-bills' }">Agregar Factura</button-add>
     </template>
     <DataTable
       :columns="columns"

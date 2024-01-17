@@ -1,9 +1,9 @@
 <script setup>
-import { getCustomerHardwareByIdRequest } from "@/api/customer";
+import { getCustomerHardwareRequest } from "@/api/customer";
 import {
   getHardwareRequest,
-  getHardwareByIdRequest,
-  deleteHardwareByIdRequest,
+  getOneHardwareRequest,
+  deleteHardwareRequest,
 } from "@/api/hardware";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -28,8 +28,6 @@ const columns = ref([
   { key: "key", label: "Llave", lock: true },
   { key: "area", label: "Área", area: true },
   { key: "customerId", label: "UID" },
-  { key: "createdAt", label: "Fecha de creación", date: true },
-  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -43,7 +41,7 @@ async function loadData() {
   load.value = true;
   try {
     if (route.params.id) {
-      const res = await getCustomerHardwareByIdRequest(route.params.id);
+      const res = await getCustomerHardwareRequest(route.params.id);
       items.value = res.data;
       itemsDisplay.value = items.value;
       load.value = false;
@@ -73,12 +71,12 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ name: "update/hardware", query: { id: action.id } });
+    router.push({ name: "update-hardware", query: { id: action.id } });
   } else if (action.action === "show") {
-    router.push({ name: "show/hardware", query: { id: action.id } });
+    router.push({ name: "show-hardware", query: { id: action.id } });
   } else if (action.action === "on" || action.action === "off") {
     try {
-      const res = await getHardwareByIdRequest(action.id);
+      const res = await getOneHardwareRequest(action.id);
       const hardware = res.data;
       mqttClient.publish(
         `client/medidor/${hardware.name}`,
@@ -98,7 +96,7 @@ async function action(action) {
     }
   } else if (action.action === "delete") {
     try {
-      await deleteHardwareByIdRequest(action.id);
+      await deleteHardwareRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Medidor eliminado");
@@ -119,7 +117,7 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new/hardware' }">Agregar medidor</button-add>
+      <button-add :to="{ name: 'new-hardware' }">Agregar medidor</button-add>
     </template>
     <DataTable
       :columns="columns"

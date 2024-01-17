@@ -6,7 +6,7 @@ import {
   login,
   logout,
   profile,
-  updateProfileAdmin,
+  updateProfile,
   verifyToken,
   updatePassword,
   register,
@@ -17,7 +17,7 @@ const router = new Router();
 router.post("/login", validateSchema(loginSchema), login);
 router.post("/logout", authRequired, logout);
 router.get("/profile", authRequired, profile);
-router.put("/profile/update", authRequired, updateProfileAdmin);
+router.put("/profile/update", authRequired, updateProfile);
 router.put("/profile/update/password", authRequired, updatePassword);
 router.get("/verify", verifyToken);
 router.post("/register", validateSchema(registerSchema), register);

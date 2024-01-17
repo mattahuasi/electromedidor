@@ -5,13 +5,12 @@ export const createCustomerRequest = (customer) =>
 
 export const getCustomersRequest = () => axios.get("/customers");
 
-export const getCustomerByIdRequest = (id) => axios.get("/customers/" + id);
+export const getCustomerRequest = (id) => axios.get("/customers/" + id);
 
-export const updateCustomerByIdRequest = (id, customer) =>
+export const updateCustomerRequest = (id, customer) =>
   axios.put("/customers/" + id, customer);
 
-export const deleteCustomerByIdRequest = (id) =>
-  axios.delete("/customers/" + id);
+export const deleteCustomerRequest = (id) => axios.delete("/customers/" + id);
 
-export const getCustomerHardwareByIdRequest = (id) =>
+export const getCustomerHardwareRequest = (id) =>
   axios.get("/customers/" + id + "/hardware");

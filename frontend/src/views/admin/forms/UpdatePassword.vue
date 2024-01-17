@@ -1,5 +1,5 @@
 <script setup>
-import { updatePassword } from "@/api/auth";
+import { updatePasswordRequest } from "@/api/auth";
 import { ref, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
 import { required, helpers } from "@vuelidate/validators";
@@ -30,7 +30,7 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      await updatePassword(formData);
+      await updatePasswordRequest(formData);
       formData.oldPassword = "";
       formData.newPassword = "";
       formData.repeatPassword = "";

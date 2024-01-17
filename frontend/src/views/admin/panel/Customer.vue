@@ -1,5 +1,5 @@
 <script setup>
-import { getCustomersRequest, deleteCustomerByIdRequest } from "@/api/customer";
+import { getCustomersRequest, deleteCustomerRequest } from "@/api/customer";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -14,18 +14,14 @@ const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
-  { key: "id", label: "ID" },
   { key: "firstName", label: "Nombres" },
   { key: "lastName", label: "Apellidos" },
   { key: "ci", label: "Cédula de identidad" },
   { key: "email", label: "Correo electrónico" },
-  { key: "phone", label: "Nro. de contacto" },
-  { key: "createdAt", label: "Fecha de creación", date: true },
-  { key: "updatedAt", label: "Ultima modificación", date: true },
+  { key: "phone", label: "Teléfono o celular" },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "show", name: "Ver medidores", icon: "fa-bolt" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
 ]);
 
@@ -58,12 +54,10 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ name: "update/customers", query: { id: action.id } });
-  } else if (action.action === "show") {
-    router.push({ name: "customers/hardware", params: { id: action.id } });
+    router.push({ name: "update-customers", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteCustomerByIdRequest(action.id);
+      await deleteCustomerRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Cliente eliminado");
@@ -84,7 +78,7 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new/customers' }">Agregar Cliente</button-add>
+      <button-add :to="{ name: 'new-customers' }">Agregar Cliente</button-add>
     </template>
     <DataTable
       :columns="columns"

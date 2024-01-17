@@ -11,6 +11,7 @@ export const createdAccessToken = (payload) => {
       },
       (err, token) => {
         if (err) reject(err);
+
         resolve(token);
       }
     );

@@ -6,9 +6,9 @@ import Sidebar from "@/components/menus/Sidebar.vue";
 const menu = ref([
   {
     key: "dashboard",
-    to: { name: "users/dashboard" },
+    to: { name: "client-dashboard" },
     name: "Panel de control",
-    icon: "fa-flipboard",
+    icon: "fa-chart-pie",
   },
   // {
   //   key: "accordion",
@@ -58,11 +58,11 @@ const menu = ref([
 </script>
 
 <template>
+  <Navbar />
+  <Sidebar :menu="menu" />
   <main>
-    <Navbar />
-    <Sidebar :menu="menu" />
-    <div class="p-4 sm:ml-64">
-      <div class="p-4 rounded-lg mt-14">
+    <div class="p-2 sm:ml-64 bg-gray-50 dark:bg-gray-700 min-h-screen">
+      <div class="p-2 rounded-lg mt-16">
         <RouterView />
       </div>
     </div>

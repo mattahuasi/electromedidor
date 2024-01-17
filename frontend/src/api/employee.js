@@ -1,13 +1,13 @@
 import axios from "./axios";
 
-export const createEmployeeRequest = (user) => axios.post("/employees", user);
+export const createEmployeeRequest = (employee) =>
+  axios.post("/employees", employee);
 
 export const getEmployeesRequest = () => axios.get("/employees");
 
-export const getEmployeeByIdRequest = (id) => axios.get("/employees/" + id);
+export const getEmployeeRequest = (id) => axios.get("/employees/" + id);
 
-export const updateEmployeeByIdRequest = (id, user) =>
-  axios.put("/employees/" + id, user);
+export const updateEmployeeRequest = (id, employee) =>
+  axios.put("/employees/" + id, employee);
 
-export const deleteEmployeeByIdRequest = (id) =>
-  axios.delete("/employees/" + id);
+export const deleteEmployeeRequest = (id) => axios.delete("/employees/" + id);

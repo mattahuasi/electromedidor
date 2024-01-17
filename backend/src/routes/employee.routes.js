@@ -6,12 +6,13 @@ import { employeeSchema } from "../schemas/employee.schema.js";
 import {
   createEmployee,
   getEmployees,
-  getEmployeeById,
-  updateEmployeeById,
-  deleteEmployeeById,
+  getEmployee,
+  updateEmployee,
+  deleteEmployee,
 } from "../controllers/employee.controller.js";
 
 const router = new Router();
+
 router.post(
   "/employees",
   authRequired,
@@ -19,13 +20,8 @@ router.post(
   createEmployee
 );
 router.get("/employees", authRequired, getEmployees);
-router.get("/employees/:id", authRequired, getEmployeeById);
-router.put("/employees/:id", authRequired, updateEmployeeById);
-router.delete(
-  "/employees/:id",
-  authRequired,
-  adminRequired,
-  deleteEmployeeById
-);
+router.get("/employees/:id", authRequired, getEmployee);
+router.put("/employees/:id", authRequired, updateEmployee);
+router.delete("/employees/:id", authRequired, adminRequired, deleteEmployee);
 
 export default router;

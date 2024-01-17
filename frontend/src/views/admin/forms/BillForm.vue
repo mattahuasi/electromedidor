@@ -1,12 +1,12 @@
 <script setup>
 import {
   createBillRequest,
-  getBillByIdRequest,
-  updateBillByIdRequest,
+  getBillRequest,
+  updateBillRequest,
 } from "@/api/bill";
 import {
   getCustomersRequest,
-  getCustomerHardwareByIdRequest,
+  getCustomerHardwareRequest,
 } from "@/api/customer";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, watch } from "vue";
@@ -59,7 +59,7 @@ async function handleSubmit() {
       formData.hardwareId = parseInt(formData.hardwareId);
       if (!route.query.id) {
         await createBillRequest(formData);
-      } else await updateBillByIdRequest(route.query.id, formData);
+      } else await updateBillRequest(route.query.id, formData);
       toast.success("Factura creada exitosamente");
       router.push({ name: "bills" });
     } catch (error) {
@@ -71,7 +71,7 @@ async function handleSubmit() {
 
 async function loadHardware() {
   try {
-    const res = await getCustomerHardwareByIdRequest(formData.customerId);
+    const res = await getCustomerHardwareRequest(formData.customerId);
     hardware.value = res.data;
   } catch (error) {
     toast.error("Error al cargar los datos");
@@ -93,7 +93,7 @@ onMounted(async () => {
     const res = await getCustomersRequest();
     customers.value = res.data;
     if (formData.customerId) {
-      const res = await getCustomerHardwareByIdRequest(formData.customerId);
+      const res = await getCustomerHardwareRequest(formData.customerId);
       hardware.value = res.data;
       console.log(hardware.value);
     }
@@ -103,7 +103,7 @@ onMounted(async () => {
   }
   if (route.query.id) {
     try {
-      const res = await getBillByIdRequest(route.query.id);
+      const res = await getBillRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");

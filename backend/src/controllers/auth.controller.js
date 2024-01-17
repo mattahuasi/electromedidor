@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken";
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
     const userFound = await User.findOne({
       where: { email },
       attributes: [
@@ -21,7 +22,7 @@ export const login = async (req, res) => {
         {
           model: Employee,
           where: { staff: true },
-          attributes: ["id", "admin"],
+          attributes: ["id", "staff", "admin"],
           required: false,
         },
         {
@@ -31,21 +32,23 @@ export const login = async (req, res) => {
         },
       ],
     });
-    if (!userFound) {
-      return res.status(404).json({ errors: ["User not found"] });
-    }
+    if (!userFound) return res.status(404).json({ errors: ["User not found"] });
+
     const isMatch = await bcrypt.compare(password, userFound.password);
-    if (!isMatch) {
+    if (!isMatch)
       return res.status(404).json({ errors: ["Password incorrect"] });
-    }
+
     const id = userFound.employee
       ? userFound.employee.id
       : userFound.customer.id;
+
     const data = {
       id: id,
       email: userFound.email,
     };
+
     if (userFound.employee) {
+      data.staff = userFound.employee.staff;
       data.admin = userFound.employee.admin;
       data.user = {
         id: userFound.id,
@@ -63,8 +66,10 @@ export const login = async (req, res) => {
         phone: userFound.phone,
       };
     }
+
     const token = await createdAccessToken({ id: userFound.id });
     data.token = token;
+
     res.json(data);
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
@@ -74,11 +79,12 @@ export const login = async (req, res) => {
 export const verifyToken = async (req, res) => {
   try {
     const token = req.headers.authorization;
-    if (!token)
-      return res.status(401).json({ errors: ["Authentication failed"] });
+
+    if (!token) return res.status(401).json({ errors: ["Unauthorized"] });
+
     jwt.verify(token, process.env.APP_TOKEN_SECRET, async (err, user) => {
-      if (err)
-        return res.status(401).json({ errors: ["Authentication failed"] });
+      if (err) return res.status(401).json({ errors: ["Unauthorized"] });
+
       const userFound = await User.findOne({
         where: { id: user.id },
         attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
@@ -97,15 +103,18 @@ export const verifyToken = async (req, res) => {
         ],
       });
       if (!userFound) {
-        return res.status(404).json({ errors: ["Authentication failed"] });
+        return res.status(404).json({ errors: ["Unauthorized"] });
       }
+
       const id = userFound.employee
         ? userFound.employee.id
         : userFound.customer.id;
+
       const data = {
         id: id,
         email: userFound.email,
       };
+
       if (userFound.employee) {
         data.admin = userFound.employee.admin;
         data.user = {
@@ -124,6 +133,7 @@ export const verifyToken = async (req, res) => {
           phone: userFound.phone,
         };
       }
+
       res.json(data);
     });
   } catch (error) {
@@ -134,9 +144,10 @@ export const verifyToken = async (req, res) => {
 export const updatePassword = async (req, res) => {
   try {
     const { oldPassword, newPassword, repeatPassword } = req.body;
+
     if (newPassword !== repeatPassword)
       return res.status(500).json({ errors: ["Passwords don't match"] });
-    console.log(req.user.id);
+
     const userFound = await User.findOne({
       where: { id: req.user.id },
       include: [
@@ -145,12 +156,16 @@ export const updatePassword = async (req, res) => {
       ],
     });
     if (!userFound) return res.status(404).json({ errors: ["User not found"] });
+
     const isMatch = await bcrypt.compare(oldPassword, userFound.password);
     if (!isMatch)
       return res.status(500).json({ errors: ["Password incorrect"] });
+
     const PasswordHash = await bcrypt.hash(newPassword, 10);
+
     userFound.password = PasswordHash;
     userFound.save();
+
     res.json({ id: userFound.id });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
@@ -161,6 +176,7 @@ export const logout = (req, res) => {
   res.cookie("token", "", {
     expires: new Date(0),
   });
+
   return res.sendStatus(200);
 };
 
@@ -168,100 +184,61 @@ export const profile = async (req, res) => {
   try {
     const userFound = await User.findOne({
       where: { id: req.user.id },
-      attributes: ["id", "admin"],
+      attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
       include: [
-        {
-          model: Person,
-          attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-        },
+        { model: Employee, where: { staff: true }, required: false },
+        { model: Customer, required: false },
       ],
     });
-    if (!userFound) return res.status(400).json({ errors: ["User not found"] });
+    if (!userFound) return res.status(404).json({ errors: ["User not found"] });
+
     res.json(userFound);
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
 };
 
-export const updateProfileAdmin = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const { firstName, lastName, ci, phone, email } = req.body;
-    const employee = await employee.findOne({
+
+    const userFound = await User.findOne({
       where: { id: req.user.id },
-      attributes: ["id", "userId"],
+      attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
       include: [
-        {
-          model: User,
-          attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-        },
+        { model: Employee, where: { staff: true }, required: false },
+        { model: Customer, required: false },
       ],
     });
-    res.json(employee);
+    if (!userFound) return res.status(404).json({ errors: ["User not found"] });
+
+    userFound.firstName = firstName;
+    userFound.lastName = lastName;
+    userFound.ci = ci;
+    userFound.phone = phone;
+    userFound.email = email;
+    userFound.save();
+
+    res.json(userFound);
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
 };
-
-export const updateProfileCustomer = async (req, res) => {
-  try {
-    const { firstName, lastName, ci, phone, email } = req.body;
-    const customer = await Customer.findOne({
-      where: { id: req.user.id },
-      attributes: ["id", "userId"],
-      include: [
-        {
-          model: User,
-          attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-        },
-      ],
-    });
-    res.json(customer);
-  } catch (error) {
-    res.status(500).json({ errors: [error.message] });
-  }
-};
-
-// export const updateProfile = async (req, res) => {
-//   try {
-//     const { firstName, lastName, ci, phone, email } = req.body;
-//     const user = await User.findOne({
-//       where: { id: req.user.id },
-//       attributes: ["id", "admin", "personId"],
-//     });
-//     if (!user) return res.status(400).json({ errors: ["User not found"] });
-//     const person = await Person.findOne({ where: { id: user.personId } });
-//     person.firstName = firstName;
-//     person.lastName = lastName;
-//     person.ci = ci;
-//     person.phone = phone;
-//     person.email = email;
-//     await person.save();
-//     const userFound = await User.findOne({
-//       where: { id: req.user.id },
-//       attributes: ["id", "admin"],
-//       include: [
-//         {
-//           model: Person,
-//           attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-//         },
-//       ],
-//     });
-//     res.json(userFound);
-//   } catch (error) {
-//     res.status(500).json({ errors: [error.message] });
-//   }
-// };
 
 export const register = async (req, res) => {
   try {
     const { firstName, lastName, ci, phone, email, password } = req.body;
+
     const userEmail = await User.findOne({ where: { email } });
     if (userEmail)
       return res.status(400).json({ errors: ["User already exists"] });
+
     const userCi = await User.findOne({ where: { ci } });
     if (userCi)
       return res.status(400).json({ errors: ["User already exists"] });
+
     const PasswordHash = await bcrypt.hash(password, 10);
+
     const newUser = await User.create({
       firstName,
       lastName,
@@ -270,12 +247,19 @@ export const register = async (req, res) => {
       email,
       password: PasswordHash,
     });
+
     const newCustomer = await Customer.create({
       userId: newUser.id,
     });
+
     res.json({
+      id: newCustomer.id,
+      firstName: newUser.firstName,
+      lastName: newUser.lastName,
+      ci: newUser.ci,
+      phone: newUser.phone,
       email: newUser.email,
-      password: newUser.password,
+      createdAt: newCustomer.createdAt,
     });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });

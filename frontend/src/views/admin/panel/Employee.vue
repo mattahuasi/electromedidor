@@ -1,6 +1,5 @@
 <script setup>
-import { getEmployeesRequest, deleteEmployeeByIdRequest } from "@/api/employee";
-import { useProfileStore } from "@/stores/profile";
+import { getEmployeesRequest, deleteEmployeeRequest } from "@/api/employee";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -9,21 +8,17 @@ import Search from "@/components/inputs/Search.vue";
 import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 
-const profileStore = useProfileStore();
 const router = useRouter();
 const items = ref([]);
 const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
-  { key: "id", label: "ID" },
   { key: "firstName", label: "Nombres" },
   { key: "lastName", label: "Apellidos" },
   { key: "ci", label: "Cédula de identidad" },
   { key: "email", label: "Correo electrónico" },
   { key: "phone", label: "Nro. de contacto" },
-  { key: "createdAt", label: "Fecha de creación", date: true },
-  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -59,10 +54,10 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ name: "update/employees", query: { id: action.id } });
+    router.push({ name: "update-employees", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteEmployeeByIdRequest(action.id);
+      await deleteEmployeeRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Usuario eliminado");
@@ -83,7 +78,7 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new/employees' }">Agregar Usuario</button-add>
+      <button-add :to="{ name: 'new-employees' }">Agregar Usuario</button-add>
     </template>
     <DataTable
       :columns="columns"

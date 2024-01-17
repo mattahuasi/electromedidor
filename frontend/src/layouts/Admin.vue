@@ -6,7 +6,7 @@ import Sidebar from "@/components/menus/Sidebar.vue";
 const menu = ref([
   {
     key: "dashboard",
-    to: { name: "dashboard" },
+    to: { name: "admin-dashboard" },
     name: "Panel de control",
     icon: "fa-chart-pie",
   },

@@ -6,16 +6,17 @@ import { billSchema } from "../schemas/bill.schema.js";
 import {
   createBill,
   getBills,
-  getBillById,
-  updateBillById,
-  deleteBillById,
+  getBill,
+  updateBill,
+  deleteBill,
 } from "../controllers/bill.controller.js";
 
 const router = new Router();
+
 router.post("/bills", authRequired, validateSchema(billSchema), createBill);
 router.get("/bills", authRequired, getBills);
-router.get("/bills/:id", authRequired, getBillById);
-router.put("/bills/:id", authRequired, adminRequired, updateBillById);
-router.delete("/bills/:id", authRequired, adminRequired, deleteBillById);
+router.get("/bills/:id", authRequired, getBill);
+router.put("/bills/:id", authRequired, adminRequired, updateBill);
+router.delete("/bills/:id", authRequired, adminRequired, deleteBill);
 
 export default router;

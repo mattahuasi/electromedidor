@@ -2,8 +2,8 @@
 import { getCustomersRequest } from "@/api/customer";
 import {
   createHardwareRequest,
-  getHardwareByIdRequest,
-  updateHardwareByIdRequest,
+  getOneHardwareRequest,
+  updateHardwareRequest,
 } from "@/api/hardware";
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, reactive } from "vue";
@@ -52,7 +52,7 @@ async function handleSubmit() {
       else formData.area = false;
       formData.customerId = parseInt(formData.customerId);
       if (!route.query.id) await createHardwareRequest(formData);
-      else await updateHardwareByIdRequest(route.query.id, formData);
+      else await updateHardwareRequest(route.query.id, formData);
       toast.success("Medidor registrado exitosamente");
       router.push({ name: "hardware" });
       // router.push({ name: "hardware", params: { id: route.params.id } });
@@ -90,7 +90,9 @@ onMounted(async () => {
   }
   if (route.query.id) {
     try {
-      const res = await getHardwareByIdRequest(route.query.id);
+      const res = await getOneHardwareRequest(route.query.id);
+      if (res.data.area) formData.urban = true;
+      else formData.rural = true;
       Object.assign(formData, res.data);
     } catch (error) {
       toast.error("Error al cargar los datos");

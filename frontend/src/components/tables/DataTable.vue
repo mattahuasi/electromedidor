@@ -45,7 +45,7 @@ function action(data) {
   <div class="relative overflow-x-auto sm:rounded-lg m-4">
     <table class="w-full text-left">
       <thead
-        class="text-sm text-gray-600 dark:text-gray-400 bg-gray-200 dark:bg-gray-700"
+        class="text-sm text-gray-600 dark:text-gray-400 bg-gray-300 dark:bg-gray-700"
       >
         <th scope="col" class="px-4 py-3">Nro</th>
         <th
@@ -62,14 +62,10 @@ function action(data) {
       </thead>
       <tbody>
         <tr
-          class="text-xs text-gray-800 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-900"
+          class="text-xs text-gray-800 dark:text-white border-b border-gray-300 hover:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-700"
           v-for="(item, index) in itemsDisplay"
           :key="item.id"
-          :class="
-            index % 2 === 0
-              ? 'bg-gray-50 dark:bg-gray-800'
-              : 'bg-gray-100 dark:bg-gray-700'
-          "
+          
         >
           <td class="px-4 py-4">
             <span>{{ index + 1 }}</span>

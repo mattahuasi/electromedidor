@@ -1,5 +1,5 @@
 <script setup>
-import { getBillsRequest, deleteBillByIdRequest } from "@/api/bill";
+import { getBillsRequest, deleteBillRequest } from "@/api/bill";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -62,7 +62,7 @@ async function action(action) {
     router.push({ name: "update/bills", query: { id: action.id } });
   } else if (action.action === "delete") {
     try {
-      await deleteBillByIdRequest(action.id);
+      await deleteBillRequest(action.id);
       items.value = [];
       loadData();
       toast.success("Factura eliminado exitosamente");
