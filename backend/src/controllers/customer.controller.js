@@ -63,6 +63,7 @@ export const getCustomers = async (req, res) => {
           ],
         },
       ],
+      order: [["id", "ASC"]],
     });
 
     const data = customers.map((customer) => ({

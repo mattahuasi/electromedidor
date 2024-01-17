@@ -19,14 +19,14 @@ const menu = ref([
   {
     key: "customers",
     to: { name: "customers" },
-    name: "Clientes",
+    name: "Clientes del sistema",
     icon: "fa-user-tie",
     accordionItem: true,
   },
   {
     key: "users",
     to: { name: "employees" },
-    name: "Usuarios",
+    name: "Usuarios del sistema",
     icon: "fa-user-cog",
     accordionItem: true,
   },

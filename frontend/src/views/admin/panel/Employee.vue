@@ -73,7 +73,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Usuarios" icon="fa-user-cog">
+  <card-data title="Usuarios del sistema" icon="fa-user-cog">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />

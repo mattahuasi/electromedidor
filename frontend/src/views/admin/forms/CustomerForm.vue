@@ -23,18 +23,29 @@ const formData = reactive({
 });
 const rules = {
   firstName: {
-    required: helpers.withMessage("Se requiere el nombre/s", required),
+    required: helpers.withMessage("Se requiere el nombre", required),
   },
   lastName: {
-    required: helpers.withMessage("Se requiere los apellidos", required),
+    required: helpers.withMessage("Se requiere el apellido", required),
   },
-  ci: { required: helpers.withMessage("Se requiere el CI", required) },
+  ci: {
+    required: helpers.withMessage(
+      "Se requiere la cédula de identidad",
+      required
+    ),
+  },
   phone: {
-    required: helpers.withMessage("Se requiere el teléfono/celular", required),
+    required: helpers.withMessage(
+      "Se requiere el teléfono o celular",
+      required
+    ),
   },
   email: {
-    required: helpers.withMessage("El correo es requerido", required),
-    email: helpers.withMessage("El correo no es valido", email),
+    required: helpers.withMessage(
+      "El correo electrónico es requerido",
+      required
+    ),
+    email: helpers.withMessage("El correo electrónico no es valido", email),
   },
   password: {},
 };
@@ -49,7 +60,7 @@ async function handleSubmit() {
         formData.password = `Sis${formData.ci}`;
         await createCustomerRequest(formData);
       } else await updateCustomerRequest(route.query.id, formData);
-      toast.success("Usuario creado exitosamente");
+      toast.success("Cliente creado exitosamente");
       router.push({ name: "customers" });
     } catch (error) {
       errors.value = error.response.data.errors;
@@ -74,7 +85,7 @@ onMounted(async () => {
 <template>
   <Form title="Cliente" icon="fa-user-tie" @handleSubmit="handleSubmit"
     ><h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
       Datos del cliente
     </h6>
@@ -82,8 +93,7 @@ onMounted(async () => {
       <div class="w-full lg:w-6/12 px-4">
         <Input
           id="firstName"
-          labelText="Nombre/s"
-          placeholder="Juan"
+          labelText="Nombre"
           v-model="v$.firstName.$model"
           :errors="v$.firstName.$errors"
           type="text"
@@ -92,8 +102,7 @@ onMounted(async () => {
       <div class="w-full lg:w-6/12 px-4">
         <Input
           id="lastName"
-          labelText="Apellidos"
-          placeholder="Perez"
+          labelText="Apellido"
           v-model="v$.lastName.$model"
           :errors="v$.lastName.$errors"
           type="text"
@@ -103,7 +112,6 @@ onMounted(async () => {
         <Input
           id="ci"
           labelText="Cédula de identidad"
-          placeholder="87654321"
           v-model="v$.ci.$model"
           :errors="v$.ci.$errors"
           type="text"
@@ -111,22 +119,20 @@ onMounted(async () => {
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Input
-          id="email"
-          labelText="Correo electrónico"
-          placeholder="usuario@ejemplo.com"
-          v-model="v$.email.$model"
-          :errors="v$.email.$errors"
-          type="email"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Input
           id="phone"
-          labelText="Teléfono/Celular"
-          placeholder="76453210"
+          labelText="Teléfono o celular"
           v-model="v$.phone.$model"
           :errors="v$.phone.$errors"
           type="text"
+        />
+      </div>
+      <div class="w-full px-4">
+        <Input
+          id="email"
+          labelText="Correo electrónico"
+          v-model="v$.email.$model"
+          :errors="v$.email.$errors"
+          type="email"
         />
       </div>
     </div>

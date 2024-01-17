@@ -23,6 +23,7 @@ const formData = reactive({
   ci: "",
   phone: "",
   email: "",
+  staff: false,
   admin: false,
 });
 const rules = {
@@ -53,7 +54,6 @@ async function handleSubmit() {
     try {
       if (!route.query.id) {
         formData.password = `Sis${formData.ci}`;
-        formData.staff = true;
         await createEmployeeRequest(formData);
       } else await updateEmployeeRequest(route.query.id, formData);
       toast.success("Usuario guardado correctamente");
@@ -81,7 +81,7 @@ onMounted(async () => {
 <template>
   <Form title="Usuario" icon="fa-user-cog" @handleSubmit="handleSubmit"
     ><h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
       Datos del usuario
     </h6>
@@ -90,7 +90,6 @@ onMounted(async () => {
         <Input
           id="firstName"
           labelText="Nombre/s"
-          placeholder="Juan"
           v-model="v$.firstName.$model"
           :errors="v$.firstName.$errors"
           type="text"
@@ -100,7 +99,6 @@ onMounted(async () => {
         <Input
           id="lastName"
           labelText="Apellidos"
-          placeholder="Perez"
           v-model="v$.lastName.$model"
           :errors="v$.lastName.$errors"
           type="text"
@@ -110,7 +108,6 @@ onMounted(async () => {
         <Input
           id="ci"
           labelText="Cédula de identidad"
-          placeholder="87654321"
           v-model="v$.ci.$model"
           :errors="v$.ci.$errors"
           type="text"
@@ -118,27 +115,39 @@ onMounted(async () => {
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Input
-          id="email"
-          labelText="Correo electrónico"
-          placeholder="usuario@ejemplo.com"
-          v-model="v$.email.$model"
-          :errors="v$.email.$errors"
-          type="email"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Input
           id="phone"
           labelText="Teléfono/Celular"
-          placeholder="76453210"
           v-model="v$.phone.$model"
           :errors="v$.phone.$errors"
           type="text"
         />
       </div>
+      <div class="w-full px-4">
+        <Input
+          id="email"
+          labelText="Correo electrónico"
+          v-model="v$.email.$model"
+          :errors="v$.email.$errors"
+          type="email"
+        />
+      </div>
+    </div>
+    <h6
+      v-if="profileStore.isAdmin"
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-2 font-bold uppercase"
+    >
+      Permisos de acceso al sistema
+    </h6>
+    <div v-if="profileStore.isAdmin" class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox
-          v-if="profileStore.isAdmin"
+          id="staff"
+          labelText="Acceso al sistema"
+          v-model="v$.staff.$model"
+        />
+      </div>
+      <div class="w-full lg:w-6/12 px-4">
+        <Checkbox
           id="admin"
           labelText="Permisos de administrador"
           v-model="v$.admin.$model"

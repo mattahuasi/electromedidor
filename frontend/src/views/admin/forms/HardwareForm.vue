@@ -8,7 +8,7 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import { ref, watch, onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, helpers, email } from "@vuelidate/validators";
+import { required, helpers } from "@vuelidate/validators";
 import { toast } from "vue-sonner";
 import Form from "@/components/cards/Form.vue";
 import Input from "@/components/inputs/Input.vue";
@@ -36,7 +36,7 @@ const rules = {
     required: helpers.withMessage("Se requiere una dirección", required),
   },
   key: {},
-  area: { required: helpers.withMessage("Elija un area", required) },
+  area: {},
   urban: {},
   rural: {},
   customerId: { required: helpers.withMessage("Elija un usuario", required) },
@@ -55,7 +55,6 @@ async function handleSubmit() {
       else await updateHardwareRequest(route.query.id, formData);
       toast.success("Medidor registrado exitosamente");
       router.push({ name: "hardware" });
-      // router.push({ name: "hardware", params: { id: route.params.id } });
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -103,11 +102,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Form title="Hardware" icon="fa-bolt" @handleSubmit="handleSubmit"
+  <Form title="Medidor" icon="fa-bolt" @handleSubmit="handleSubmit"
     ><h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos del Hardware
+      Datos del medidor
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">
@@ -129,23 +128,6 @@ onMounted(async () => {
         />
       </div>
       <div class="w-full lg:w-6/12 px-4">
-        <Select
-          id="customer"
-          labelText="Usuario"
-          v-model="v$.customerId.$model"
-          :errors="v$.customerId.$errors"
-          name="firstName"
-          :options="customers"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
-        <Checkbox
-          id="key"
-          labelText="Llave (Selecciona para activar)"
-          v-model="v$.key.$model"
-        />
-      </div>
-      <div class="w-full lg:w-6/12 px-4">
         <Checkbox
           id="urban"
           labelText="Área urbana"
@@ -154,6 +136,36 @@ onMounted(async () => {
       </div>
       <div class="w-full lg:w-6/12 px-4">
         <Checkbox id="rural" labelText="Área rural" v-model="v$.rural.$model" />
+      </div>
+    </div>
+    <h6
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-2 font-bold uppercase"
+    >
+      Usuario del medidor
+    </h6>
+    <div class="flex flex-wrap">
+      <div class="w-full px-4">
+        <Select
+          id="customer"
+          v-model="v$.customerId.$model"
+          :errors="v$.customerId.$errors"
+          name="firstName"
+          :options="customers"
+        />
+      </div>
+    </div>
+    <h6
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-2 font-bold uppercase"
+    >
+      Activación del medidor
+    </h6>
+    <div class="flex flex-wrap">
+      <div class="w-full px-4">
+        <Checkbox
+          id="key"
+          labelText="Selecciona para activar el medidor"
+          v-model="v$.key.$model"
+        />
       </div>
     </div>
   </Form>

@@ -77,6 +77,7 @@ export const getEmployees = async (req, res) => {
             attributes: ["firstName", "lastName", "ci", "phone", "email"],
           },
         ],
+        order: [["id", "ASC"]],
       });
 
       const data = employees.map((employee) => ({
@@ -102,6 +103,7 @@ export const getEmployees = async (req, res) => {
             attributes: ["firstName", "lastName", "ci", "phone", "email"],
           },
         ],
+        order: [["id", "ASC"]],
       });
 
       const data = employees.map((employee) => ({

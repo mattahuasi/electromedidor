@@ -14,7 +14,6 @@ const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
-  { key: "id", label: "ID" },
   { key: "consumption", label: "Consumo" },
   { key: "cost", label: "Total" },
   { key: "status", label: "Estado", status: true },

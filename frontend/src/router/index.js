@@ -23,8 +23,6 @@ import AdminCustomerForm from "@/views/admin/forms/CustomerForm.vue";
 import AdminHardwareForm from "@/views/admin/forms/HardwareForm.vue";
 import AdminBillForm from "@/views/admin/forms/BillForm.vue";
 
-import Chart from "@/views/admin/panel/Chart.vue";
-
 import ClientDashboard from "@/views/client/panel/Dashboard.vue";
 
 const router = createRouter({
@@ -91,11 +89,11 @@ const router = createRouter({
           name: "new-hardware",
           component: AdminHardwareForm,
         },
-        {
-          path: "/show/hardware",
-          name: "show-hardware",
-          component: Chart,
-        },
+        // {
+        //   path: "/show/hardware",
+        //   name: "show-hardware",
+        //   component: Chart,
+        // },
         {
           path: "/update/hardware",
           name: "update-hardware",
