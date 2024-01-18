@@ -13,13 +13,15 @@ import "dotenv/config";
 //   }
 // );
 
-export const sequelize = new Sequelize(process.env.DB_URL, {
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false,
-    },
-  },
-});
+// export const sequelize = new Sequelize(process.env.DB_URL, {
+//   dialectOptions: {
+//     ssl: {
+//       require: true,
+//       rejectUnauthorized: false,
+//     },
+//   },
+// });
+
+export const sequelize = new Sequelize(process.env.DB_URL);
 
 sequelize.options.logging = false;
