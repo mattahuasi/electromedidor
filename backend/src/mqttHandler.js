@@ -41,13 +41,15 @@ class mqttHandler {
       if (message.toString() === "1" || message.toString() === "0") {
         const arg = message.toString() === "1" ? 1 : 0;
         await updateHardwareKeyMQTT(name, arg);
+      } else {
+        let reading = message.toString();
+        reading = JSON.parse(reading);
+        await createReadingMQTT(name, reading);
       }
-      let reading = message.toString();
-      reading = JSON.parse(reading);
-      await createReadingMQTT(name, reading);
     });
     this.mqttClient.on("close", () => {
-      console.log("MQTT client disconnected.");
+      console.log("MQTT client disconnected. Trying to reconnect...");
+      this.mqttClient.reconnect();
     });
   }
 }
