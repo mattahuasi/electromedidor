@@ -22,6 +22,7 @@ const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
+  { key: "id", label: "ID" },
   { key: "name", label: "Nombre" },
   { key: "address", label: "Dirección" },
   { key: "key", label: "Llave", lock: true },
@@ -80,12 +81,12 @@ async function action(action) {
     try {
       const res = await getOneHardwareRequest(action.id);
       const hardware = res.data;
-      // mqttClient.publish(
-      //   `client/medidor/${hardware.name}`,
-      //   action.action === "on" ? "1" : "0"
-      // );
+      mqttClient.publish(
+        `client/medidor/${hardware.name}`,
+        action.action === "on" ? "1" : "0"
+      );
 
-      mqttClient.publish("medidor/actuadores", action.action === "on" ? "2" : "1");
+      // mqttClient.publish("medidor/actuadores", action.action === "on" ? "2" : "1");
 
       toast.success(
         `Medidor ${hardware.name} ${

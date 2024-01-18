@@ -14,6 +14,7 @@ const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
+  { key: "id", label: "ID" },
   { key: "firstName", label: "Nombres" },
   { key: "lastName", label: "Apellidos" },
   { key: "ci", label: "Cédula de identidad" },

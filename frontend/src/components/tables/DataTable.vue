@@ -47,7 +47,6 @@ function action(data) {
       <thead
         class="text-sm text-gray-600 dark:text-gray-400 bg-gray-300 dark:bg-gray-700"
       >
-        <th scope="col" class="px-4 py-3">Nro</th>
         <th
           scope="col"
           v-for="column in columns"
@@ -66,9 +65,6 @@ function action(data) {
           v-for="(item, index) in itemsDisplay"
           :key="item.id"
         >
-          <td class="px-4 py-4">
-            <span>{{ index + 1 }}</span>
-          </td>
           <td class="px-4 py-4" v-for="column in columns" :key="column.key">
             <span v-if="column.status" class="flex justify-center">
               <span

@@ -14,6 +14,7 @@ const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
+  { key: "id", label: "ID" },
   { key: "title", label: "Titulo" },
   { key: "detail", label: "Detalle" },
   { key: "content", label: "Contenido", status: true },
