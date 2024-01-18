@@ -139,7 +139,7 @@ onMounted(async () => {
       </div>
     </div>
     <h6
-      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-2 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-4 font-bold uppercase"
     >
       Usuario del medidor
     </h6>
@@ -147,6 +147,7 @@ onMounted(async () => {
       <div class="w-full px-4">
         <Select
           id="customer"
+          label-text="Elija un usuario"
           v-model="v$.customerId.$model"
           :errors="v$.customerId.$errors"
           name="firstName"

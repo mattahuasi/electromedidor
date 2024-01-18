@@ -65,7 +65,6 @@ function action(data) {
           class="text-xs text-gray-800 dark:text-white border-b border-gray-300 hover:bg-gray-200 dark:border-gray-700 dark:hover:bg-gray-700"
           v-for="(item, index) in itemsDisplay"
           :key="item.id"
-          
         >
           <td class="px-4 py-4">
             <span>{{ index + 1 }}</span>

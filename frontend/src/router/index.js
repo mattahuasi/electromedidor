@@ -23,6 +23,9 @@ import AdminCustomerForm from "@/views/admin/forms/CustomerForm.vue";
 import AdminHardwareForm from "@/views/admin/forms/HardwareForm.vue";
 import AdminBillForm from "@/views/admin/forms/BillForm.vue";
 
+import AdminLineChart from "@/views/admin/charts/LineChart.vue";
+import AdminRealTimeLineChart from "@/views/admin/charts/RealTimeLineChart.vue";
+
 import ClientDashboard from "@/views/client/panel/Dashboard.vue";
 
 const router = createRouter({
@@ -89,11 +92,16 @@ const router = createRouter({
           name: "new-hardware",
           component: AdminHardwareForm,
         },
-        // {
-        //   path: "/show/hardware",
-        //   name: "show-hardware",
-        //   component: Chart,
-        // },
+        {
+          path: "/show/hardware",
+          name: "show-hardware",
+          component: AdminLineChart,
+        },
+        {
+          path: "/online/hardware",
+          name: "online-hardware",
+          component: AdminRealTimeLineChart,
+        },
         {
           path: "/update/hardware",
           name: "update-hardware",
@@ -127,7 +135,7 @@ const router = createRouter({
       ],
     },
     {
-      path: "/",
+      path: "/client",
       redirect: "client-dashboard",
       component: Client,
       meta: { requiresAuth: true },
@@ -141,12 +149,20 @@ const router = createRouter({
     },
     {
       path: "/auth",
-      redirect: "/auth/login",
+      redirect: "login",
       component: Auth,
       meta: { notAuthenticated: true },
       children: [
-        { path: "/auth/login", component: Login },
-        { path: "/auth/register", component: Register },
+        {
+          path: "/auth/login",
+          name: "login",
+          component: Login,
+        },
+        {
+          path: "/auth/register",
+          name: "register",
+          component: Register,
+        },
       ],
     },
     { path: "/:pathMatch(.*)*", redirect: "/" },

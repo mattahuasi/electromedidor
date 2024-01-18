@@ -13,9 +13,7 @@ onMounted(async () => {
   try {
     const res = await getHardwareRequest();
     items.value = res.data;
-    console.log(items.value);
     items.value.forEach((item) => {
-      console.log(item);
       if (item.key) activates.value++;
       else deactivates.value++;
     });
@@ -23,7 +21,7 @@ onMounted(async () => {
     toast.error("Error al cargar datos");
   }
   if (line.value !== null) {
-    const echart = echarts.init(line.value, null, {
+    const echart = echarts.init(line.value, "dark", {
       width: 1024,
       height: 500,
     });

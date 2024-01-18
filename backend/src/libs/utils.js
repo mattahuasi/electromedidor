@@ -40,3 +40,11 @@ export const getCurrentTime = () => {
   const year = date.getFullYear();
   return `${year}/${month}/${day}`;
 };
+
+export const deleteRepiteDate = (dates) => {
+  let array = [];
+  dates.forEach((element) => {
+    if (!array.includes(element)) array.push(element);
+  });
+  return array;
+};

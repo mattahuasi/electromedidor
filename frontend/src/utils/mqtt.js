@@ -1,4 +1,3 @@
-// import { getHardwareByIdRequest } from "@/api/hardware";
 import { ref } from "vue";
 import mqtt from "mqtt";
 
@@ -18,29 +17,17 @@ mqttClient.on("error", (error) => {
 mqttClient.on("connect", () => {
   console.log("MQTT client has connected.");
   connected.value = true;
-//   subscribe();
 });
 
-// const subscribe = (name) => {
-//   mqttClient.subscribe(`medidor/${name}`, { qos: 0 });
-// };
-
-// const publish = async (id, arg) => {
-//   const res = await getHardwareByIdRequest(id);
-//   const hardware = res.data;
-//   const name = hardware.name;
-//   console.log(name);
-//   mqttClient.publish(`medidor/${name}`, arg);
-// };
-
-mqttClient.on("message", async function (topic, message) {
+mqttClient.on("message", function (topic, message) {
   console.log("Topic", topic);
   console.log(message.toString());
   messages.value.push(message.toString());
 });
 
 mqttClient.on("close", () => {
-  console.log("MQTT client disconnected.");
+  console.log("MQTT client disconnected. Trying to reconnect...");
+  mqttClient.reconnect();
   connected.value = false;
 });
 

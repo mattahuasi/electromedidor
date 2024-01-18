@@ -22,7 +22,6 @@ const itemsDisplay = ref([]);
 const searchQuery = ref("");
 const load = ref(true);
 const columns = ref([
-  { key: "id", label: "ID" },
   { key: "name", label: "Nombre" },
   { key: "address", label: "Dirección" },
   { key: "key", label: "Llave", lock: true },
@@ -31,7 +30,8 @@ const columns = ref([
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "show", name: "Ver gráficos", icon: "fa-chart-line" },
+  { id: "show", name: "Ver gráficos", icon: "fa-chart-pie" },
+  { id: "online", name: "Ver lecturas", icon: "fa-chart-line" },
   { id: "on", name: "Activar", icon: "fa-unlock" },
   { id: "off", name: "Desactivar", icon: "fa-lock" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
@@ -74,16 +74,23 @@ async function action(action) {
     router.push({ name: "update-hardware", query: { id: action.id } });
   } else if (action.action === "show") {
     router.push({ name: "show-hardware", query: { id: action.id } });
+  } else if (action.action === "online") {
+    router.push({ name: "online-hardware", query: { id: action.id } });
   } else if (action.action === "on" || action.action === "off") {
     try {
       const res = await getOneHardwareRequest(action.id);
       const hardware = res.data;
-      mqttClient.publish(
-        `client/medidor/${hardware.name}`,
-        action.action === "on" ? "1" : "0"
-      );
+      // mqttClient.publish(
+      //   `client/medidor/${hardware.name}`,
+      //   action.action === "on" ? "1" : "0"
+      // );
+
+      mqttClient.publish("medidor/actuadores", action.action === "on" ? "2" : "1");
+
       toast.success(
-        `Medidor ${action.action === "on" ? "activado" : "desactivado"}`
+        `Medidor ${hardware.name} ${
+          action.action === "on" ? "activado" : "desactivado"
+        }`
       );
       setTimeout(() => {
         items.value = [];

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { fullDateFormat } from "@/utils/index";
 import * as echarts from "echarts";
 
@@ -8,8 +8,12 @@ const props = defineProps({
   items: { type: Array, required: true },
 });
 
-console.log(props.title);
-console.log(props.items);
+const itemsDisplay = computed(() => {
+  return props.items;
+});
+
+// console.log(props.title);
+// console.log(itemsDisplay);
 
 const line = ref(null);
 const data = ref([]);
@@ -19,7 +23,12 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div ref="line"></div>
+  <!-- <div ref="line"></div> -->
+  <ul>
+    <li v-for="(item, index) in itemsDisplay" :key="item.id">
+      {{ item }}
+    </li>
+  </ul>
 </template>
 
 <!-- <script setup>
