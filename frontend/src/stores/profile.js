@@ -14,6 +14,7 @@ export const useProfileStore = defineStore("profile", {
     }),
     fullName: (state) =>
       state.user.user?.firstName + " " + state.user.user?.lastName,
+    isStaff: (state) => state.user?.staff,
     isAdmin: (state) => state.user?.admin,
   },
   actions: {

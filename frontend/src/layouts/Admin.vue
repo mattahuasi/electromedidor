@@ -3,7 +3,7 @@ import { ref } from "vue";
 import Navbar from "@/components/menus/Navbar.vue";
 import Sidebar from "@/components/menus/Sidebar.vue";
 
-const menu = ref([
+const items = ref([
   {
     key: "dashboard",
     to: { name: "admin-dashboard" },
@@ -59,7 +59,7 @@ const menu = ref([
 
 <template>
   <Navbar />
-  <Sidebar :menu="menu" />
+  <Sidebar :items="items" />
   <main>
     <div class="p-2 sm:ml-64 bg-gray-50 dark:bg-gray-700 min-h-screen">
       <div class="p-2 rounded-lg mt-16">

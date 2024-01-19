@@ -5,7 +5,7 @@ import AnchorAccordion from "@/components/anchors/AnchorAccordion.vue";
 
 const utilsStore = useUtilsStore();
 const prop = defineProps({
-  menu: {
+  items: {
     type: Array,
     required: true,
   },
@@ -25,13 +25,13 @@ const prop = defineProps({
   >
     <div class="h-full px-3 pb-4 overflow-y-auto bg-gray-100 dark:bg-gray-800">
       <ul class="space-y-2 font-medium">
-        <li v-for="item in menu">
+        <li v-for="item in items">
           <AnchorAccordion
             v-if="item.accordion"
             name="Usuarios"
             icon="fa-users"
           >
-            <li v-for="item in menu">
+            <li v-for="item in items">
               <Anchor
                 v-if="item.accordionItem"
                 :to="item.to"

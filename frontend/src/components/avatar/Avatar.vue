@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from "vue";
+import { getInitialsName } from "@/utils/index";
 import { useDark, useToggle } from "@vueuse/core";
 import { useProfileStore } from "@/stores/profile";
 import Dropdown from "@/components/dropdowns/Dropdown.vue";
 
 const profileStore = useProfileStore();
+const initials = getInitialsName(profileStore.fullName);
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
@@ -12,20 +13,13 @@ async function logout() {
   await profileStore.logout();
   location.reload();
 }
-
-const initials = ref("");
-const fullNameArray = profileStore.fullName.split(" ");
-if (fullNameArray.length >= 3)
-  initials.value = fullNameArray[0].charAt(0) + fullNameArray[2].charAt(0);
-else if (fullNameArray.length >= 2)
-  initials.value = fullNameArray[0].charAt(0) + fullNameArray[1].charAt(0);
 </script>
 
 <template>
   <div class="flex items-center">
     <div class="flex items-center ms-3">
       <button
-        class=" text-gray-800 dark:text-gray-100 mx-3 rounded-md py-1 px-5 shadow-md border border-gray-800 dark:border-gray-100 hidden md:block"
+        class="text-gray-800 dark:text-gray-100 mx-3 rounded-md py-1 px-5 shadow-md border border-gray-800 dark:border-gray-100 hidden md:block"
         @click="toggleDark()"
       >
         <v-icon v-if="isDark" name="fa-regular-moon"></v-icon>
@@ -66,7 +60,15 @@ else if (fullNameArray.length >= 2)
           <ul class="py-1" role="none">
             <li>
               <router-link
+                v-if="profileStore.isStaff"
                 :to="{ name: 'profile' }"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                role="menuitem"
+                >Mi información</router-link
+              >
+              <router-link
+                v-else
+                :to="{ name: 'client-profile' }"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                 role="menuitem"
                 >Mi información</router-link
@@ -74,7 +76,16 @@ else if (fullNameArray.length >= 2)
             </li>
             <li>
               <router-link
+                v-if="profileStore.isStaff"
                 :to="{ name: 'update-password' }"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                role="menuitem"
+              >
+                Actualizar contraseña
+              </router-link>
+              <router-link
+                v-else
+                :to="{ name: 'client-update-password' }"
                 class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
                 role="menuitem"
               >
@@ -84,7 +95,7 @@ else if (fullNameArray.length >= 2)
             <li>
               <span
                 @click="logout"
-                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
                 role="menuitem"
                 >Desconectarse</span
               >

@@ -92,7 +92,7 @@ export const verifyToken = async (req, res) => {
           {
             model: Employee,
             where: { staff: true },
-            attributes: ["id", "admin"],
+            attributes: ["id", "staff", "admin"],
             required: false,
           },
           {
@@ -116,6 +116,7 @@ export const verifyToken = async (req, res) => {
       };
 
       if (userFound.employee) {
+        data.staff = userFound.employee.staff;
         data.admin = userFound.employee.admin;
         data.user = {
           id: userFound.id,

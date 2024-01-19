@@ -40,3 +40,13 @@ export const getCurrentTime = () => {
   const year = date.getFullYear();
   return `${year}/${month}/${day}`;
 };
+
+export const getInitialsName = (fullName) => {
+  let initials = "";
+  const fullNameArray = fullName.split(" ");
+  if (fullNameArray.length >= 3)
+    initials = fullNameArray[0].charAt(0) + fullNameArray[2].charAt(0);
+  else if (fullNameArray.length >= 2)
+    initials = fullNameArray[0].charAt(0) + fullNameArray[1].charAt(0);
+  return initials;
+};

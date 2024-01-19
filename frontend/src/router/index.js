@@ -27,15 +27,24 @@ import AdminLineChart from "@/views/admin/charts/LineChart.vue";
 import AdminRealTimeLineChart from "@/views/admin/charts/RealTimeLineChart.vue";
 
 import ClientDashboard from "@/views/client/panel/Dashboard.vue";
+import ClientHardware from "@/views/client/panel/Hardware.vue";
+import ClientBill from "@/views/client/panel/Bill.vue";
+
+import ClientProfileForm from "@/views/client/forms/ProfileForm.vue";
+import ClientUpdatePasswordForm from "@/views/client/forms/UpdatePassword.vue";
+import ClientHardwareForm from "@/views/client/forms/HardwareForm.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/",
-      redirect: "admin-dashboard",
+      redirect: "/dashboard",
       component: Admin,
-      meta: { requiresAuth: true },
+      meta: {
+        requiresAuth: true,
+        requiresStaff: true,
+      },
       children: [
         {
           path: "/dashboard",
@@ -136,20 +145,48 @@ const router = createRouter({
     },
     {
       path: "/client",
-      redirect: "client-dashboard",
+      redirect: "/dashboard",
       component: Client,
-      meta: { requiresAuth: true },
+      meta: {
+        requiresAuth: true,
+        notRequiresStaff: true,
+      },
       children: [
         {
-          path: "/dashboard",
+          path: "/client/dashboard",
           name: "client-dashboard",
           component: ClientDashboard,
+        },
+        {
+          path: "/client/profile",
+          name: "client-profile",
+          component: ClientProfileForm,
+        },
+        {
+          path: "/client/update/password",
+          name: "client-update-password",
+          component: ClientUpdatePasswordForm,
+        },
+        {
+          path: "/client/hardware",
+          name: "client-hardware",
+          component: ClientUpdatePasswordForm,
+        },
+        {
+          path: "/client/new/hardware",
+          name: "client-new-hardware",
+          component: ClientUpdatePasswordForm,
+        },
+        {
+          path: "/client/bills",
+          name: "client-bills",
+          component: ClientUpdatePasswordForm,
         },
       ],
     },
     {
       path: "/auth",
-      redirect: "login",
+      redirect: "/auth/login",
       component: Auth,
       meta: { notAuthenticated: true },
       children: [
@@ -173,6 +210,7 @@ router.beforeEach(async (to, from, next) => {
   let ok = false;
   let path = "";
   const profileStore = useProfileStore();
+
   if (!profileStore.isAuthenticated) {
     try {
       await profileStore.verifyToken();
@@ -199,8 +237,8 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  if (to.matched.some((record) => record.meta.requiresAdmin)) {
-    if (!profileStore.isAdmin) {
+  if (to.matched.some((record) => record.meta.requiresStaff)) {
+    if (!profileStore.isStaff) {
       ok = false;
       path = "/";
     } else {
@@ -213,7 +251,7 @@ router.beforeEach(async (to, from, next) => {
       path = "/auth/login";
       ok = false;
     } else if (!profileStore.isAdmin && to.path === "/dashboard") {
-      path = "/users/dashboard";
+      path = "/client/dashboard";
       ok = false;
     } else {
       ok = true;
