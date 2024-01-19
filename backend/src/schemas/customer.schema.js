@@ -3,53 +3,57 @@ import { z } from "zod";
 export const customerSchema = z.object({
   firstName: z
     .string({
-      required_error: "Name is required",
-      invalid_type_error: "Name must be a string",
+      required_error: "El nombre es obligatorio",
+      invalid_type_error: "El nombre debe ser una cadena de texto",
     })
-    .min(4, { message: "Name must be 4 or more characters long" })
-    .max(40, { message: "Name must be 40 or fewer characters long" })
+    .min(4, { message: "El nombre debe tener 4 caracteres o más" })
+    .max(40, { message: "El nombre debe tener 40 caracteres o menos" })
     .regex(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+$/, {
-      message: "Name should only contain letters and spaces",
+      message: "El nombre solo debe contener letras y espacios",
     }),
   lastName: z
     .string({
-      required_error: "Last name is required",
-      invalid_type_error: "Last name must be a string",
+      required_error: "El apellido es obligatorio",
+      invalid_type_error: "El apellido debe ser una cadena de texto",
     })
-    .min(4, { message: "Last name must be 4 or more characters long" })
-    .max(40, { message: "Last name must be 40 or fewer characters long" })
+    .min(4, { message: "El apellido debe tener 4 caracteres o más" })
+    .max(40, { message: "El apellido debe tener 40 caracteres o menos" })
     .regex(/^[a-zA-ZáéíóúÁÉÍÓÚüÜñÑ ]+$/, {
-      message: "Last name should only contain letters and spaces",
+      message: "El apellido solo debe contener letras y espacios",
     }),
   ci: z
     .string({
-      required_error: "CI is required",
-      invalid_type_error: "CI must be a string",
+      required_error: "La cédula de identidad es obligatoria",
+      invalid_type_error: "La cédula de identidad debe ser una cadena de texto",
     })
-    .min(5, { message: "CI must be 5 or more characters long" })
-    .max(15, { message: "CI must be 15 or fewer characters long" }),
+    .min(5, { message: "La cédula de identidad debe tener 5 caracteres o más" })
+    .max(15, {
+      message: "La cédula de identidad debe tener 15 caracteres o menos",
+    }),
   phone: z
     .string({
-      required_error: "Phone number is required",
-      invalid_type_error: "Phone number must be a string",
+      required_error: "El número de teléfono es obligatorio",
+      invalid_type_error: "El número de teléfono debe ser una cadena de texto",
     })
-    .min(5, { message: "Phone number must be 5 or more characters long" })
-    .max(15, { message: "Phone number must be 15 or fewer characters long" }),
+    .min(5, { message: "El número de teléfono debe tener 5 caracteres o más" })
+    .max(15, {
+      message: "El número de teléfono debe tener 15 caracteres o menos",
+    }),
   email: z
     .string({
-      required_error: "Email is required",
-      invalid_type_error: "Email must be a string",
+      required_error: "El correo electrónico es obligatorio",
+      invalid_type_error: "El correo electrónico debe ser una cadena de texto",
     })
-    .email({ message: "Invalid email address" }),
+    .email({ message: "Dirección de correo electrónico no válida" }),
   password: z
     .string({
-      required_error: "Password is required",
-      invalid_type_error: "Password must be a string",
+      required_error: "La contraseña es obligatoria",
+      invalid_type_error: "La contraseña debe ser una cadena de texto",
     })
-    .min(6, { message: "Password should have at least 6 characters" })
-    .max(20, { message: "Password should not exceed 20 characters" })
+    .min(6, { message: "La contraseña debe tener al menos 6 caracteres" })
+    .max(20, { message: "La contraseña no debe exceder los 20 caracteres" })
     .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{6,20}$/, {
       message:
-        "Password must include at least one uppercase letter, one lowercase letter, and one number (e.g., 'Abc123')",
+        "La contraseña debe incluir al menos una letra mayúscula, una letra minúscula y un número (por ejemplo: 'Abc123')",
     }),
 });

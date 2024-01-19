@@ -2,27 +2,27 @@ import { z } from "zod";
 
 export const billSchema = z.object({
   date: z.date({
-    required_error: "Date is required",
-    invalid_type_error: "Date must be a date type",
+    required_error: "La fecha es obligatoria",
+    invalid_type_error: "La fecha debe ser de tipo fecha",
   }),
   consumption: z.number({
-    required_error: "Consumption is required",
-    invalid_type_error: "Consumption must be a number",
+    required_error: "El consumo es obligatorio",
+    invalid_type_error: "El consumo debe ser un número",
   }),
   cost: z.number({
-    required_error: "Cost is required",
-    invalid_type_error: "Cost must be a number",
+    required_error: "El costo es obligatorio",
+    invalid_type_error: "El costo debe ser un número",
   }),
   status: z.boolean({
-    required_error: "Status is required",
-    invalid_type_error: "Status must be a boolean",
+    required_error: "El estado es obligatorio",
+    invalid_type_error: "El estado debe ser un booleano",
   }),
   customerId: z.number({
-    required_error: "Customer is required",
-    invalid_type_error: "Customer must be a number",
+    required_error: "El cliente es obligatorio",
+    invalid_type_error: "El cliente debe ser un número",
   }),
   hardwareId: z.number({
-    required_error: "Hardware is required",
-    invalid_type_error: "Hardware must be a number",
+    required_error: "El hardware es obligatorio",
+    invalid_type_error: "El hardware debe ser un número",
   }),
 });

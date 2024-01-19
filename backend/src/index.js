@@ -12,13 +12,15 @@ async function main() {
   try {
     await sequelize.sync({ alter: true });
     console.log("Connection has been established successfully.");
+
     app.listen(app.get("port"), () => {
       console.log(`Server listening on port ${app.get("port")}.`);
     });
+
     const mqttClient = new mqttHandler();
     mqttClient.connect();
   } catch (error) {
-    console.log("Error: " + error);
+    console.log("Error during initialization:" + error);
   }
 }
 

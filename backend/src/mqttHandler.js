@@ -23,21 +23,26 @@ class mqttHandler {
       console.log(error);
       this.mqttClient.end();
     });
+
     this.mqttClient.on("connect", () => {
       console.log("MQTT client has connected.");
       subscribe();
     });
+
     const subscribe = async () => {
       const res = await getHardwareMQTT();
+
       res.forEach((hardware) => {
         const name = hardware.dataValues.name;
         this.mqttClient.subscribe(`server/medidor/${name}`, { qos: 0 });
         this.mqttClient.subscribe(`client/medidor/${name}`, { qos: 0 });
       });
     };
+
     this.mqttClient.on("message", async function (topic, message) {
       const topicVector = topic.toString().split("/");
       const name = topicVector[2].trim();
+
       if (message.toString() === "1" || message.toString() === "0") {
         const arg = message.toString() === "1" ? 1 : 0;
         await updateHardwareKeyMQTT(name, arg);
@@ -47,8 +52,11 @@ class mqttHandler {
         await createReadingMQTT(name, reading);
       }
     });
+
     this.mqttClient.on("close", () => {
-      console.log("MQTT client disconnected. Trying to reconnect...");
+      console.log(
+        "MQTT client has been disconnected. Attempting to reconnect..."
+      );
       this.mqttClient.reconnect();
     });
   }

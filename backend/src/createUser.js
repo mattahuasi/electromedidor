@@ -19,18 +19,22 @@ function askQuestion(question) {
 
 async function askForData() {
   console.log("Creando usuario administrador");
+
   while (!userData.firstName) {
     userData.firstName = await askQuestion("Ingresa tu nombre/s: ");
   }
+
   while (!userData.lastName) {
     userData.lastName = await askQuestion("Ingresa tus apellidos: ");
   }
+
   while (!userData.email || !validator.validate(userData.email)) {
     if (userData.email) {
       console.log("Ingresa un email válido.");
     }
     userData.email = await askQuestion("Ingresa tu email: ");
   }
+
   while (!userData.password || userData.password.length <= 6) {
     if (userData.password) {
       console.log("Ingresa una contraseña valida.");
@@ -39,7 +43,9 @@ async function askForData() {
       "Ingresa tu contraseña (debe ser mayor a 6 caracteres): "
     );
   }
+
   const passwordHash = await bcrypt.hash(userData.password, 10);
+
   const [user, created] = await User.findOrCreate({
     where: { ci: "00000001" },
     defaults: {
@@ -50,6 +56,7 @@ async function askForData() {
       password: passwordHash,
     },
   });
+
   const [employee, createdEmployee] = await Employee.findOrCreate({
     where: { userId: user.id },
     defaults: {
@@ -58,11 +65,14 @@ async function askForData() {
       userId: user.id,
     },
   });
+
   if (!created) console.log("El usuario ya ha sido creado anteriormente");
+
   console.log("Datos de usuario");
   console.log("Nombre/s:", user.firstName);
   console.log("Apellidos:", user.lastName);
   console.log("Email:", user.email);
+
   rl.close();
 }
 

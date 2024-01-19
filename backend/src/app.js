@@ -18,10 +18,11 @@ app.set("port", process.env.APP_PORT || 3000);
 
 app.use(
   cors({
-    origin: ["http://localhost:5173"],
+    origin: process.env.ALLOWED_ORIGINS,
     credentials: true,
   })
 );
+
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());

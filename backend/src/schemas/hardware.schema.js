@@ -3,28 +3,28 @@ import { z } from "zod";
 export const hardwareSchema = z.object({
   name: z
     .string({
-      required_error: "Name is required",
-      invalid_type_error: "Name must be a string",
+      required_error: "El nombre es obligatorio",
+      invalid_type_error: "El nombre debe ser una cadena de texto",
     })
-    .min(4, { message: "Name must be 4 or more characters long" })
-    .max(40, { message: "Name must be 40 or fewer characters long" })
+    .min(4, { message: "El nombre debe tener 4 caracteres o más" })
+    .max(40, { message: "El nombre debe tener 40 caracteres o menos" })
     .regex(/^[a-zA-Z0-9]+$/, {
-      message: "Name should only contain letters and numbers without spaces",
+      message: "El nombre solo debe contener letras y números, sin espacios",
     }),
   address: z.string({
-    required_error: "Address is required",
-    invalid_type_error: "Address must be a string",
+    required_error: "La dirección es obligatoria",
+    invalid_type_error: "La dirección debe ser una cadena de texto",
   }),
   key: z.boolean({
-    required_error: "Key is required",
-    invalid_type_error: "Key must be a boolean",
+    required_error: "La clave es obligatoria",
+    invalid_type_error: "La clave debe ser un booleano",
   }),
   area: z.boolean({
-    required_error: "Area is required",
-    invalid_type_error: "Area must be a boolean",
+    required_error: "El área es obligatoria",
+    invalid_type_error: "El área debe ser un booleano",
   }),
   customerId: z.number({
-    required_error: "Customer is required",
-    invalid_type_error: "Customer must be a number",
+    required_error: "El cliente es obligatorio",
+    invalid_type_error: "El cliente debe ser un número",
   }),
 });
