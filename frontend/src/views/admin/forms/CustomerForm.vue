@@ -23,29 +23,32 @@ const formData = reactive({
 });
 const rules = {
   firstName: {
-    required: helpers.withMessage("Se requiere el nombre", required),
+    required: helpers.withMessage("Por favor, ingresa el nombre", required),
   },
   lastName: {
-    required: helpers.withMessage("Se requiere el apellido", required),
+    required: helpers.withMessage("Por favor, ingresa el apellido", required),
   },
   ci: {
     required: helpers.withMessage(
-      "Se requiere la cédula de identidad",
+      "Por favor, ingresa el número de cédula de identidad",
       required
     ),
   },
   phone: {
     required: helpers.withMessage(
-      "Se requiere el teléfono o celular",
+      "Por favor, ingresa el número de teléfono o celular",
       required
     ),
   },
   email: {
     required: helpers.withMessage(
-      "El correo electrónico es requerido",
+      "Por favor, ingresa el correo electrónico",
       required
     ),
-    email: helpers.withMessage("El correo electrónico no es valido", email),
+    email: helpers.withMessage(
+      "Por favor, ingresa un correo electrónico válido",
+      email
+    ),
   },
   password: {},
 };
@@ -60,7 +63,7 @@ async function handleSubmit() {
         formData.password = `Sis${formData.ci}`;
         await createCustomerRequest(formData);
       } else await updateCustomerRequest(route.query.id, formData);
-      toast.success("Cliente creado exitosamente");
+      toast.success("¡Cliente creado con éxito!");
       router.push({ name: "customers" });
     } catch (error) {
       errors.value = error.response.data.errors;
@@ -75,7 +78,9 @@ onMounted(async () => {
       const res = await getCustomerRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
-      toast.error("Error al cargar los datos");
+      toast.error(
+        "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+      );
       router.push({ name: "customers" });
     }
   }
@@ -85,7 +90,7 @@ onMounted(async () => {
 <template>
   <Form title="Cliente" icon="fa-user-tie" @handleSubmit="handleSubmit"
     ><h6
-      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
     >
       Datos del cliente
     </h6>

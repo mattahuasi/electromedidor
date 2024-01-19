@@ -18,16 +18,29 @@ const formData = reactive({
 });
 const rules = {
   firstName: {
-    required: helpers.withMessage("El nombre es requerido", required),
+    required: helpers.withMessage("Por favor, ingresa tu nombre", required),
   },
   lastName: {
-    required: helpers.withMessage("El apellido es requerido", required),
+    required: helpers.withMessage("Por favor, ingresa tu apellido", required),
   },
-  ci: { required: helpers.withMessage("El CI es requerido", required) },
+  ci: {
+    required: helpers.withMessage(
+      "Por favor, ingresa tu cédula de identidad",
+      required
+    ),
+  },
   phone: {
-    required: helpers.withMessage("El teléfono/celular es requerido", required),
+    required: helpers.withMessage(
+      "Por favor, ingresa tu número de teléfono o celular",
+      required
+    ),
   },
-  email: { required: helpers.withMessage("El email es requerido", required) },
+  email: {
+    required: helpers.withMessage(
+      "Por favor, ingresa tu correo electrónico",
+      required
+    ),
+  },
 };
 const v$ = useVuelidate(rules, formData);
 
@@ -37,7 +50,7 @@ async function handleSubmit() {
     try {
       const res = await updateProfileRequest(formData);
       profileStore.user = res.data;
-      toast.success("Información actualizada correctamente");
+      toast.success("¡La información se ha actualizado correctamente!");
     } catch (error) {
       error.response.data.errors.map((item) => toast.error(item));
     }
@@ -56,7 +69,7 @@ onMounted(() => {
     @handleSubmit="handleSubmit"
   >
     <h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
     >
       Perfil de usuario
     </h6>
@@ -74,7 +87,7 @@ onMounted(() => {
       <div class="w-full lg:w-6/12 px-4">
         <Input
           id="firstName"
-          labelText="Nombre/s"
+          labelText="Nombre"
           v-model="v$.firstName.$model"
           :errors="v$.firstName.$errors"
           type="text"
@@ -83,7 +96,7 @@ onMounted(() => {
       <div class="w-full lg:w-6/12 px-4">
         <Input
           id="lastName"
-          labelText="Apellidos"
+          labelText="Apellido"
           v-model="v$.lastName.$model"
           :errors="v$.lastName.$errors"
           type="text"
@@ -92,7 +105,7 @@ onMounted(() => {
       <div class="w-full lg:w-6/12 px-4">
         <Input
           id="ci"
-          labelText="CI"
+          labelText="Cédula de identidad"
           v-model="v$.ci.$model"
           :errors="v$.ci.$errors"
           type="text"
@@ -101,7 +114,7 @@ onMounted(() => {
       <div class="w-full lg:w-6/12 px-4">
         <Input
           id="phone"
-          labelText="Teléfono/Celular"
+          labelText="Teléfono o celular"
           v-model="v$.phone.$model"
           :errors="v$.phone.$errors"
           type="text"

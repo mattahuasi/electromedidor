@@ -4,5 +4,5 @@ import { Toaster } from "vue-sonner";
 
 <template>
   <RouterView />
-  <Toaster richColors />
+  <Toaster richColors position="top-center" />
 </template>

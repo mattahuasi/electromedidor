@@ -19,11 +19,11 @@ async function logout() {
   <div class="flex items-center">
     <div class="flex items-center ms-3">
       <button
-        class="text-gray-800 dark:text-gray-100 mx-3 rounded-md py-1 px-5 shadow-md border border-gray-800 dark:border-gray-100 hidden md:block"
+        class="bg-blue-700 text-gray-100 dark:text-gray-800 hover:bg-blue-600 mr-5 rounded-md py-1 px-5 shadow-lg hidden md:block"
         @click="toggleDark()"
       >
-        <v-icon v-if="isDark" name="fa-regular-moon"></v-icon>
-        <v-icon v-else name="fa-regular-sun"></v-icon>
+        <v-icon v-if="isDark" name="fa-moon"></v-icon>
+        <v-icon v-else name="fa-sun"></v-icon>
       </button>
       <Dropdown>
         <template v-slot:icon>

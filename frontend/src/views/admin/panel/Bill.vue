@@ -36,7 +36,9 @@ async function loadData() {
     itemsDisplay.value = items.value;
     load.value = false;
   } catch (error) {
-    toast.error("Error al cargar datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
   }
 }
 
@@ -65,9 +67,11 @@ async function action(action) {
       await deleteBillRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("Factura eliminado exitosamente");
+      toast.success("¡Factura eliminada con éxito!");
     } catch (error) {
-      toast.error("Error al eliminar la factura");
+      toast.error(
+        "Se produjo un error al intentar eliminar la factura. Por favor, inténtalo nuevamente."
+      );
     }
   }
 }

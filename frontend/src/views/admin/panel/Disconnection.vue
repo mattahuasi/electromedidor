@@ -28,12 +28,11 @@ const columns = ref([
   { key: "key", label: "Llave", lock: true },
   { key: "area", label: "Área", area: true },
   { key: "customerId", label: "UID" },
-  { key: "createdAt", label: "Fecha de creación", date: true },
-  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "show", name: "Ver gráficos", icon: "fa-chart-line" },
+  { id: "show", name: "Ver gráficos", icon: "fa-chart-pie" },
+  { id: "online", name: "Ver lecturas", icon: "fa-chart-line" },
   { id: "on", name: "Activar", icon: "fa-unlock" },
   { id: "off", name: "Desactivar", icon: "fa-lock" },
   { id: "delete", name: "Eliminar", icon: "fa-eraser" },
@@ -54,7 +53,9 @@ async function loadData() {
       load.value = false;
     }
   } catch (error) {
-    toast.error("Error al cargar datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
   }
 }
 
@@ -76,6 +77,8 @@ async function action(action) {
     router.push({ name: "update-hardware", query: { id: action.id } });
   } else if (action.action === "show") {
     router.push({ name: "show-hardware", query: { id: action.id } });
+  } else if (action.action === "online") {
+    router.push({ name: "online-hardware", query: { id: action.id } });
   } else if (action.action === "on" || action.action === "off") {
     try {
       const res = await getOneHardwareRequest(action.id);
@@ -84,8 +87,13 @@ async function action(action) {
         `client/medidor/${hardware.name}`,
         action.action === "on" ? "1" : "0"
       );
+
+      // mqttClient.publish("medidor/actuadores", action.action === "on" ? "2" : "1");
+
       toast.success(
-        `Medidor ${action.action === "on" ? "activado" : "desactivado"}`
+        `¡Medidor ${hardware.name} ${
+          action.action === "on" ? "activado" : "desactivado"
+        } exitosamente!`
       );
       setTimeout(() => {
         items.value = [];
@@ -93,7 +101,9 @@ async function action(action) {
       }, 500);
     } catch (error) {
       toast.error(
-        `Error al ${action.action === "on" ? "activar" : "desactivar"} medidor`
+        `Se produjo un error al ${
+          action.action === "on" ? "intentar activar" : "intentar desactivar"
+        } el medidor.`
       );
     }
   } else if (action.action === "delete") {
@@ -101,9 +111,11 @@ async function action(action) {
       await deleteHardwareRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("Medidor eliminado");
+      toast.success("¡Medidor eliminado exitosamente!");
     } catch (error) {
-      toast.error("Error al eliminar medidor");
+      toast.error(
+        "Se produjo un error al intentar eliminar el medidor. Por favor, inténtalo nuevamente."
+      );
     }
   }
 }

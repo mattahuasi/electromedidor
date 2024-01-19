@@ -14,13 +14,22 @@ const formData = reactive({
 });
 const rules = {
   oldPassword: {
-    required: helpers.withMessage("Campo requerido", required),
+    required: helpers.withMessage(
+      "Por favor, ingresa tu contraseña actual",
+      required
+    ),
   },
   newPassword: {
-    required: helpers.withMessage("Campo Requerido", required),
+    required: helpers.withMessage(
+      "Por favor, ingresa tu nueva contraseña",
+      required
+    ),
   },
   repeatPassword: {
-    required: helpers.withMessage("Campo requerido", required),
+    required: helpers.withMessage(
+      "Por favor, repite tu nueva contraseña",
+      required
+    ),
   },
 };
 const v$ = useVuelidate(rules, formData);
@@ -35,7 +44,7 @@ async function handleSubmit() {
       formData.newPassword = "";
       formData.repeatPassword = "";
       v$.value.$reset();
-      toast.success("Contraseña actualizada");
+      toast.success("¡Contraseña actualizada con éxito!");
     } catch (error) {
       errors.value = error.response.data.errors;
       errors.value.map((item) => toast.error(item));
@@ -46,7 +55,9 @@ async function handleSubmit() {
 
 <template>
   <Form title="Cambiar contraseña" icon="fa-key" @handleSubmit="handleSubmit">
-    <h6 class="text-gray-400 text-sm mt-3 mb-6 font-bold uppercase">
+    <h6
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
+    >
       Contraseña
     </h6>
     <div class="flex flex-wrap">

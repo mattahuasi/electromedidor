@@ -53,7 +53,9 @@ async function loadData() {
       load.value = false;
     }
   } catch (error) {
-    toast.error("Error al cargar datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
   }
 }
 
@@ -89,9 +91,9 @@ async function action(action) {
       // mqttClient.publish("medidor/actuadores", action.action === "on" ? "2" : "1");
 
       toast.success(
-        `Medidor ${hardware.name} ${
+        `¡Medidor ${hardware.name} ${
           action.action === "on" ? "activado" : "desactivado"
-        }`
+        } exitosamente!`
       );
       setTimeout(() => {
         items.value = [];
@@ -99,7 +101,9 @@ async function action(action) {
       }, 500);
     } catch (error) {
       toast.error(
-        `Error al ${action.action === "on" ? "activar" : "desactivar"} medidor`
+        `Se produjo un error al ${
+          action.action === "on" ? "intentar activar" : "intentar desactivar"
+        } el medidor.`
       );
     }
   } else if (action.action === "delete") {
@@ -107,9 +111,11 @@ async function action(action) {
       await deleteHardwareRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("Medidor eliminado");
+      toast.success("¡Medidor eliminado exitosamente!");
     } catch (error) {
-      toast.error("Error al eliminar medidor");
+      toast.error(
+        "Se produjo un error al intentar eliminar el medidor. Por favor, inténtalo nuevamente."
+      );
     }
   }
 }

@@ -28,18 +28,20 @@ const formData = reactive({
 const rules = {
   name: {
     required: helpers.withMessage(
-      "Se requiere un nombre (El nombre no debe contener espacios)",
+      "Por favor, ingresa un nombre (sin espacios)",
       required
     ),
   },
   address: {
-    required: helpers.withMessage("Se requiere una dirección", required),
+    required: helpers.withMessage("Por favor, ingresa una dirección", required),
   },
   key: {},
   area: {},
   urban: {},
   rural: {},
-  customerId: { required: helpers.withMessage("Elija un usuario", required) },
+  customerId: {
+    required: helpers.withMessage("Por favor, elige un usuario", required),
+  },
 };
 const v$ = useVuelidate(rules, formData);
 const errors = ref([]);
@@ -53,7 +55,7 @@ async function handleSubmit() {
       formData.customerId = parseInt(formData.customerId);
       if (!route.query.id) await createHardwareRequest(formData);
       else await updateHardwareRequest(route.query.id, formData);
-      toast.success("Medidor registrado exitosamente");
+      toast.success("¡Medidor registrado con éxito!");
       router.push({ name: "hardware" });
     } catch (error) {
       errors.value = error.response.data.errors;
@@ -85,7 +87,9 @@ onMounted(async () => {
     const res = await getCustomersRequest();
     customers.value = res.data;
   } catch (error) {
-    toast.error("Error al cargar usuarios");
+    toast.error(
+      "Se produjo un error al cargar los usuarios. Por favor, intenta nuevamente."
+    );
   }
   if (route.query.id) {
     try {
@@ -94,7 +98,9 @@ onMounted(async () => {
       else formData.rural = true;
       Object.assign(formData, res.data);
     } catch (error) {
-      toast.error("Error al cargar los datos");
+      toast.error(
+        "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+      );
       router.push({ name: "hardware" });
     }
   }
@@ -104,7 +110,7 @@ onMounted(async () => {
 <template>
   <Form title="Medidor" icon="fa-bolt" @handleSubmit="handleSubmit"
     ><h6
-      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
     >
       Datos del medidor
     </h6>
@@ -139,7 +145,7 @@ onMounted(async () => {
       </div>
     </div>
     <h6
-      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-4 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-4 font-bold uppercase"
     >
       Usuario del medidor
     </h6>
@@ -156,7 +162,7 @@ onMounted(async () => {
       </div>
     </div>
     <h6
-      class="text-gray-500 dark:text-gray-100 text-sm mt-3 mb-2 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-2 font-bold uppercase"
     >
       Activación del medidor
     </h6>

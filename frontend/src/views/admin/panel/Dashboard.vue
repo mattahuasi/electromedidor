@@ -18,7 +18,9 @@ onMounted(async () => {
       else deactivates.value++;
     });
   } catch (error) {
-    toast.error("Error al cargar datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
   }
   if (pie.value !== null) {
     const echart = echarts.init(pie.value, "dark");

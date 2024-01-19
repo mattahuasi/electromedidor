@@ -35,7 +35,9 @@ async function loadData() {
     itemsDisplay.value = items.value;
     load.value = false;
   } catch (error) {
-    toast.error("Error al cargar datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
   }
 }
 
@@ -64,9 +66,11 @@ async function action(action) {
       await deleteBillRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("Noticia eliminado exitosamente");
+      toast.success("¡Noticia eliminada exitosamente!");
     } catch (error) {
-      toast.error("Error al eliminar la noticia");
+      toast.error(
+        "Se produjo un error al intentar eliminar la noticia. Por favor, inténtalo nuevamente."
+      );
     }
   }
 }

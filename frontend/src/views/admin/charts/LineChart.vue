@@ -32,7 +32,9 @@ async function handleSubmit(e) {
       console.log(categories.value);
       console.log(data.value);
     } catch (error) {
-      toast.error("Error al cargar datos");
+      toast.error(
+        "Se produjo un error al cargar los datos. Por favor, verifica tu conexión e inténtalo nuevamente."
+      );
     }
     if (line.value !== null && categories.value.length !== 0) {
       const echart = echarts.init(line.value, "dark");
@@ -66,7 +68,9 @@ onMounted(async () => {
       items.value = res.data;
       dates.value = items.value.dates;
     } catch (error) {
-      toast.error("Error al cargar datos");
+      toast.error(
+        "Se produjo un error al cargar los datos. Por favor, verifica tu conexión e inténtalo nuevamente."
+      );
     }
   }
 });

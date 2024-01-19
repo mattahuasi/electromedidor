@@ -19,14 +19,14 @@ const formData = reactive({
 });
 const rules = computed(() => ({
   firstName: {
-    required: helpers.withMessage("El nombre es requerido", required),
+    required: helpers.withMessage("Por favor, ingresa tu nombre", required),
   },
   lastName: {
-    required: helpers.withMessage("El apellido es requerido", required),
+    required: helpers.withMessage("Por favor, ingresa tu apellido", required),
   },
   ci: {
     required: helpers.withMessage(
-      "La cédula de identidad es requerida",
+      "Por favor, ingresa tu cédula de identidad",
       required
     ),
     minLength: helpers.withMessage(
@@ -36,7 +36,7 @@ const rules = computed(() => ({
   },
   phone: {
     required: helpers.withMessage(
-      "El teléfono o celular es requerido",
+      "Por favor, ingresa tu número de teléfono o celular",
       required
     ),
     minLength: helpers.withMessage(
@@ -45,14 +45,17 @@ const rules = computed(() => ({
     ),
   },
   email: {
-    email: helpers.withMessage("El correo electrónico no es válido", email),
+    email: helpers.withMessage(
+      "Por favor, ingresa un correo electrónico válido",
+      email
+    ),
     required: helpers.withMessage(
-      "El correo electrónico es requerido",
+      "Por favor, ingresa tu correo electrónico",
       required
     ),
   },
   password: {
-    required: helpers.withMessage("La contraseña es requerida", required),
+    required: helpers.withMessage("Por favor, ingresa tu contraseña", required),
     minLength: helpers.withMessage(
       "La contraseña debe tener al menos 6 caracteres",
       minLength(6)
@@ -67,14 +70,16 @@ async function handleSubmit(event) {
   if (isFormCorrect) {
     try {
       await registerRequest(formData);
-      toast.success("Registro exitoso");
+      toast.success("¡Registro exitoso! Bienvenido/a.");
       await profileStore.login({
         email: formData.email,
         password: formData.password,
       });
       location.reload();
     } catch (error) {
-      toast.error("Error al registrase, llena bien el formulario");
+      toast.error(
+        "Error al registrarse. Por favor, verifica que todos los campos estén completados correctamente."
+      );
     }
   }
 }
@@ -89,7 +94,8 @@ async function handleSubmit(event) {
         <router-link to="/auth/login">SisElectro</router-link>
       </h5>
       <p class="text-sm text-center font-medium text-gray-300">
-        Llena el formulario de registro para crear una cuenta.
+        Completa el formulario de registro para crear tu cuenta y unirte a
+        nosotros.
       </p>
       <div v-if="alertOpen">
         <div
@@ -117,7 +123,6 @@ async function handleSubmit(event) {
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.firstName.$model"
           type="text"
-          required
         />
       </div>
       <div>
@@ -137,7 +142,6 @@ async function handleSubmit(event) {
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.lastName.$model"
           type="text"
-          required
         />
       </div>
       <div>
@@ -157,7 +161,6 @@ async function handleSubmit(event) {
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.ci.$model"
           type="text"
-          required
         />
       </div>
       <div>
@@ -177,7 +180,6 @@ async function handleSubmit(event) {
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.phone.$model"
           type="text"
-          required
         />
       </div>
       <div>
@@ -197,7 +199,6 @@ async function handleSubmit(event) {
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.email.$model"
           type="email"
-          required
         />
       </div>
       <div>
@@ -217,7 +218,6 @@ async function handleSubmit(event) {
           id="password"
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.password.$model"
-          required
         />
       </div>
       <button
@@ -227,8 +227,8 @@ async function handleSubmit(event) {
         Crear cuenta
       </button>
       <div class="text-sm text-center font-medium text-gray-300">
-        Si tienes problemas con el registro pídele a un administrador que lo
-        haga.
+        Si encuentras dificultades durante el registro, no dudes en pedir ayuda
+        a un administrador.
       </div>
     </form>
   </div>

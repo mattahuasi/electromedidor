@@ -13,14 +13,17 @@ const formData = reactive({
 });
 const rules = computed(() => ({
   email: {
-    email: helpers.withMessage("El correo electrónico no es válido", email),
+    email: helpers.withMessage(
+      "Por favor, ingresa un correo electrónico válido",
+      email
+    ),
     required: helpers.withMessage(
-      "El correo electrónico es requerido",
+      "Por favor, ingresa tu correo electrónico",
       required
     ),
   },
   password: {
-    required: helpers.withMessage("La contraseña es requerida", required),
+    required: helpers.withMessage("Por favor, ingresa tu contraseña", required),
     minLength: helpers.withMessage(
       "La contraseña debe tener al menos 6 caracteres",
       minLength(6)
@@ -88,9 +91,7 @@ function notification() {
           id="email"
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.email.$model"
-          placeholder="name@company.com"
           type="email"
-          required
         />
       </div>
       <div>
@@ -109,9 +110,7 @@ function notification() {
           id="password"
           class="bg-gray-600 border border-gray-500 text-white placeholder-gray-400 text-sm rounded-lg ring-1 focus:ring-blue-500 focus:border-blue-500 focus:outline-none block w-full p-2.5"
           v-model="v$.password.$model"
-          placeholder="••••••••"
           type="password"
-          required
         />
       </div>
       <button
@@ -121,11 +120,11 @@ function notification() {
         Iniciar sesión
       </button>
       <div class="text-sm text-center font-medium text-gray-300">
-        ¿No tienes una cuenta?
+        ¿Aún no tienes una cuenta?
         <router-link to="/auth/register" class="text-blue-700 hover:underline"
           >Regístrate</router-link
         >
-        o pídele a un administrador que lo haga.
+        o solicita a un administrador que lo haga por ti.
       </div>
     </form>
   </div>

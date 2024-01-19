@@ -31,19 +31,22 @@ const formData = reactive({
 });
 const rules = {
   consumption: {
-    required: helpers.withMessage("Este campo es requerido", required),
+    required: helpers.withMessage("Por favor, ingresa el consumo", required),
   },
   cost: {
-    required: helpers.withMessage("Este campo es requerido", required),
+    required: helpers.withMessage("Por favor, ingresa el costo", required),
   },
   status: {
-    required: helpers.withMessage("Elija el estado de la factura", required),
+    required: helpers.withMessage(
+      "Por favor, elige el estado de la factura",
+      required
+    ),
   },
   customerId: {
-    required: helpers.withMessage("Se requiere un usuario", required),
+    required: helpers.withMessage("Por favor, selecciona un usuario", required),
   },
   hardwareId: {
-    required: helpers.withMessage("Se requiere un medidor", required),
+    required: helpers.withMessage("Por favor, selecciona un medidor", required),
   },
 };
 const v$ = useVuelidate(rules, formData);
@@ -60,7 +63,7 @@ async function handleSubmit() {
       if (!route.query.id) {
         await createBillRequest(formData);
       } else await updateBillRequest(route.query.id, formData);
-      toast.success("Factura creada exitosamente");
+      toast.success("¡La factura se ha creado exitosamente!");
       router.push({ name: "bills" });
     } catch (error) {
       errors.value = error.response.data.errors;
@@ -73,8 +76,11 @@ async function loadHardware() {
   try {
     const res = await getCustomerHardwareRequest(formData.customerId);
     hardware.value = res.data;
+    console.log(hardware.value);
   } catch (error) {
-    toast.error("Error al cargar los datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
     router.push({ name: "bills" });
   }
 }
@@ -95,10 +101,11 @@ onMounted(async () => {
     if (formData.customerId) {
       const res = await getCustomerHardwareRequest(formData.customerId);
       hardware.value = res.data;
-      console.log(hardware.value);
     }
   } catch (error) {
-    toast.error("Error al cargar los datos");
+    toast.error(
+      "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+    );
     router.push({ name: "bills" });
   }
   if (route.query.id) {
@@ -106,7 +113,9 @@ onMounted(async () => {
       const res = await getBillRequest(route.query.id);
       Object.assign(formData, res.data);
     } catch (error) {
-      toast.error("Error al cargar los datos");
+      toast.error(
+        "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
+      );
       router.push({ name: "bills" });
     }
   }
@@ -114,11 +123,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Form title="Cliente" icon="fa-user-tie" @handleSubmit="handleSubmit"
+  <Form title="Factura" icon="fa-book" @handleSubmit="handleSubmit"
     ><h6
-      class="text-gray-400 dark:text-gray-100 text-sm mt-3 mb-6 font-bold uppercase"
+      class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos del cliente
+      Datos de la factura
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-4/12 px-4">
@@ -162,7 +171,7 @@ onMounted(async () => {
           labelText="Medidores"
           v-model="v$.hardwareId.$model"
           :errors="v$.hardwareId.$errors"
-          name="mack"
+          name="name"
           :options="hardware"
         />
       </div>
