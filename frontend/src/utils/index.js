@@ -33,12 +33,23 @@ export const hourFormat = (date) => {
   return `${hour}:${minute}:${second}`;
 };
 
-export const getCurrentTime = () => {
+export const getCurrentDate = () => {
   const date = new Date();
   const day = date.getDate();
   const month = date.getMonth() + 1;
   const year = date.getFullYear();
   return `${year}/${month}/${day}`;
+};
+
+export const getCurrentHour = () => {
+  const d = new Date();
+  const addCero = (number) => {
+    return number < 10 ? `0${number}` : number;
+  };
+  const hour = addCero(d.getHours());
+  const minute = addCero(d.getMinutes());
+  const second = addCero(d.getSeconds());
+  return `${hour}:${minute}:${second}`;
 };
 
 export const getInitialsName = (fullName) => {

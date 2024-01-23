@@ -1,8 +1,8 @@
 <script setup>
 import { getHardwareRequest } from "@/api/hardware";
 import { ref, onMounted } from "vue";
-import * as echarts from "echarts";
 import { toast } from "vue-sonner";
+import * as echarts from "echarts";
 
 const pie = ref(null);
 const items = ref([]);

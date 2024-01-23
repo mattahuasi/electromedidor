@@ -5,15 +5,17 @@ import {
   getOneHardwareRequest,
   deleteHardwareRequest,
 } from "@/api/hardware";
+import { useProfileStore } from "@/stores/profile";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { toast } from "vue-sonner";
-import mqttClient from "@/utils/mqtt";
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
 import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 
+const useProfile = useProfileStore();
+const mqttClient = ref(useProfile.mqttClient);
 const route = useRoute();
 const router = useRouter();
 const customer = ref();
@@ -83,13 +85,10 @@ async function action(action) {
     try {
       const res = await getOneHardwareRequest(action.id);
       const hardware = res.data;
-      mqttClient.publish(
+      mqttClient.value.publish(
         `client/medidor/${hardware.name}`,
         action.action === "on" ? "1" : "0"
       );
-
-      // mqttClient.publish("medidor/actuadores", action.action === "on" ? "2" : "1");
-
       toast.success(
         `¡Medidor ${hardware.name} ${
           action.action === "on" ? "activado" : "desactivado"

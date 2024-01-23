@@ -1,9 +1,10 @@
+import { loginRequest, verifyTokenRequest, logoutRequest } from "@/api/auth";
 import { defineStore } from "pinia";
-import { verifyTokenRequest, loginRequest } from "@/api/auth";
 import Cookies from "js-cookie";
+import mqtt from "mqtt";
 
 export const useProfileStore = defineStore("profile", {
-  state: () => ({ user: {}, isAuthenticated: false }),
+  state: () => ({ user: {}, isAuthenticated: false, mqttClient: null }),
   getters: {
     dataUser: (state) => ({
       email: state.user.email,
@@ -34,6 +35,25 @@ export const useProfileStore = defineStore("profile", {
         }
         this.user = res.data;
         this.isAuthenticated = true;
+
+        this.mqttClient = mqtt.connect(import.meta.env.VITE_MQTT_BASEURL, {
+          username: import.meta.env.VITE_MQTT_USERNAME,
+          password: import.meta.env.VITE_MQTT_PASSWORD,
+        });
+
+        this.mqttClient.on("error", (error) => {
+          console.log(error);
+          this.mqttClient.end();
+        });
+
+        this.mqttClient.on("connect", () => {
+          console.log("MQTT client has connected.");
+        });
+
+        this.mqttClient.on("close", () => {
+          console.log("MQTT client disconnected. Trying to reconnect...");
+          this.mqttClient.reconnect();
+        });
       } catch (error) {
         this.user = {};
         this.isAuthenticated = false;
@@ -53,6 +73,7 @@ export const useProfileStore = defineStore("profile", {
     async logout() {
       try {
         Cookies.remove("token");
+        await logoutRequest();
         this.user = {};
         this.isAuthenticated = false;
       } catch (error) {

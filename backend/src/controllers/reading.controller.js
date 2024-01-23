@@ -70,6 +70,39 @@ export const getReadingsDates = async (req, res) => {
   }
 };
 
+export const getLastReadings = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const hardware = await Hardware.findByPk(id, {
+      include: [{ model: Reading }],
+    });
+    if (!hardware)
+      return res.status(404).json({ errors: ["Hardware not found"] });
+
+    const sortedReadings = hardware.readings.sort(
+      (a, b) => b.createdAt - a.createdAt
+    );
+
+    const lastReadings = sortedReadings.slice(0, 10);
+
+    const readings = lastReadings.map((reading) => ({
+      id: reading.id,
+      power: reading.power,
+      voltage: reading.voltage,
+      current: reading.current,
+      powerFactor: reading.powerFactor,
+      consumption: reading.consumption,
+      hardwareId: hardware.id,
+      createdAt: reading.createdAt,
+    }));
+
+    res.json(readings);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
+  }
+};
+
 export const getReadingsDay = async (req, res) => {
   try {
     const { id, date } = req.params;

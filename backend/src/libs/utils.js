@@ -33,7 +33,7 @@ export const hourFormat = (date) => {
   return `${hour}:${minute}:${second}`;
 };
 
-export const getCurrentTime = () => {
+export const getCurrentDate = () => {
   const date = new Date();
   const day = date.getDate();
   const month = date.getMonth() + 1;

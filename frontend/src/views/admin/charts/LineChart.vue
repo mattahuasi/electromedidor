@@ -14,8 +14,8 @@ const errors = ref([]);
 const date = ref("");
 const line = ref(null);
 
-async function handleSubmit(e) {
-  e.preventDefault();
+async function handleSubmit(event) {
+  event.preventDefault();
   const categories = ref([]);
   const data = ref([]);
   if (route.query.id) {
