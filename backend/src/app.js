@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
+import authCustomerRoutes from "./routes/authCustomer.routes.js";
 import employeeRoutes from "./routes/employee.routes.js";
 import customerRoutes from "./routes/customer.routes.js";
 import hardwareRoutes from "./routes/hardware.routes.js";
@@ -28,6 +29,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api", authRoutes);
+app.use("/api", authCustomerRoutes);
 app.use("/api", employeeRoutes);
 app.use("/api", customerRoutes);
 app.use("/api", hardwareRoutes);

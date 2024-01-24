@@ -1,5 +1,4 @@
 import jwt from "jsonwebtoken";
-// import "dotenv/config";
 
 export const createdAccessToken = (payload) => {
   return new Promise((resolve, reject) => {
