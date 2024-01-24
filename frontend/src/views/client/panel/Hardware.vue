@@ -68,11 +68,11 @@ function searchItems() {
 
 async function action(action) {
   if (action.action === "update") {
-    router.push({ name: "update-hardware", query: { id: action.id } });
+    router.push({ name: "client-update-hardware", query: { id: action.id } });
   } else if (action.action === "show") {
-    router.push({ name: "show-hardware", query: { id: action.id } });
+    router.push({ name: "client-show-hardware", query: { id: action.id } });
   } else if (action.action === "online") {
-    router.push({ name: "online-hardware", query: { id: action.id } });
+    router.push({ name: "client-online-hardware", query: { id: action.id } });
   } else if (action.action === "on" || action.action === "off") {
     try {
       const res = await getOneHardwareRequest(action.id);
@@ -122,7 +122,7 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new-hardware' }">Agregar medidor</button-add>
+      <button-add :to="{ name: 'client-new-hardware' }">Agregar medidor</button-add>
     </template>
     <DataTable
       :columns="columns"

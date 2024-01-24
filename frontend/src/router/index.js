@@ -34,6 +34,9 @@ import ClientProfileForm from "@/views/client/forms/ProfileForm.vue";
 import ClientUpdatePasswordForm from "@/views/client/forms/UpdatePassword.vue";
 import ClientHardwareForm from "@/views/client/forms/HardwareForm.vue";
 
+import ClientLineChart from "@/views/client/charts/LineChart.vue";
+import ClientRealTimeLineChart from "@/views/client/charts/RealTimeLineChart.vue";
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -176,6 +179,21 @@ const router = createRouter({
           path: "/client/new/hardware",
           name: "client-new-hardware",
           component: ClientHardwareForm,
+        },
+        {
+          path: "/client/update/hardware",
+          name: "client-update-hardware",
+          component: ClientHardwareForm,
+        },
+        {
+          path: "/client/show/hardware",
+          name: "client-show-hardware",
+          component: ClientLineChart,
+        },
+        {
+          path: "/client/online/hardware",
+          name: "client-online-hardware",
+          component: ClientRealTimeLineChart,
         },
         {
           path: "/client/bills",

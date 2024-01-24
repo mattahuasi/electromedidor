@@ -20,10 +20,7 @@ const columns = ref([
   { key: "status", label: "Estado", status: true },
   { key: "hardwareId", label: "HID" },
 ]);
-const options = ref([
-  { id: "update", name: "Actualizar", icon: "fa-edit" },
-  { id: "delete", name: "Eliminar", icon: "fa-eraser" },
-]);
+const options = ref([]);
 
 async function loadData() {
   load.value = true;
@@ -56,22 +53,7 @@ function searchItems() {
   itemsDisplay.value = filteredItems;
 }
 
-async function action(action) {
-  if (action.action === "update") {
-    router.push({ name: "update-bills", query: { id: action.id } });
-  } else if (action.action === "delete") {
-    try {
-      await deleteBillRequest(action.id);
-      items.value = [];
-      loadData();
-      toast.success("¡Factura eliminada con éxito!");
-    } catch (error) {
-      toast.error(
-        "Se produjo un error al intentar eliminar la factura. Por favor, inténtalo nuevamente."
-      );
-    }
-  }
-}
+async function action(action) {}
 
 onMounted(() => {
   loadData();
