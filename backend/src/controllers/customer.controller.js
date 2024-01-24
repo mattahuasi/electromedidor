@@ -168,27 +168,17 @@ export const deleteCustomer = async (req, res) => {
   }
 };
 
-export const getCustomerHardwareById = async (req, res) => {
+export const getCustomerHardware = async (req, res) => {
   try {
-    const { id } = req.params;
-
-    const customer = await Customer.findByPk(id, {
-      include: [{ model: Hardware }],
-      order: [[Hardware, "id", "ASC"]],
-    });
+    const customer = await Customer.findOne({ where: { userId: req.user.id } });
     if (!customer) return res.status(404).json({ errors: ["User not found"] });
 
-    const data = customer.hardware.map((item) => ({
-      id: item.id,
-      name: item.name,
-      address: item.address,
-      key: item.key,
-      area: item.area,
-      createdAt: item.createdAt,
-      updatedAt: item.updatedAt,
-    }));
+    const hardware = await Hardware.findAll({
+      where: { customerId: customer.id },
+      order: [["id", "ASC"]],
+    });
 
-    res.json(data);
+    res.json(hardware);
   } catch (error) {
     return res.status(500).json({ errors: [error] });
   }

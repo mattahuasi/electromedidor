@@ -9,7 +9,7 @@ import {
   getCustomer,
   updateCustomer,
   deleteCustomer,
-  getCustomerHardwareById,
+  getCustomerHardware,
 } from "../controllers/customer.controller.js";
 
 const router = new Router();
@@ -21,9 +21,9 @@ router.post(
   createCustomer
 );
 router.get("/customers", authRequired, getCustomers);
+router.get("/customers/hardware", authRequired, getCustomerHardware);
 router.get("/customers/:id", authRequired, getCustomer);
 router.put("/customers/:id", authRequired, updateCustomer);
 router.delete("/customers/:id", authRequired, adminRequired, deleteCustomer);
-router.get("/customers/:id/hardware", authRequired, getCustomerHardwareById);
 
 export default router;

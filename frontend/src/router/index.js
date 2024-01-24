@@ -170,17 +170,17 @@ const router = createRouter({
         {
           path: "/client/hardware",
           name: "client-hardware",
-          component: ClientUpdatePasswordForm,
+          component: ClientHardware,
         },
         {
           path: "/client/new/hardware",
           name: "client-new-hardware",
-          component: ClientUpdatePasswordForm,
+          component: ClientHardwareForm,
         },
         {
           path: "/client/bills",
           name: "client-bills",
-          component: ClientUpdatePasswordForm,
+          component: ClientBill,
         },
       ],
     },
