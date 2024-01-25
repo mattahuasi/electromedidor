@@ -1,10 +1,6 @@
 <script setup>
 import { getCustomerHardwareRequest } from "@/api/customer";
-import {
-  getHardwareRequest,
-  getOneHardwareRequest,
-  deleteHardwareRequest,
-} from "@/api/hardware";
+import { getOneHardwareRequest, deleteHardwareRequest } from "@/api/hardware";
 import { useProfileStore } from "@/stores/profile";
 import { ref, onMounted, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
@@ -89,7 +85,7 @@ async function action(action) {
       setTimeout(() => {
         items.value = [];
         loadData();
-      }, 500);
+      }, 1000);
     } catch (error) {
       toast.error(
         `Se produjo un error al ${
@@ -122,7 +118,9 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'client-new-hardware' }">Agregar medidor</button-add>
+      <button-add :to="{ name: 'client-new-hardware' }"
+        >Agregar medidor</button-add
+      >
     </template>
     <DataTable
       :columns="columns"

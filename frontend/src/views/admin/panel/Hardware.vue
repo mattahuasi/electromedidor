@@ -1,5 +1,4 @@
 <script setup>
-import { getCustomerHardwareRequest } from "@/api/customer";
 import {
   getHardwareRequest,
   getOneHardwareRequest,
@@ -7,7 +6,7 @@ import {
 } from "@/api/hardware";
 import { useProfileStore } from "@/stores/profile";
 import { ref, onMounted, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
+import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
@@ -16,9 +15,7 @@ import DataTable from "@/components/tables/DataTable.vue";
 
 const useProfile = useProfileStore();
 const mqttClient = ref(useProfile.mqttClient);
-const route = useRoute();
 const router = useRouter();
-const customer = ref();
 const items = ref([]);
 const itemsDisplay = ref([]);
 const searchQuery = ref("");
@@ -43,17 +40,10 @@ const options = ref([
 async function loadData() {
   load.value = true;
   try {
-    if (route.params.id) {
-      const res = await getCustomerHardwareRequest(route.params.id);
-      items.value = res.data;
-      itemsDisplay.value = items.value;
-      load.value = false;
-    } else {
-      const res = await getHardwareRequest();
-      items.value = res.data;
-      itemsDisplay.value = items.value;
-      load.value = false;
-    }
+    const res = await getHardwareRequest();
+    items.value = res.data;
+    itemsDisplay.value = items.value;
+    load.value = false;
   } catch (error) {
     toast.error(
       "Se produjo un error al cargar los datos. Por favor, inténtalo de nuevo."
@@ -97,7 +87,7 @@ async function action(action) {
       setTimeout(() => {
         items.value = [];
         loadData();
-      }, 500);
+      }, 1000);
     } catch (error) {
       toast.error(
         `Se produjo un error al ${

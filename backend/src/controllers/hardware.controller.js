@@ -1,5 +1,6 @@
 import { Hardware } from "../models/Hardware.js";
 import { Reading } from "../models/Reading.js";
+import { Bill } from "../models/Bill.js";
 
 export const createHardware = async (req, res) => {
   try {
@@ -129,5 +130,33 @@ export const updateHardwareKeyMQTT = async (name, arg) => {
     await hardware.save();
   } catch (error) {
     return error;
+  }
+};
+
+export const getHardwareDebt = async (req, res) => {
+  try {
+    const hardware = await Hardware.findAll({
+      order: [["id", "ASC"]],
+      include: { model: Bill, where: { status: false } },
+    });
+
+    let debtors = [];
+    hardware.forEach((element) => {
+      if (element.bills.length >= 3) debtors.push(element);
+    });
+
+    const data = debtors.map((hardware) => ({
+      id: hardware.id,
+      name: hardware.name,
+      address: hardware.address,
+      key: hardware.key,
+      area: hardware.area,
+      customerId: hardware.customerId,
+      debt: hardware.bills.length,
+    }));
+
+    res.json(data);
+  } catch (error) {
+    return res.status(500).json({ errors: [error] });
   }
 };

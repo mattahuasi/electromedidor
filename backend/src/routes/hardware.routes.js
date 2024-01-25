@@ -8,6 +8,7 @@ import {
   getOneHardware,
   updateHardware,
   deleteHardware,
+  getHardwareDebt,
 } from "../controllers/hardware.controller.js";
 
 const router = new Router();
@@ -19,6 +20,7 @@ router.post(
   createHardware
 );
 router.get("/hardware", authRequired, getHardware);
+router.get("/hardware/debt", getHardwareDebt);
 router.get("/hardware/:id", authRequired, getOneHardware);
 router.put("/hardware/:id", authRequired, updateHardware);
 router.delete("/hardware/:id", authRequired, deleteHardware);

@@ -5,7 +5,6 @@ import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
 import CardData from "@/components/cards/CardData.vue";
 import Search from "@/components/inputs/Search.vue";
-import ButtonAdd from "@/components/buttons/ButtonAdd.vue";
 import DataTable from "@/components/tables/DataTable.vue";
 
 const router = useRouter();
@@ -66,7 +65,6 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new-bills' }">Agregar Factura</button-add>
     </template>
     <DataTable
       :columns="columns"

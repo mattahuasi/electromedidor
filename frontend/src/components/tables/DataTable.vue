@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from "vue";
-import { fullDateFormat } from "@/utils/index";
+import { fullDateFormat, dateFormat } from "@/utils/index";
 import TableDropdown from "@/components/dropdowns/TableDropdown.vue";
 import Dropdown from "@/components/dropdowns/Dropdown.vue";
 
@@ -86,7 +86,7 @@ function action(data) {
               {{ item[column.key] ? "Urbano" : "Rural" }}
             </span>
             <span v-else-if="column.date">
-              {{ dateFormatted(item[column.key]) }}
+              {{ dateFormat(item[column.key]) }}
             </span>
             <span v-else>
               {{ item[column.key] }}

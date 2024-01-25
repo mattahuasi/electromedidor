@@ -11,7 +11,7 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, reactive, watch } from "vue";
 import { useVuelidate } from "@vuelidate/core";
-import { required, helpers, email } from "@vuelidate/validators";
+import { required, helpers } from "@vuelidate/validators";
 import { toast } from "vue-sonner";
 import Form from "@/components/cards/Form.vue";
 import Input from "@/components/inputs/Input.vue";

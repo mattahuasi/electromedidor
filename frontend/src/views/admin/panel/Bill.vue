@@ -1,5 +1,9 @@
 <script setup>
-import { getBillsRequest, deleteBillRequest } from "@/api/bill";
+import {
+  getBillsRequest,
+  deleteBillRequest,
+  generateBillsRequest,
+} from "@/api/bill";
 import { ref, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { toast } from "vue-sonner";
@@ -18,10 +22,9 @@ const columns = ref([
   { key: "consumption", label: "Consumo" },
   { key: "cost", label: "Total" },
   { key: "status", label: "Estado", status: true },
+  { key: "date", label: "Mes factura", date: true },
   { key: "customerId", label: "UID" },
   { key: "hardwareId", label: "HID" },
-  { key: "createdAt", label: "Fecha de creación", date: true },
-  { key: "updatedAt", label: "Ultima modificación", date: true },
 ]);
 const options = ref([
   { id: "update", name: "Actualizar", icon: "fa-edit" },
@@ -65,14 +68,32 @@ async function action(action) {
   } else if (action.action === "delete") {
     try {
       await deleteBillRequest(action.id);
-      items.value = [];
-      loadData();
+      setTimeout(() => {
+        items.value = [];
+        loadData();
+      }, 5000);
       toast.success("¡Factura eliminada con éxito!");
     } catch (error) {
       toast.error(
-        "Se produjo un error al intentar eliminar la factura. Por favor, inténtalo nuevamente."
+        "Se produjo un error al intentar generar las facturas. Por favor, inténtalo nuevamente."
       );
     }
+  }
+}
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  try {
+    await generateBillsRequest();
+    setTimeout(() => {
+      items.value = [];
+      loadData();
+    }, 5000);
+    toast.success("¡Facturas generadas con éxito!");
+  } catch (error) {
+    toast.error(
+      "Se produjo un error al intentar eliminar la factura. Por favor, inténtalo nuevamente."
+    );
   }
 }
 
@@ -87,7 +108,20 @@ onMounted(() => {
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new-bills' }">Agregar Factura</button-add>
+
+      <div class="flex justify-between items-center flex-wrap">
+        <form @submit="handleSubmit">
+          <button
+            @submit="handleSubmit"
+            class="flex items-center mr-4 h-12 text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-xs px-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+            type="submit"
+          >
+            <v-icon name="fa-book" class="mr-1" />
+            Generar Facturas
+          </button>
+        </form>
+        <button-add :to="{ name: 'new-bills' }">Agregar Factura</button-add>
+      </div>
     </template>
     <DataTable
       :columns="columns"
