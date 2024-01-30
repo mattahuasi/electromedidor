@@ -3,7 +3,7 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import authRoutes from "./routes/auth.routes.js";
+import authEmployeeRoutes from "./routes/authEmployee.routes.js";
 import authCustomerRoutes from "./routes/authCustomer.routes.js";
 import employeeRoutes from "./routes/employee.routes.js";
 import customerRoutes from "./routes/customer.routes.js";
@@ -28,7 +28,7 @@ app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
 
-app.use("/api", authRoutes);
+app.use("/api", authEmployeeRoutes);
 app.use("/api", authCustomerRoutes);
 app.use("/api", employeeRoutes);
 app.use("/api", customerRoutes);

@@ -81,8 +81,7 @@ async function action(action) {
   }
 }
 
-async function handleSubmit(event) {
-  event.preventDefault();
+async function generateBills() {
   try {
     await generateBillsRequest();
     setTimeout(() => {
@@ -96,6 +95,13 @@ async function handleSubmit(event) {
     );
   }
 }
+
+async function handleSubmit(event) {
+  event.preventDefault();
+  generateBills();
+}
+
+// setInterval(generateBills, 30 * 24 * 60 * 60 * 1000);
 
 onMounted(() => {
   loadData();
