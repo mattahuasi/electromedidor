@@ -8,19 +8,19 @@ const items = ref([
     key: "dashboard",
     to: { name: "client-dashboard" },
     name: "Panel de control",
-    icon: "fa-chart-pie",
+    icon: "fa-flipboard",
+  },
+  {
+    key: "hardware",
+    to: { name: "client-hardware" },
+    name: "Medidores",
+    icon: "fa-charging-station",
   },
   {
     key: "bills",
     to: { name: "client-bills" },
     name: "Facturas",
     icon: "fa-book",
-  },
-  {
-    key: "hardware",
-    to: { name: "client-hardware" },
-    name: "Medidores",
-    icon: "fa-bolt",
   },
 ]);
 </script>

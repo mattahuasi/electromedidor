@@ -1,8 +1,4 @@
-import {
-  employeeLoginRequest,
-  employeeVerifyTokenRequest,
-  employeeLogoutRequest,
-} from "@/api/authEmployee";
+import { loginRequest, verifyTokenRequest, logoutRequest } from "@/api/auth";
 import { defineStore } from "pinia";
 import Cookies from "js-cookie";
 import mqtt from "mqtt";
@@ -33,8 +29,9 @@ export const useProfileStore = defineStore("profile", {
         this.isAuthenticated = false;
         return;
       }
+
       try {
-        const res = await employeeVerifyTokenRequest(cookies.token);
+        const res = await verifyTokenRequest(cookies.token);
 
         if (!res.data) {
           this.user = {};
@@ -72,7 +69,7 @@ export const useProfileStore = defineStore("profile", {
 
     async login(email, password) {
       try {
-        const res = await employeeLoginRequest(email, password);
+        const res = await loginRequest(email, password);
         Cookies.set("token", res.data.token, { expires: 1 });
         this.user = res.data;
         this.isAuthenticated = true;
@@ -84,7 +81,7 @@ export const useProfileStore = defineStore("profile", {
     async logout() {
       try {
         Cookies.remove("token");
-        await employeeLogoutRequest();
+        await logoutRequest();
         this.user = {};
         this.isAuthenticated = false;
       } catch (error) {

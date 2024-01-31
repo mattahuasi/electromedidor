@@ -113,7 +113,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Medidores" icon="fa-bolt">
+  <card-data title="Medidores" icon="fa-charging-station">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />

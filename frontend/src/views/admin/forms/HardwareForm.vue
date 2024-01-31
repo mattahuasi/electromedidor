@@ -108,7 +108,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Form title="Medidor" icon="fa-bolt" @handleSubmit="handleSubmit"
+  <Form title="Medidor" icon="fa-charging-station" @handleSubmit="handleSubmit"
     ><h6
       class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
     >

@@ -70,7 +70,7 @@ async function handleSubmit() {
         formData.password = `Sis${formData.ci}`;
         await createEmployeeRequest(formData);
       } else await updateEmployeeRequest(route.query.id, formData);
-      toast.success("¡Usuario guardado exitosamente!");
+      toast.success("¡Funcionario guardado exitosamente!");
       router.push({ name: "employees" });
     } catch (error) {
       errors.value = error.response.data.errors;
@@ -95,11 +95,11 @@ onMounted(async () => {
 </script>
 
 <template>
-  <Form title="Usuario" icon="fa-user-cog" @handleSubmit="handleSubmit"
+  <Form title="Funcionario" icon="fa-user-cog" @handleSubmit="handleSubmit"
     ><h6
       class="text-gray-500 dark:text-gray-200 text-sm mt-3 mb-6 font-bold uppercase"
     >
-      Datos del usuario
+      Datos del funcionario
     </h6>
     <div class="flex flex-wrap">
       <div class="w-full lg:w-6/12 px-4">

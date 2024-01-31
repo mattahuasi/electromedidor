@@ -1,4 +1,5 @@
 import { User, Employee } from "../models/User.js";
+import { Op } from "sequelize";
 import bcrypt from "bcryptjs";
 
 export const createEmployee = async (req, res) => {
@@ -71,6 +72,7 @@ export const getEmployees = async (req, res) => {
 
     if (myUser.employee.admin) {
       const employees = await Employee.findAll({
+        where: { id: { [Op.ne]: req.user.id } },
         include: [
           {
             model: User,
@@ -96,7 +98,7 @@ export const getEmployees = async (req, res) => {
       return res.json(data);
     } else {
       const employees = await Employee.findAll({
-        where: { staff: true },
+        where: { id: { [Op.ne]: req.user.id }, staff: true, admin: false },
         include: [
           {
             model: User,

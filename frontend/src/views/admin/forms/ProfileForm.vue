@@ -1,5 +1,5 @@
 <script setup>
-import { employeeUpdateProfileRequest } from "@/api/authEmployee";
+import { updateProfileRequest } from "@/api/auth";
 import { useProfileStore } from "@/stores/profile";
 import { onMounted, reactive } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -48,7 +48,7 @@ async function handleSubmit() {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      const res = await employeeUpdateProfileRequest(formData);
+      const res = await updateProfileRequest(formData);
       profileStore.user = res.data;
       toast.success("¡La información se ha actualizado correctamente!");
     } catch (error) {

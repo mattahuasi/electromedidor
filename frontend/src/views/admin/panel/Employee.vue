@@ -63,10 +63,10 @@ async function action(action) {
       await deleteEmployeeRequest(action.id);
       items.value = [];
       loadData();
-      toast.success("¡Usuario eliminado exitosamente!");
+      toast.success("¡Funcionario eliminado exitosamente!");
     } catch (error) {
       toast.error(
-        "Se produjo un error al intentar eliminar el usuario. Por favor, inténtalo nuevamente."
+        "Se produjo un error al intentar eliminar el funcionario. Por favor, inténtalo nuevamente."
       );
     }
   }
@@ -78,12 +78,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <card-data title="Usuarios del sistema" icon="fa-user-cog">
+  <card-data title="Funcionarios" icon="fa-users-cog">
     <template v-slot:filters>
       <div class="pb-4">
         <Search v-model="searchQuery" />
       </div>
-      <button-add :to="{ name: 'new-employees' }">Agregar Usuario</button-add>
+      <button-add :to="{ name: 'new-employees' }"
+        >Agregar Funcionario</button-add
+      >
     </template>
     <DataTable
       :columns="columns"

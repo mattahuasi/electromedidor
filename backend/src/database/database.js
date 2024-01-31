@@ -1,7 +1,6 @@
 import Sequelize from "sequelize";
 import "dotenv/config";
 
-// Conexión a una base de datos PostgreSQL local
 export const sequelize = new Sequelize(
   process.env.DB_DATABASE,
   process.env.DB_USERNAME,
@@ -14,7 +13,6 @@ export const sequelize = new Sequelize(
   }
 );
 
-// Conexión local a una base de datos PostgreSQL de en linea
 // export const sequelize = new Sequelize(process.env.DB_URL, {
 //   dialectOptions: {
 //     ssl: {
@@ -24,7 +22,6 @@ export const sequelize = new Sequelize(
 //   },
 // });
 
-// Conexión a la base de datos en linea PostgreSQL en producción
 // export const sequelize = new Sequelize(process.env.DB_URL);
 
 sequelize.options.logging = false;

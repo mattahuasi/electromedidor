@@ -246,17 +246,17 @@ router.beforeEach(async (to, from, next) => {
     }
   }
 
-  if (to.matched.some((record) => record.meta.notAuthenticated)) {
-    if (profileStore.isAuthenticated) {
+  if (to.matched.some((record) => record.meta.requiresStaff)) {
+    if (!profileStore.isStaff) {
+      path = "/auth/login";
       ok = false;
-      path = "/";
     } else {
       ok = true;
     }
   }
 
-  if (to.matched.some((record) => record.meta.requiresStaff)) {
-    if (!profileStore.isStaff) {
+  if (to.matched.some((record) => record.meta.notAuthenticated)) {
+    if (profileStore.isAuthenticated) {
       ok = false;
       path = "/";
     } else {
