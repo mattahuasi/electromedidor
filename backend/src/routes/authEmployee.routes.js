@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { authRequired } from "../middlewares/validateToken.js";
 import { validateSchema } from "../middlewares/validator.middleware.js";
-import { loginSchema, registerSchema } from "../schemas/auth.schema.js";
+import { loginSchema } from "../schemas/auth.schema.js";
 import {
   login,
   logout,

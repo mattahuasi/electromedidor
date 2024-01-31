@@ -1,4 +1,4 @@
-import { User, Employee, Customer } from "../models/User.js";
+import { User, Employee } from "../models/User.js";
 import { createdAccessToken } from "../libs/jwt.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
@@ -119,15 +119,15 @@ export const updateProfile = async (req, res) => {
 
     await user.save();
 
-    const userFound = await Employee.findOne({
-      where: { id: req.user.id },
-      include: {
-        model: User,
-        attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
-      },
-    });
-
     res.sendStatus(200);
+
+    // const userFound = await Employee.findOne({
+    //   where: { id: req.user.id },
+    //   include: {
+    //     model: User,
+    //     attributes: ["id", "firstName", "lastName", "ci", "phone", "email"],
+    //   },
+    // });
 
     // res.json({
     //   user: {
@@ -183,47 +183,6 @@ export const updatePassword = async (req, res) => {
     //     admin: userFound.admin,
     //   },
     // });
-  } catch (error) {
-    res.status(500).json({ errors: [error.message] });
-  }
-};
-
-export const register = async (req, res) => {
-  try {
-    const { firstName, lastName, ci, phone, email, password } = req.body;
-
-    const userEmail = await User.findOne({ where: { email } });
-    if (userEmail)
-      return res.status(400).json({ errors: ["User already exists"] });
-
-    const userCi = await User.findOne({ where: { ci } });
-    if (userCi)
-      return res.status(400).json({ errors: ["User already exists"] });
-
-    const PasswordHash = await bcrypt.hash(password, 10);
-
-    const newUser = await User.create({
-      firstName,
-      lastName,
-      ci,
-      phone,
-      email,
-      password: PasswordHash,
-    });
-
-    const newCustomer = await Customer.create({
-      userId: newUser.id,
-    });
-
-    res.json({
-      id: newCustomer.id,
-      firstName: newUser.firstName,
-      lastName: newUser.lastName,
-      ci: newUser.ci,
-      phone: newUser.phone,
-      email: newUser.email,
-      createdAt: newCustomer.createdAt,
-    });
   } catch (error) {
     res.status(500).json({ errors: [error.message] });
   }
