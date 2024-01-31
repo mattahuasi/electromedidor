@@ -1,5 +1,5 @@
 <script setup>
-import { registerRequest } from "@/api/auth";
+import { customerRegisterRequest } from "@/api/authCustomer";
 import { useProfileStore } from "@/stores/profile";
 import { reactive, computed, ref } from "vue";
 import { useVuelidate } from "@vuelidate/core";
@@ -69,7 +69,7 @@ async function handleSubmit(event) {
   const isFormCorrect = await v$.value.$validate();
   if (isFormCorrect) {
     try {
-      await registerRequest(formData);
+      await customerRegisterRequest(formData);
       toast.success("¡Registro exitoso! Bienvenido/a.");
       await profileStore.login({
         email: formData.email,

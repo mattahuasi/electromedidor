@@ -148,7 +148,7 @@ const router = createRouter({
     },
     {
       path: "/client",
-      redirect: "/dashboard",
+      redirect: "/client/dashboard",
       component: Client,
       meta: {
         requiresAuth: true,
