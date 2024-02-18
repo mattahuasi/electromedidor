@@ -47,7 +47,7 @@ export const useProfileStore = defineStore("profile", {
         throw error;
       }
 
-      this.mqttClient = mqtt.connect(import.meta.env.VITE_MQTT_BASEURL, {
+      this.mqttClient = mqtt.connect(import.meta.env.VITE_MQTT_HOST, {
         username: import.meta.env.VITE_MQTT_USERNAME,
         password: import.meta.env.VITE_MQTT_PASSWORD,
       });

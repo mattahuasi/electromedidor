@@ -128,7 +128,7 @@ export const verifyToken = async (req, res) => {
 
     if (!token) return res.status(401).json({ errors: ["Unauthorized"] });
 
-    jwt.verify(token, process.env.APP_TOKEN_SECRET, async (err, user) => {
+    jwt.verify(token, process.env.TOKEN_SECRET, async (err, user) => {
       if (err) return res.status(401).json({ errors: ["Unauthorized"] });
 
       const userFound = await User.findOne({

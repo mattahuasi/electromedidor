@@ -1,11 +1,7 @@
 import axios from "axios";
 
-const baseURL = import.meta.env.VITE_API_BASEURL
-  ? import.meta.env.VITE_API_BASEURL
-  : "http://localhost:3000/api";
-
 const instance = axios.create({
-  baseURL: baseURL,
+  baseURL: import.meta.env.VITE_API_BASEURL,
 });
 
 instance.defaults.headers.common["Authorization"] = getCookie("token");

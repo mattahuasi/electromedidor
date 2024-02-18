@@ -14,7 +14,7 @@ import reportRoutes from "./routes/report.routes.js";
 const app = express();
 
 app.set("appName", process.env.APP_NAME || "API");
-app.set("port", process.env.APP_PORT || 3000);
+app.set("port", process.env.PORT || 3000);
 
 app.use(
   cors({
