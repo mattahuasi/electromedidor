@@ -150,7 +150,7 @@ function action(data) {
             v-model.number="itemsPerPage"
             class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-700 bg-white border border-gray-500 rounded-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-100 dark:hover:bg-gray-700 dark:hover:text-white"
           >
-            <option selected value="5">10</option>
+            <option selected value="10">10</option>
             <option value="20">20</option>
             <option value="50">50</option>
             <option value="100">100</option>
