@@ -1,8 +1,8 @@
 import {
   getHardwareMQTT,
   updateHardwareKeyMQTT,
-} from "./controllers/hardware.controller.js";
-import { createReadingMQTT } from "./controllers/reading.controller.js";
+} from "../controllers/hardware.controller.js";
+import { createReadingMQTT } from "../controllers/reading.controller.js";
 import mqtt from "mqtt";
 
 class mqttHandler {

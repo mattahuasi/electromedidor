@@ -1,5 +1,5 @@
 import { sequelize } from "./database/database.js";
-import mqttHandler from "./mqttHandler.js";
+import mqttHandler from "./libs/mqttHandler.js";
 import app from "./app.js";
 import "./models/User.js";
 import "./models/Hardware.js";

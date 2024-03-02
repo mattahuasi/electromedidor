@@ -1,4 +1,4 @@
-import { User, Employee } from "./models/User.js";
+import { User, Employee } from "../models/User.js";
 import validator from "email-validator";
 import readline from "readline";
 import bcrypt from "bcryptjs";
